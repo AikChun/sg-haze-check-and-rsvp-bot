@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use Irazasyed\Telegram\Telegram;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
