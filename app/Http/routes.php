@@ -11,7 +11,10 @@
 |
 */
 
+Route::get('/', function () {
+    return view('welcome');
+});
 
-Route::get('bot/getUpdates', 'TelegramController@getUpdates');
+Route::get('bot/getupdates', 'TelegramController@getUpdates');
 
 

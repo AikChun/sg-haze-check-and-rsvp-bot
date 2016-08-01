@@ -20,7 +20,7 @@ class TelegramController extends Controller
     public function getUpdates()
     {
         $updates = $this->telegram->getUpdates();
-        dd($updates);
+        return $updates;
     }
 
 
