@@ -1,14 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App;
 
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
 use Telegram;
 use App\MessageUpdate;
 
-class TelegramController extends Controller
+class HazeCheckBot
 {
 
     public function replyToMessages()
@@ -103,7 +100,5 @@ class TelegramController extends Controller
         $text .= $data['main']['forecast'] . "\n\n";
         return $text;
     }
-
-
 
 }

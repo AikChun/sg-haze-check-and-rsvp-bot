@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use Telegram;
+use App\MessageUpdate;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -15,6 +16,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         // Commands\Inspire::class,
+        Commands\BotGetUpdates::class,
     ];
 
     /**
@@ -25,8 +27,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-
+        //$schedule->command('bot:updates')->everyMinute();
         // $schedule->command('inspire')
         //          ->hourly();
     }
+
 }

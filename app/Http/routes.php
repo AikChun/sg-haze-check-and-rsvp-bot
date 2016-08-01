@@ -15,6 +15,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('bot/' . env('TELEGRAM_BOT_TOKEN') . '/getupdates', 'TelegramController@getUpdates');
+Route::get('bot/' . env('TELEGRAM_BOT_TOKEN') . '/getupdates', 'TelegramController@replyToMessages');
 
 
