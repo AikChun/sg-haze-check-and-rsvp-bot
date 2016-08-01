@@ -10,6 +10,24 @@ use App\MessageUpdate;
 
 class TelegramController extends Controller
 {
+    public function setWebhook()
+    {
+       $response = Telegram::setWebhook(['url' => 'https://pickira.com/hazebot/'. env('TELEGRAM_BOT_TOKEN'). '/webhook']);
+       return $response;
+    }
+
+    public function webhook()
+    {
+        $update = file_get_contents('php://input');
+        $update = json_decode($update);
+        Log::info(var_dump($update));
+        return $update;
+    }
+
+    public function removeWebhook()
+    {
+        $response = Telegram::removeWebhook();
+    }
 
     public function replyToMessages()
     {

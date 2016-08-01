@@ -16,5 +16,8 @@ Route::get('/', function () {
 });
 
 Route::get('bot/' . env('TELEGRAM_BOT_TOKEN') . '/getupdates', 'TelegramController@replyToMessages');
+Route::get('hazebot/' . env('TELEGRAM_BOT_TOKEN') . '/webhook', 'TelegramController@setWebhook');
+Route::get('hazebot/' . env('TELEGRAM_BOT_TOKEN') . '/remove_webhook', 'TelegramController@removeWebhook');
+Route::post('hazebot/' . env('TELEGRAM_BOT_TOKEN') . '/webhook', 'TelegramController@webhook');
 
 
