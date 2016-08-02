@@ -20,7 +20,7 @@ class TelegramController extends Controller
     {
         $updates = file_get_contents('php://input');
         $updatesInObjects = json_decode($updates);
-        Log::info($updatesInObjects);
+        Log::info('loggin response after json_decode: '. $updatesInObjects);
         die;
         $collection = collect($updatesInObjects);
         $updates = $this->rebuildBrokenJson($updatesInObject);
