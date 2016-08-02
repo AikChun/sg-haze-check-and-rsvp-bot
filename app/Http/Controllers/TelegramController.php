@@ -131,18 +131,14 @@ class TelegramController extends Controller
     protected function rebuildBrokenJson($updates)
     {
         $newArray = [];
-        foreach($updates as $update) {
-            $newEntry = [];
-            if(is_numeric($update)) {
-                Log::info($update);
-                $newEntry['update_id'] = $update;
-                $newArray[] = $newEntry;
-            }
-            if(is_array($update)) {
-                //$newEntry['message'] = $update;
-                $endElement = end($newArray);
-                $endElement['message'] = $update;
-            }
+        foreach(int $i=0;$i<count($updates);$i++) {
+            $newEntry = [
+                'update_id' => $updates[$i],
+                'message' => $updates[$i+1],
+            ];
+
+            $newArray[] = $newEntry;
+            $i++;
         }
         return $newArray;
     }
