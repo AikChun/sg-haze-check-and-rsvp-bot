@@ -134,6 +134,7 @@ class TelegramController extends Controller
         foreach($updates as $update) {
             $newEntry = [];
             if(is_numeric($update)) {
+                Log::info($update);
                 $newEntry['update_id'] = $update;
             }
             if(is_array($update)) {
