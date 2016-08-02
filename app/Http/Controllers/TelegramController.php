@@ -19,7 +19,7 @@ class TelegramController extends Controller
     public function webhook()
     {
         $update = file_get_contents('php://input');
-        $update = json_decode($update);
+        $update = json_decode($update, true);
         $chatId = $update["message"]["chat"]["id"];
         $message = $update["message"]["text"];
 
