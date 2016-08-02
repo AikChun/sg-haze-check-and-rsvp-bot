@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Log;
 use App\Http\Requests;
 use Telegram;
 use App\MessageUpdate;
