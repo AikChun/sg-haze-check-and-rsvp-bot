@@ -137,8 +137,8 @@ class TelegramController extends Controller
         }
         for($i=0;$i<count($temp);$i++) {
             $newEntry = [
-                'update_id' => $updates[$i],
-                'message' => $updates[$i+1],
+                'update_id' => $temp[$i],
+                'message' => $temp[$i+1],
             ];
 
             $newArray[] = $newEntry;
