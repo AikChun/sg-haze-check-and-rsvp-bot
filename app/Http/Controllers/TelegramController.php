@@ -22,7 +22,6 @@ class TelegramController extends Controller
         $updates = json_decode($updates, true);
         //$updates = $this->rebuildBrokenJson($updatesInObject);
 
-        Log::info(print_r($updates, true));
         $lastUpdate = MessageUpdate::orderBy('id', 'desc')->first();
         $lastUpdateId = 0;
 
@@ -65,6 +64,8 @@ class TelegramController extends Controller
     {
         $newArray = [];
         foreach($updates as $update) {
+
+            Log::info(print_r($update, true));
             if($update['update_id'] > $lastUpdateId) {
                 $newArray[] = $update;
             }
