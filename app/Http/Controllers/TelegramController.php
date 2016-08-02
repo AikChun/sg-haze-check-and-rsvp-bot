@@ -19,8 +19,8 @@ class TelegramController extends Controller
     public function webhook()
     {
         $updates = file_get_contents('php://input');
-        $updates = json_decode($updates, true);
-        $updates = $this->rebuildBrokenJson($updates);
+        $updatesInObject = json_decode($updates);
+        $updates = $this->rebuildBrokenJson($updatesInObject);
 
         Log::info(print_r($updates, true));
         $lastUpdate = MessageUpdate::orderBy('id', 'desc')->first();
@@ -129,13 +129,29 @@ class TelegramController extends Controller
         return $text;
     }
 
-    protected function rebuildBrokenJson($array)
+    protected function rebuildBrokenJson($update)
     {
-        $newArray = [];
-        foreach($array as $key=>$value) {
-            $newArray["'". $key. "'"] = $value;
-        }
-        return $newArray;
+        return [
+            'update_id' => $update->update_id,
+            'message' => [
+                'message_id' => $update->message->message_id,
+                'from' => [
+                    'id' => $update->message->from->id,
+                    'first_name' => $update->message->from->first_name,
+                    'username' => $update->message->from->username,
+                ]
+
+            ],
+            'chat' => [
+                'id' => $update->message->chat->id,
+                'first_name' => $update->message->chat->first_name,
+                'username' => $update->message->chat->username,
+                'type' => $update->message->chat->type,
+
+            ],
+            'date' => $update->message->date,
+            'text' => $update->message->text,
+        ];
     }
 
 
