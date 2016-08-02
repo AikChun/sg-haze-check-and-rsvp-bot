@@ -8,32 +8,7 @@ use App\MessageUpdate;
 class HazeCheckBot
 {
 
-    public function replyToMessages()
-    {
-        $updates = Telegram::getUpdates();
-        // find last updateId
-        $lastUpdate = MessageUpdate::orderBy('id', 'desc')->first();
-        $lastUpdateId = $lastUpdate->update_id;
-
-        // getNewUpdatesSinceLastUpdateId
-        $newUpdates = $this->filterNewUpdatesSinceLastUpdateId($updates, $lastUpdateId);
-
-        if(count($newUpdates) < 1 ) {
-            return count($newUpdates);
-        }
-
-        array_walk($newUpdates,  function($update) {
-            $this->handleEachUpdate($update);
-        });
-
-        $maxUpdateId = $this->getMaxUpdateId($newUpdates);
-        $messageUpdate = new MessageUpdate;
-        $messageUpdate->update_id = $maxUpdateId;
-        $messageUpdate->save();
-
-    }
-
-    protected function filterNewUpdatesSinceLastUpdateId($updates, $lastUpdateId)
+    public function filterNewUpdatesSinceLastUpdateId($updates, $lastUpdateId)
     {
         return array_filter($updates, function($update) use($lastUpdateId) {
             return $update['update_id'] > $lastUpdateId;

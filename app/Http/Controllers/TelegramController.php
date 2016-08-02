@@ -7,6 +7,7 @@ use Log;
 use App\Http\Requests;
 use Telegram;
 use App\MessageUpdate;
+use App\HazeCheckBot;
 
 class TelegramController extends Controller
 {
@@ -18,19 +19,21 @@ class TelegramController extends Controller
 
     public function webhook()
     {
-        $updates = file_get_contents('php://input');
+        $updates         = file_get_contents('php://input');
         $updatesInObject = json_decode($updates, true);
-        $updates = $this->rebuildBrokenJson($updatesInObject);
+        $updates         = $this->rebuildBrokenJson($updatesInObject);
 
-        $lastUpdate = MessageUpdate::orderBy('id', 'desc')->first();
-        $lastUpdateId = 0;
+        $lastUpdate      = MessageUpdate::orderBy('id', 'desc')->first();
+        $lastUpdateId    = 0;
 
         if(is_object($lastUpdate)) {
             $lastUpdateId = $lastUpdate->update_id;
         }
 
         // getNewUpdatesSinceLastUpdateId
-        $newUpdates = $this->filterNewUpdatesSinceLastUpdateId($updates, $lastUpdateId);
+        $hazeCheckBot = new HazeCheckBot;
+
+        $newUpdates = $hazeCheckBot->filterNewUpdatesSinceLastUpdateId($updates, $lastUpdateId);
 
         if(count($newUpdates) < 1 ) {
             return count($newUpdates);
