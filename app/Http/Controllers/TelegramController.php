@@ -106,7 +106,7 @@ class TelegramController extends Controller
                  $text = 'Sorry this command is not within my actions';
 
         }
-        $apiUrl = sprintf("http://api.nea.gov.sg/api/WebAPI/?dataset=%s&keyref=%s", $dataset, env('NEA_API_KEY');
+        $apiUrl = sprintf("http://api.nea.gov.sg/api/WebAPI/?dataset=%s&keyref=%s", $dataset, env('NEA_API_KEY'));
         $client = new \GuzzleHttp\Client();
         $response =  $client->request('GET', $apiUrl );
         $xml = simplexml_load_string($response->getBody()->getContents());
