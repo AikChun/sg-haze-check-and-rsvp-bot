@@ -12,7 +12,8 @@ class VerifyCsrfToken extends BaseVerifier
      * @var array
      */
     protected $except = [
-        '*:*/webhook',
-        'hazebot/'. env('TELEGRAM_BOT_TOKEN').'/webhook',
+        'hazebot/*/webhook',
+        'hazebot/*',
+        '*/webhook'
     ];
 }
