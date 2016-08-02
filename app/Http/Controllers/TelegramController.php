@@ -19,7 +19,7 @@ class TelegramController extends Controller
     public function webhook()
     {
         $updates = file_get_contents('php://input');
-        $updatesInObject = json_decode($updates);
+        $updatesInObject = json_decode($updates, true);
         $updates = $this->rebuildBrokenJson($updatesInObject);
 
         $lastUpdate = MessageUpdate::orderBy('id', 'desc')->first();
