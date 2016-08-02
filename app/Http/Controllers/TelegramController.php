@@ -19,8 +19,8 @@ class TelegramController extends Controller
     public function webhook()
     {
         $updates = file_get_contents('php://input');
-        $updatesInObject = json_decode($updates);
-        $updates = $this->rebuildBrokenJson($updatesInObject);
+        $updates = json_decode($updates, true);
+        //$updates = $this->rebuildBrokenJson($updatesInObject);
 
         Log::info(print_r($updates, true));
         $lastUpdate = MessageUpdate::orderBy('id', 'desc')->first();
@@ -63,9 +63,16 @@ class TelegramController extends Controller
 
     protected function filterNewUpdatesSinceLastUpdateId($updates, $lastUpdateId)
     {
-        return array_filter($updates, function($update) use($lastUpdateId) {
-            return $update->update_id > $lastUpdateId;
-        });
+        $newArray = [];
+        foreach($updates as $update) {
+            if($update['update_id'] > $lastUpdateId) {
+                $newArray[] = $update;
+            }
+        }
+        return $newArray;
+        //return array_filter($updates, function($update) use($lastUpdateId) {
+        //    return $update->update_id > $lastUpdateId;
+        //});
     }
 
     protected function getMaxUpdateId($updates)
