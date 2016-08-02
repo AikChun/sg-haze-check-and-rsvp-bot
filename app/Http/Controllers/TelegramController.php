@@ -19,7 +19,10 @@ class TelegramController extends Controller
     public function webhook()
     {
         $updates = file_get_contents('php://input');
-        $updatesInObject = json_decode($updates, true);
+        $updatesInObjects = json_decode($updates);
+        Log::info($updatesInObjects);
+        die;
+        $collection = collect($updatesInObjects);
         $updates = $this->rebuildBrokenJson($updatesInObject);
 
         $lastUpdate = MessageUpdate::orderBy('id', 'desc')->first();
@@ -103,8 +106,7 @@ class TelegramController extends Controller
                  $text = 'Sorry this command is not within my actions';
 
         }
-        $apiUrl = 'http://api.nea.gov.sg/api/WebAPI/?dataset=';
-        $apiUrl .= $dataset . '&keyref=' . env('NEA_API_KEY');
+        $apiUrl = sprintf("http://api.nea.gov.sg/api/WebAPI/?dataset=%s&keyref=%s", $dataset, env('NEA_API_KEY');
         $client = new \GuzzleHttp\Client();
         $response =  $client->request('GET', $apiUrl );
         $xml = simplexml_load_string($response->getBody()->getContents());
