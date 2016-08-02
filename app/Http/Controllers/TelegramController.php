@@ -19,8 +19,8 @@ class TelegramController extends Controller
     public function webhook()
     {
         $updates = file_get_contents('php://input');
-        $updates = json_decode($updates);
-
+        $updates = json_decode($updates, true);
+        $updates = $this->rebuildBrokenJson($update);
 
         Log::info(print_r($updates, true));
         $lastUpdate = MessageUpdate::orderBy('id', 'desc')->first();
@@ -64,14 +64,14 @@ class TelegramController extends Controller
     protected function filterNewUpdatesSinceLastUpdateId($updates, $lastUpdateId)
     {
         return array_filter($updates, function($update) use($lastUpdateId) {
-            return $update->update_id > $lastUpdateId;
+            return $update['update_id'] > $lastUpdateId;
         });
     }
 
     protected function getMaxUpdateId($updates)
     {
         return max(array_map(function($update){
-            return $update->update_id;
+            return $update['update_id'];
         }, $updates));
 
     }
@@ -79,11 +79,10 @@ class TelegramController extends Controller
     protected function handleEachUpdate($update)
     {
         $message = [
-            'chat_id' => $update->message->chat->id,
-            //'chat_id' => $update['message']['chat']['id'],
+            'chat_id' => $update['message']['chat']['id'],
         ];
 
-        $data = $this->getDataFromNea($update->message->text);
+        $data = $this->getDataFromNea($update['message']['text']);
 
         $message['text'] = $this->prepareDataIntoText($data);
 
@@ -128,6 +127,15 @@ class TelegramController extends Controller
         $text .= 'Low: ' . $data['main']['temperature']['@attributes']['low'] . "\n\n";
         $text .= $data['main']['forecast'] . "\n\n";
         return $text;
+    }
+
+    protected function rebuildBrokenJson($array)
+    {
+        $newArray = [];
+        foreach($array as $key=>$value) {
+            $newArray[$key] = $value;
+        }
+        return $newArray;
     }
 
 
