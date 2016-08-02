@@ -7,7 +7,7 @@ use Log;
 use App\Http\Requests;
 use Telegram;
 use App\MessageUpdate;
-use App\HazeCheckBot;
+use App\Bots\HazeCheckBot\HazeCheckBot;
 
 class TelegramController extends Controller
 {

@@ -15,7 +15,7 @@ class HazeCheckBot
         });
     }
 
-    protected function getMaxUpdateId($updates)
+    public function getMaxUpdateId($updates)
     {
         return max(array_map(function($update){
             return $update['update_id'];
