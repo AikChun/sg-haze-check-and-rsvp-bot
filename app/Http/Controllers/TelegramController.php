@@ -64,7 +64,7 @@ class TelegramController extends Controller
     protected function filterNewUpdatesSinceLastUpdateId($updates, $lastUpdateId)
     {
         return array_filter($updates, function($update) use($lastUpdateId) {
-            return $update[update_id] > $lastUpdateId;
+            return $update['update_id'] > $lastUpdateId;
         });
     }
 
@@ -133,7 +133,7 @@ class TelegramController extends Controller
     {
         $newArray = [];
         foreach($array as $key=>$value) {
-            $newArray[$key] = $value;
+            $newArray["'". $key. "'"] = $value;
         }
         return $newArray;
     }
