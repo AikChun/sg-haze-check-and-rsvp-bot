@@ -18,29 +18,9 @@ class TelegramController extends Controller
 
     public function webhook()
     {
-        $update = file_get_contents('php://input');
-        $update = json_decode($update, true);
-        $chatId = $update["message"]["chat"]["id"];
-        $message = $update["message"]["text"];
+        $updates = file_get_contents('php://input');
+        $updates = json_decode($updates, true);
 
-
-        $response =  Telegram::sendMessage([
-            'chat_id' => $chatId,
-            'text' => $message
-        ]);
-
-        return $response;
-    }
-
-    public function removeWebhook()
-    {
-        $response = Telegram::removeWebhook();
-    }
-
-    public function replyToMessages()
-    {
-        $updates = Telegram::getUpdates();
-        // find last updateId
         $lastUpdate = MessageUpdate::orderBy('id', 'desc')->first();
         $lastUpdateId = $lastUpdate->update_id;
 
@@ -59,6 +39,19 @@ class TelegramController extends Controller
         $messageUpdate = new MessageUpdate;
         $messageUpdate->update_id = $maxUpdateId;
         $messageUpdate->save();
+
+        return $response;
+    }
+
+    public function removeWebhook()
+    {
+        $response = Telegram::removeWebhook();
+    }
+
+    public function replyToMessages()
+    {
+        $updates = Telegram::getUpdates();
+        // find last updateId
 
     }
 
