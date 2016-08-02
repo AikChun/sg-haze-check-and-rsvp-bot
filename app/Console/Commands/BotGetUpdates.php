@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\HazeCheckBot;
+use App\Bots\HazeCheckBot\HazeCheckBot;
 use Illuminate\Console\Command;
 
 class BotGetUpdates extends Command
