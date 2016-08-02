@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Bots\HazeCheckBot;
 
 use Telegram;
 use App\MessageUpdate;
