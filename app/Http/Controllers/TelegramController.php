@@ -136,11 +136,13 @@ class TelegramController extends Controller
             if(is_numeric($update)) {
                 Log::info($update);
                 $newEntry['update_id'] = $update;
+                $newArray[] = $newEntry;
             }
             if(is_array($update)) {
-                $newEntry['message'] = $update;
+                //$newEntry['message'] = $update;
+                $endElement = end($newArray);
+                $endElement['message'] = $update;
             }
-            $newArray[] = $newEntry;
         }
         return $newArray;
     }
