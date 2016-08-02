@@ -133,7 +133,7 @@ class TelegramController extends Controller
         $newArray = [];
         foreach($updates as $update) {
             $newEntry = [];
-            if(is_numeric($update) {
+            if(is_numeric($update)) {
                 $newEntry['update_id'] = $update;
             }
             if(is_array($update)) {
@@ -141,6 +141,7 @@ class TelegramController extends Controller
             }
             $newArray[] = $newEntry;
         }
+        return $newArray;
     }
 
 
