@@ -20,8 +20,16 @@ class TelegramController extends Controller
     {
         $update = file_get_contents('php://input');
         $update = json_decode($update);
-        Log::info(var_dump($update));
-        return $update;
+        $chatId = $update["message"]["chat"]["id"];
+        $message = $update["message"]["text"];
+
+
+        $response =  Telegram::sendMessage([
+            'chat_id' => $chatId,
+            'text' => $message
+        ]);
+
+        return $response;
     }
 
     public function removeWebhook()
