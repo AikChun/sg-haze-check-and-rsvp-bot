@@ -21,8 +21,12 @@ class TelegramController extends Controller
         $updates = file_get_contents('php://input');
         $updates = json_decode($updates, true);
 
-        $lastUpdate = MessageUpdate::orderBy('id', 'desc')->first()->toArray();
-        $lastUpdateId = $lastUpdate['update_id'];
+        $lastUpdate = MessageUpdate::orderBy('id', 'desc')->first();
+        $lastUpdateId = 0;
+
+        if(is_object($lastUpdate)) {
+            $lastUpdateId = $lastUpdate->update_id;
+        }
 
         // getNewUpdatesSinceLastUpdateId
         $newUpdates = $this->filterNewUpdatesSinceLastUpdateId($updates, $lastUpdateId);
