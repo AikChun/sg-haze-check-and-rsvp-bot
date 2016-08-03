@@ -112,12 +112,12 @@ class TelegramController extends Controller
         $dataset = "";
 
         switch($type) {
-            case "/3hrpsi":
-            case "/3hrpsi@sghazecheckbot":
+            case "/get3hrpsi":
+            case "/get3hrpsi@sghazecheckbot":
                 $dataset="psi_update";
                 break;
-            case "/todayforecase@sghazecheckbot":
-            case "/todayforecast":
+            case "/getforecast@sghazecheckbot":
+            case "/getforecast":
                 $dataset="24hrs_forecast";
                 break;
 
@@ -134,7 +134,7 @@ class TelegramController extends Controller
     {
         $pieces = explode("@", $command);
         $text = "";
-        if($pieces[0] == "/todayforecast") {
+        if($pieces[0] == "/getforecast") {
             //return var_dump($data['main']);
             $text = $data['title'] . "\n\n";
             $text .= $data['main']['title'] . "\n\n";
@@ -147,7 +147,7 @@ class TelegramController extends Controller
             $text .= $data['main']['forecast'] . "\n\n";
         }
 
-        if($pieces[0] == "/3hrspsi") {
+        if($pieces[0] == "/get3hrspsi") {
             $text = $data['title'] . "\n\n";
             $text .= "Time of Record: " . date('D j-n-Y H:i', strtotime($data['item']['region'][0]['record']['-timestamp'])) . "\n\n";
             $text .= "Region: " . "\n\n";
