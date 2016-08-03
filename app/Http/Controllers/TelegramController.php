@@ -87,7 +87,7 @@ class TelegramController extends Controller
         $command = strtolower($update['message']['text']);
         $dataset = $this->getDatasetToNea($command);
 
-        if($data === false) {
+        if($dataset === false) {
             return false;
         }
 
