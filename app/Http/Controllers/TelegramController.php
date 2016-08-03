@@ -147,7 +147,7 @@ class TelegramController extends Controller
 
         Log::info($command);
         if($pieces[0] == "/get3hrpsi") {
-            Log::info('inside if: '. $command);
+            Log::info(print_r($data, true));
             $text = $data['title'] . "\n\n";
             $text .= "Time of Record: " . date('D j-n-Y H:i', strtotime($data['item']['region'][0]['record']['@attributes']['timestamp'])) . "\n\n";
             $text .= "Region: " . "\n\n";
