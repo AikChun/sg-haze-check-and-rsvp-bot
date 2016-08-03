@@ -132,6 +132,7 @@ class TelegramController extends Controller
     protected function prepareDataIntoText($data, $command)
     {
         $pieces = explode("@", $command);
+        $text = "";
         if($pieces[0] == "/todayforecast") {
             //return var_dump($data['main']);
             $text = $data['title'] . "\n\n";
