@@ -84,49 +84,76 @@ class TelegramController extends Controller
             'chat_id' => $update['message']['chat']['id'],
         ];
 
-        $data = $this->getDataFromNea($update['message']['text']);
+        $command = strtolower($update['message']['text']);
+        $dataset = $this->getDatasetToNea($command);
 
-        $message['text'] = $this->prepareDataIntoText($data);
+        if($data === false) {
+            return false;
+        }
+
+
+        $apiUrl = sprintf("http://api.nea.gov.sg/api/WebAPI/?dataset=%s&keyref=%s", $dataset, env('NEA_API_KEY'));
+
+        $client = new \GuzzleHttp\Client();
+        $response =  $client->request('GET', $apiUrl );
+        $xmlData = simplexml_load_string($response->getBody()->getContents());
+        $jsonData = json_encode($xmlData);
+        $dataArray = json_decode($jsonData,TRUE);
+
+        $message['text'] = $this->prepareDataIntoText($dataArray, $command);
 
         $response = Telegram::sendMessage($message);
 
     }
 
-    protected function getDataFromNea($type)
+    protected function getDatasetToNea($type)
     {
-        $client = new \GuzzleHttp\Client();
         $dataset = "";
 
         switch($type) {
+            case "/3hrpsi":
+            case "/3hrpsi@sghazecheckbot":
+                $dataset="psi_update";
+                break;
+            case "/todayforecase@sghazecheckbot"
             case "/todayforecast":
                 $dataset="24hrs_forecast";
                 break;
 
-             default:
-                 $text = 'Sorry this command is not within my actions';
+            default:
+                return false;
 
         }
-        $apiUrl = sprintf("http://api.nea.gov.sg/api/WebAPI/?dataset=%s&keyref=%s", $dataset, env('NEA_API_KEY'));
-        $client = new \GuzzleHttp\Client();
-        $response =  $client->request('GET', $apiUrl );
-        $xml = simplexml_load_string($response->getBody()->getContents());
-        $json = json_encode($xml);
-        return json_decode($json,TRUE);
+
+        return $dataset;
 
     }
 
-    protected function prepareDataIntoText($data)
+    protected function prepareDataIntoText($data, $command)
     {
-        //return var_dump($data['main']);
-        $text = $data['title'] . "\n\n";
-        $text .= $data['main']['title'] . "\n\n";
-        //$text .= $data['main']['forecastIssue']['@attributes']['date'] . "\n\n";
-        //$text .= $data['main']['forecastIssue']['@attributes']['time'] . "\n\n";
-        $text .= $data['main']['validTime'] . "\n\n";
-        $text .= "Temperature: " . "\n\n";
-        $text .= 'High: ' . $data['main']['temperature']['@attributes']['high'] . "\n\n";
-        $text .= 'Low: ' . $data['main']['temperature']['@attributes']['low'] . "\n\n";
-        $text .= $data['main']['forecast'] . "\n\n";
+        $pieces = explode("@", $command);
+        if($pieces[0] == "/todayforecast") {
+            //return var_dump($data['main']);
+            $text = $data['title'] . "\n\n";
+            $text .= $data['main']['title'] . "\n\n";
+            //$text .= $data['main']['forecastIssue']['@attributes']['date'] . "\n\n";
+            //$text .= $data['main']['forecastIssue']['@attributes']['time'] . "\n\n";
+            $text .= $data['main']['validTime'] . "\n\n";
+            $text .= "Temperature: " . "\n\n";
+            $text .= 'High: ' . $data['main']['temperature']['@attributes']['high'] . "\n\n";
+            $text .= 'Low: ' . $data['main']['temperature']['@attributes']['low'] . "\n\n";
+            $text .= $data['main']['forecast'] . "\n\n";
+        }
+
+        if($pieces[0] == "/3hrspsi") {
+            $text = $data['title'] . "\n\n";
+            $text .= "Time of Record: " . date('D j-n-Y H:i', strtotime($data['item']['region'][0]['record']['-timestamp'])) . "\n\n";
+            $text .= "Region: " . "\n\n";
+            $text .= "North - " . $data['item']['region'][0]['record']['reading'][1]['value'] . "\n\n";
+            $text .= "Central - " . $data['item']['region'][2]['record']['reading'][1]['value'] . "\n\n";
+            $text .= "East - " . $data['item']['region'][3]['record']['reading'][1]['value'] . "\n\n";
+            $text .= "West - " . $data['item']['region'][4]['record']['reading'][1]['value'] . "\n\n";
+        }
         return $text;
     }
 
