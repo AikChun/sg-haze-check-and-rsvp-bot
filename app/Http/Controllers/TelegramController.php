@@ -109,8 +109,8 @@ class TelegramController extends Controller
         $dataset = "";
 
         switch($type) {
-            case "/get3hrpsi":
             case "/get3hrpsi@sghazecheckbot":
+            case "/get3hrpsi":
                 $dataset="psi_update";
                 break;
             case "/getforecast@sghazecheckbot":
