@@ -82,7 +82,6 @@ class TelegramController extends Controller
         $message = [
             'chat_id' => $update['message']['chat']['id'],
         ];
-        Log::info(print_r($update, true));
         $command = strtolower($update['message']['text']);
         $dataset = $this->getDatasetToNea($command);
 
@@ -130,6 +129,7 @@ class TelegramController extends Controller
 
     protected function prepareDataIntoText($data, $command)
     {
+        Log::info(print_r($data, true));
         $pieces = explode("@", $command);
         $text = "";
         if($pieces[0] == "/getforecast") {
