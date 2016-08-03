@@ -115,7 +115,7 @@ class TelegramController extends Controller
             case "/3hrpsi@sghazecheckbot":
                 $dataset="psi_update";
                 break;
-            case "/todayforecase@sghazecheckbot"
+            case "/todayforecase@sghazecheckbot":
             case "/todayforecast":
                 $dataset="24hrs_forecast";
                 break;
