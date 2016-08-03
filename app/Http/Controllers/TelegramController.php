@@ -84,8 +84,8 @@ class TelegramController extends Controller
             'chat_id' => $update['message']['chat']['id'],
         ];
 
+        Log::info(var_dump($update['message']));
         $command = strtolower($update['message']['text']);
-        Log::info($command);
         $dataset = $this->getDatasetToNea($command);
 
         if($dataset === false) {
