@@ -22,7 +22,7 @@ class TelegramController extends Controller
         $updates         = file_get_contents('php://input');
         $updatesInObject = json_decode($updates, true);
         $updates         = $this->rebuildBrokenJson($updatesInObject);
-        Log::info(print_r($updates));
+        Log::info(print_r($updates, true));
         $lastUpdate      = MessageUpdate::orderBy('id', 'desc')->first();
         $lastUpdateId    = 0;
 
