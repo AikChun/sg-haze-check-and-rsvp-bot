@@ -145,18 +145,15 @@ class TelegramController extends Controller
             $text .= $data['main']['forecast'] . "\n\n";
         }
 
-        Log::info($command);
         if($pieces[0] == "/get3hrpsi") {
-            Log::info(print_r($data, true));
             $text = $data['title'] . "\n\n";
             $text .= "Time of Record: " . date('D j-n-Y H:i', strtotime($data['item']['region'][0]['record']['@attributes']['timestamp'])) . "\n\n";
             $text .= "Region: " . "\n\n";
-            $text .= "North - " . $data['item']['region'][0]['record']['reading'][[1]['@attributes']]['value'] . "\n\n";
-            $text .= "Central - " . $data['item']['region'][2]['record']['reading'][[1]['@attributes']]['value'] . "\n\n";
-            $text .= "East - " . $data['item']['region'][3]['record']['reading'][[1]['@attributes']]['value'] . "\n\n";
-            $text .= "West - " . $data['item']['region'][4]['record']['reading'][[1]['@attributes']]['value'] . "\n\n";
+            $text .= "North - " . $data['item']['region'][0]['record']['reading'][[1]['@attributes']['value'] . "\n\n";
+            $text .= "Central - " . $data['item']['region'][2]['record']['reading'][[1]['@attributes']['value'] . "\n\n";
+            $text .= "East - " . $data['item']['region'][3]['record']['reading'][[1]['@attributes']['value'] . "\n\n";
+            $text .= "West - " . $data['item']['region'][4]['record']['reading'][[1]['@attributes']['value'] . "\n\n";
         }
-        Log::info('finally : '. $text);
         return $text;
     }
 
