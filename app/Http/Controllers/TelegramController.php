@@ -145,7 +145,7 @@ class TelegramController extends Controller
             $text .= $data['main']['forecast'] . "\n\n";
         }
 
-        if($pieces[0] == "/get3hrspsi") {
+        if($pieces[0] == "/get3hrpsi") {
             $text = $data['title'] . "\n\n";
             $text .= "Time of Record: " . date('D j-n-Y H:i', strtotime($data['item']['region'][0]['record']['@attributes']['timestamp'])) . "\n\n";
             $text .= "Region: " . "\n\n";
