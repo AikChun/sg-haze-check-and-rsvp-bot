@@ -22,7 +22,7 @@ class TelegramController extends Controller
         $updates         = file_get_contents('php://input');
         $updatesInObject = json_decode($updates, true);
         $updates         = $this->rebuildBrokenJson($updatesInObject);
-
+        Log::info(print_r($updates));
         $lastUpdate      = MessageUpdate::orderBy('id', 'desc')->first();
         $lastUpdateId    = 0;
 
@@ -48,7 +48,7 @@ class TelegramController extends Controller
         $messageUpdate->update_id = $maxUpdateId;
         $messageUpdate->save();
 
-        return $response;
+        return 'OK';
     }
 
     public function removeWebhook()
