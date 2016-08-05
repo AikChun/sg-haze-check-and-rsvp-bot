@@ -77,13 +77,15 @@ class AttendingCommand extends Command
 
     private function prepareText($event, $attendees)
     {
-        $text = "Event: \n\n";
+        $text = "Event: \n";
         $text .= $event['description'] . "\n\n";
         $i = 1;
         foreach ($attendees as $attendee) {
-            $text .= $i . ". " . $attendee['username'] . "\n\n";
+            $text .= $i . ". " . $attendee['username'] . "\n";
             $i = $i + 1;
         }
+        $text .= "Click here to attend!\n";
+        $text .= "/attending";
 
         return $text;
     }

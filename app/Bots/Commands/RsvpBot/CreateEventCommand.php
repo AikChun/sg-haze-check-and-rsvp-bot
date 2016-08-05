@@ -58,7 +58,9 @@ class CreateEventCommand extends Command
     private function announceEventCreated($data)
     {
         $text = "Event: \n";
-        $text .= $data;
+        $text .= $data . "\n\n";
+        $text .= "Click here to attend!\n";
+        $text .= "/attending";
 
         return $text;
     }
