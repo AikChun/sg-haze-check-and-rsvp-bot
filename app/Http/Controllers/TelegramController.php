@@ -19,35 +19,39 @@ class TelegramController extends Controller
 
     public function webhook()
     {
-        $updates         = file_get_contents('php://input');
-        $updatesInObject = json_decode($updates, true);
-        $updates         = $this->rebuildBrokenJson($updatesInObject);
-        $lastUpdate      = MessageUpdate::orderBy('id', 'desc')->first();
-        $lastUpdateId    = 0;
+        //$updates         = file_get_contents('php://input');
+        $updates = Telegram::getWebhookUpdates();
+        $update->getMessage()->getChat()->getId();
+        Telegram::sendMessage($chat_id, "Thanks", false, null, null);
+        return response()->json(["status" => "success"]);
+        //$updatesInObject = json_decode($updates, true);
+        //$updates         = $this->rebuildBrokenJson($updatesInObject);
+        //$lastUpdate      = MessageUpdate::orderBy('id', 'desc')->first();
+        //$lastUpdateId    = 0;
 
-        if(is_object($lastUpdate)) {
-            $lastUpdateId = $lastUpdate->update_id;
-        }
+        //if(is_object($lastUpdate)) {
+        //    $lastUpdateId = $lastUpdate->update_id;
+        //}
 
-        // getNewUpdatesSinceLastUpdateId
-        $hazeCheckBot = new HazeCheckBot;
+        //// getNewUpdatesSinceLastUpdateId
+        //$hazeCheckBot = new HazeCheckBot;
 
-        $newUpdates = $hazeCheckBot->filterNewUpdatesSinceLastUpdateId($updates, $lastUpdateId);
+        //$newUpdates = $hazeCheckBot->filterNewUpdatesSinceLastUpdateId($updates, $lastUpdateId);
 
-        if(count($newUpdates) < 1 ) {
-            return count($newUpdates);
-        }
+        //if(count($newUpdates) < 1 ) {
+        //    return count($newUpdates);
+        //}
 
-        array_walk($newUpdates,  function($update) {
-            $this->handleEachUpdate($update);
-        });
+        //array_walk($newUpdates,  function($update) {
+        //    $this->handleEachUpdate($update);
+        //});
 
-        $maxUpdateId = $this->getMaxUpdateId($newUpdates);
-        $messageUpdate = new MessageUpdate;
-        $messageUpdate->update_id = $maxUpdateId;
-        $messageUpdate->save();
+        //$maxUpdateId = $this->getMaxUpdateId($newUpdates);
+        //$messageUpdate = new MessageUpdate;
+        //$messageUpdate->update_id = $maxUpdateId;
+        //$messageUpdate->save();
 
-        return 'OK';
+        //return 'OK';
     }
 
     public function removeWebhook()
