@@ -18,7 +18,7 @@ class TelegramController extends Controller
 
     public function webhook()
     {
-        $telegram = new Api('HAZEBOT_TOKEN');
+        $telegram = new Api(env('HAZEBOT_TOKEN'));
         $update   = $telegram->getWebhookUpdates();
         $chat_id  = $update->getMessage()->getChat()->getId();
         $telegram->sendMessage(['chat_id' => $chat_id, 'text' => 'hello.. text message']);
