@@ -3,7 +3,7 @@
 namespace App\Bots\HazeCheckBot\Commands;
 
 use Telegram\Actions;
-use Telegram\Bot\Command;
+use Telegram\Bot\Commands\Command;
 
 class StartCommand extends Command
 {
