@@ -6,7 +6,7 @@ use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
 use App\Event;
 
-class DeleteEventCommand extends Command
+class ViewEventCommand extends Command
 {
     /**
      * @var string Command Name
