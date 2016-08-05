@@ -10,6 +10,15 @@ use Telegram\Bot\Api;
 
 class TelegramController extends Controller
 {
+    public function __construct()
+    {
+        $this->telegram = new Api(env('HAZEBOT_TOKEN'));
+        $this->telegram->addCommands([
+           Telegram\Bot\Commands\HelpCommand::class,
+           App\Bots\HazeCheckBot\Commands\StartCommand::class
+        ]);
+    }
+
     public function setWebhook()
     {
        $response = Telegram::setWebhook(['url' => 'https://pickira.com/hazebot/'. env('TELEGRAM_BOT_TOKEN'). '/webhook']);
@@ -18,10 +27,10 @@ class TelegramController extends Controller
 
     public function webhook()
     {
-        $telegram = new Api(env('HAZEBOT_TOKEN'));
-        $update   = $telegram->getWebhookUpdates();
-        $chat_id  = $update->getMessage()->getChat()->getId();
-        $telegram->sendMessage(['chat_id' => $chat_id, 'text' => 'hello.. text message']);
+        //$update   = $this->telegram->getWebhookUpdates();
+        //$chat_id  = $update->getMessage()->getChat()->getId();
+        //$this->telegram->sendMessage(['chat_id' => $chat_id, 'text' => 'hello.. text message']);
+        $this->telegram->commandsHandler(true);
         //$update  = Telegram::getWebhookUpdates();
         //$chat_id = $update->getMessage()->getChat()->getId();
         //Telegram::sendMessage(['chat_id' => $chat_id, 'text' => 'hello.. text message']);
