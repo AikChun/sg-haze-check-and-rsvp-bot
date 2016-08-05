@@ -16,9 +16,10 @@ class TelegramController extends Controller
     {
         $this->telegram = new Api(env('HAZEBOT_TOKEN'));
         $this->telegram->addCommands([
-           StartCommand::class,
-           ThreeHourPsiUpdateCommand::class,
-           Telegram\Bot\Commands\HelpCommand::class
+            StartCommand::class,
+            ThreeHourPsiUpdateCommand::class,
+            TwentyFourHourForecastCommand::class,
+            Telegram\Bot\Commands\HelpCommand::class
         ]);
     }
 
