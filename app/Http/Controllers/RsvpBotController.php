@@ -8,6 +8,8 @@ use App\Http\Requests;
 use Telegram;
 use Telegram\Bot\Api;
 use App\Bots\Commands\HazeBot\StartCommand;
+use App\Bots\Commands\RsvpBot\CreateEventCommand;
+use App\Bots\Commands\RsvpBot\AttendingCommand;
 
 class RsvpBotController extends Controller
 {
@@ -19,6 +21,8 @@ class RsvpBotController extends Controller
         $this->telegram = new Api(env('RSVPBOT_TOKEN'));
         $this->telegram->addCommands([
             StartCommand::class,
+            CreateEventCommand::class,
+            AttendingCommand::class,
             Telegram\Bot\Commands\HelpCommand::class
         ]);
     }
