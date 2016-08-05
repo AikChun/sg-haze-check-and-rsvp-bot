@@ -54,11 +54,11 @@ class TwoHourForecastCommand extends Command
         $text = $data['title'] . "\n\n";
         $text .= 'Source: ' . $data['source'] . "\n\n";
         $text .= $data['item']['forecastIssue']['@attributes']['date'] . " " . $data['item']['forecastIssue']['@attributes']['time'] . "\n\n";
-        $text .= $data['item']['weatherForecast']['area'][1]['@attributes']['name'] . ' - ' . NeaWeatherForecastAbbrev::interpret($data['item']['weatherForecast']['area'][1]['@attributes']['forecast']);
-        $text .= $data['item']['weatherForecast']['area'][3]['@attributes']['name'] . ' - ' . NeaWeatherForecastAbbrev::interpret($data['item']['weatherForecast']['area'][3]['@attributes']['forecast']);
-        $text .= $data['item']['weatherForecast']['area'][9]['@attributes']['name'] . ' - ' . NeaWeatherForecastAbbrev::interpret($data['item']['weatherForecast']['area'][9]['@attributes']['forecast']);
-        $text .= $data['item']['weatherForecast']['area'][12]['@attributes']['name'] . ' - ' . NeaWeatherForecastAbbrev::interpret($data['item']['weatherForecast']['area'][12]['@attributes']['forecast']);
-        $text .= $data['item']['weatherForecast']['area'][16]['@attributes']['name'] . ' - ' . NeaWeatherForecastAbbrev::interpret($data['item']['weatherForecast']['area'][16]['@attributes']['forecast']);
+        $text .= $data['item']['weatherForecast']['area'][1]['@attributes']['name'] . ' - ' . NeaWeatherForecastAbbrev::interpret($data['item']['weatherForecast']['area'][1]['@attributes']['forecast']) . "\n\n";
+        $text .= $data['item']['weatherForecast']['area'][3]['@attributes']['name'] . ' - ' . NeaWeatherForecastAbbrev::interpret($data['item']['weatherForecast']['area'][3]['@attributes']['forecast']) . "\n\n";
+        $text .= $data['item']['weatherForecast']['area'][9]['@attributes']['name'] . ' - ' . NeaWeatherForecastAbbrev::interpret($data['item']['weatherForecast']['area'][9]['@attributes']['forecast']) . "\n\n";
+        $text .= $data['item']['weatherForecast']['area'][12]['@attributes']['name'] . ' - ' . NeaWeatherForecastAbbrev::interpret($data['item']['weatherForecast']['area'][12]['@attributes']['forecast']) . "\n\n";
+        $text .= $data['item']['weatherForecast']['area'][16]['@attributes']['name'] . ' - ' . NeaWeatherForecastAbbrev::interpret($data['item']['weatherForecast']['area'][16]['@attributes']['forecast']) . "\n\n";
         $text .= $data['item']['weatherForecast']['area'][46]['@attributes']['name'] . ' - ' . NeaWeatherForecastAbbrev::interpret($data['item']['weatherForecast']['area'][46]['@attributes']['forecast']);
 
         return $text;
