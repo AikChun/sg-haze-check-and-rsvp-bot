@@ -35,7 +35,7 @@ class CreateEventCommand extends Command
         $event = Event::where('chat_id', $chatId)->count();
 
         $text = "";
-        if($event == 0) {
+        if($event > 0) {
             $text = "You already have an event created! Delete before starting a new one.";
         } else {
             $event = new Event;
