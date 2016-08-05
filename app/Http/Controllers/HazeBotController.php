@@ -12,7 +12,7 @@ use App\Bots\HazeCheckBot\Commands\ThreeHourPsiUpdateCommand;
 use App\Bots\HazeCheckBot\Commands\TwoHourForecastCommand;
 use App\Bots\HazeCheckBot\Commands\TwentyFourHourForecastCommand;
 
-class TelegramController extends Controller
+class HazeBotController extends Controller
 {
     public function __construct()
     {
@@ -36,7 +36,7 @@ class TelegramController extends Controller
     public function webhook()
     {
         $update = $this->telegram->commandsHandler(true);
-        Log::info(print_r($update, true));
+
         return response()->json(["status" => "success"]);
     }
 
