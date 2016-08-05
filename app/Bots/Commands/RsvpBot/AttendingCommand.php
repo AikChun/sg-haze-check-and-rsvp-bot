@@ -66,7 +66,7 @@ class AttendingCommand extends Command
 
     private function findAllAttendees($event)
     {
-        $attendees = Attendee::find(['event_id' => $event['id']])->get();
+        $attendees = Attendee::where('event_id', $event['id'])->get();
 
         return $attendees;
     }
@@ -77,7 +77,7 @@ class AttendingCommand extends Command
         $text .= $event['description'] . "\n\n";
         $i = 1;
         foreach ($attendees as $attendee) {
-            $text .= $i . ". " . $attendee->username . "\n\n";
+            $text .= $i . ". " . $attendee['username'] . "\n\n";
             $i = $i + 1;
         }
 
