@@ -27,7 +27,7 @@ class TwentyFourHourForecastCommand extends Command
         // `replyWith<Message|Photo|Audio|Video|Voice|Document|Sticker|Location|ChatAction>()` all the available methods are dynamically
         // handled when you replace `send<Method>` with `replyWith` and use the same parameters - except chat_id does NOT need to be included in the array.
 
-        $apiUrl   = sprintf("http://api.nea.gov.sg/api/WebAPI/?dataset=24hrs_forecast&keyref = %s", env('NEA_API_KEY'));
+        $apiUrl   = sprintf("http://api.nea.gov.sg/api/WebAPI/?dataset=24hrs_forecast&keyref=%s", env('NEA_API_KEY'));
 
         $client   = new \GuzzleHttp\Client();
         $response = $client->request('GET', $apiUrl );
