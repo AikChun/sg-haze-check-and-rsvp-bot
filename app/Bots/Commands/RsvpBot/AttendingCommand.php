@@ -46,7 +46,13 @@ class AttendingCommand extends Command
         $attendee->user_id  = $fromUserId;
         $attendee->username = $fromUserName;
 
-        $attendee->save();
+
+        $attendees = $this->findAllAttendees($event);
+
+        if($this->isNotAttending($attendees, $attendee)) {
+            $attendee->save();
+        }
+
 
         $eventAttendees = $this->findAllAttendees($event);
 
@@ -82,5 +88,14 @@ class AttendingCommand extends Command
         }
 
         return $text;
+    }
+
+    private function isNotAttending($attendees, $newAttendee)
+    {
+        $attended = array_filter($attendees, function($attendee) {
+            return $attendees['user_id'] == $newAttendee->user_id;
+        });
+
+        return (empty($attended));
     }
 }
