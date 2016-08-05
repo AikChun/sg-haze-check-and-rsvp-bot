@@ -92,9 +92,9 @@ class AttendingCommand extends Command
 
     private function isNotAttending($attendees, $newAttendee)
     {
-        $attended = array_filter($attendees, function($attendee) {
-            return $attendees['user_id'] == $newAttendee->user_id;
-        });
+        $attended = $attendees->filter(function($attendee) use ($newAttendee){
+            return $attendee->user_id == $newAttendee->user_id;
+        })->toArray();
 
         return (empty($attended));
     }
