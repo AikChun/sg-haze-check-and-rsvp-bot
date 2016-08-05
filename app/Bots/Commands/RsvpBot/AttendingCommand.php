@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Bots\Commands\RsvpBot;
-
+use Log;
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
 use App\Event;
