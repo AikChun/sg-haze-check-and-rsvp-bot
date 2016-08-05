@@ -7,6 +7,7 @@ use Log;
 use App\Http\Requests;
 use Telegram;
 use Telegram\Bot\Api;
+use app\Bots\HazeCheckBot\Commands;
 
 class TelegramController extends Controller
 {
@@ -15,7 +16,7 @@ class TelegramController extends Controller
         $this->telegram = new Api(env('HAZEBOT_TOKEN'));
         $this->telegram->addCommands([
            Telegram\Bot\Commands\HelpCommand::class,
-           App\Bots\HazeCheckBot\Commands\StartCommand::class
+           StartCommand::class
         ]);
     }
 
