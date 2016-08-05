@@ -6,23 +6,30 @@ use Illuminate\Http\Request;
 use Log;
 use App\Http\Requests;
 use Telegram;
+use Telegram\Bot\Api;
 use App\MessageUpdate;
 use App\Bots\HazeCheckBot\HazeCheckBot;
 
 class TelegramController extends Controller
 {
+
+    protected $telegram;
+    public function __construct()
+    {
+        $this->telegram = new Api(env('HAZEBOT_TOKEN'));
+    }
     public function setWebhook()
     {
-       $response = Telegram::setWebhook(['url' => 'https://pickira.com/hazebot/'. env('TELEGRAM_BOT_TOKEN'). '/webhook']);
+       $response = $this->telegram->setWebhook(['url' => 'https://pickira.com/hazebot/'. env('TELEGRAM_BOT_TOKEN'). '/webhook']);
        return $response;
     }
 
     public function webhook()
     {
         //$updates         = file_get_contents('php://input');
-        $update  = Telegram::getWebhookUpdates();
+        $update  = $this->telegram->getWebhookUpdates();
         $chat_id = $update->getMessage()->getChat()->getId();
-        Telegram::sendMessage(['chat_id' => $chat_id, 'text' => 'hello.. text message']);
+        $this->telegram::sendMessage(['chat_id' => $chat_id, 'text' => 'hello.. text message']);
         return response()->json(["status" => "success"]);
         //$updatesInObject = json_decode($updates, true);
         //$updates         = $this->rebuildBrokenJson($updatesInObject);
