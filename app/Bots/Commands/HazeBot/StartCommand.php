@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Bots\HazeCheckBot\Commands;
+namespace App\Bots\Commands\HazeBot;
 
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;

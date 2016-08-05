@@ -7,10 +7,10 @@ use Log;
 use App\Http\Requests;
 use Telegram;
 use Telegram\Bot\Api;
-use App\Bots\HazeCheckBot\Commands\StartCommand;
-use App\Bots\HazeCheckBot\Commands\ThreeHourPsiUpdateCommand;
-use App\Bots\HazeCheckBot\Commands\TwoHourForecastCommand;
-use App\Bots\HazeCheckBot\Commands\TwentyFourHourForecastCommand;
+use App\Bots\Commands\HazeBot\StartCommand;
+use App\Bots\Commands\HazeBot\ThreeHourPsiUpdateCommand;
+use App\Bots\Commands\HazeBot\TwoHourForecastCommand;
+use App\Bots\Commands\HazeBot\TwentyFourHourForecastCommand;
 
 class HazeBotController extends Controller
 {
