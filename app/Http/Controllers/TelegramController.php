@@ -22,7 +22,7 @@ class TelegramController extends Controller
         //$updates         = file_get_contents('php://input');
         $update  = Telegram::getWebhookUpdates();
         $chat_id = $update->getMessage()->getChat()->getId();
-        Telegram::sendMessage($chat_id, "Thanks", false, null, null);
+        Telegram::sendMessage(['chat_id' => $chat_id], "Thanks", false, null, null);
         return response()->json(["status" => "success"]);
         //$updatesInObject = json_decode($updates, true);
         //$updates         = $this->rebuildBrokenJson($updatesInObject);
