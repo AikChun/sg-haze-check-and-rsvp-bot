@@ -29,7 +29,6 @@ class AttendingCommand extends Command
         // `replyWith<Message|Photo|Audio|Video|Voice|Document|Sticker|Location|ChatAction>()` all the available methods are dynamically
         // handled when you replace `send<Method>` with `replyWith` and use the same parameters - except chat_id does NOT need to be included in the array.
         $chatId       = $this->getUpdate()->getMessage()->getChat()->getId();
-        Log::info($chatId);
         $fromUser     = $this->getUpdate()->getMessage()->getFrom();
         $fromUserId   = $fromUser->getId();
 
@@ -38,7 +37,7 @@ class AttendingCommand extends Command
             $fromUserName = $fromUser->getUsername();
         }
 
-        $event = Event::find(['chat_id' => $chatId])->first();
+        $event = Event::where('chat_id', $chatId)->first();
         Log::info($event['id']);
         Log::info($event['chat_id']);
         $attendee = new Attendee;
