@@ -39,7 +39,7 @@ class DeleteEventCommand extends Command
             $text = "You don't got not event, son!";
         } else {
 
-            $event = Event::where('chat_id' => $chatId)->first();
+            $event = Event::where('chat_id', $chatId)->first();
 
             $attendees = Attendee::where('event_id', $event['id']);
 

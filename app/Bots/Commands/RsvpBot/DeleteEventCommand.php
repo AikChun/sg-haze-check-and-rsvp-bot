@@ -39,7 +39,7 @@ class DeleteEventCommand extends Command
             $text = "You don't got no event to delete cuz.";
         } else {
 
-            $event = Event::where('chat_id' => $chatId)->delete();
+            $event = Event::where('chat_id', $chatId)->delete();
             $text = "You have successfully delete the event.";
         }
 
