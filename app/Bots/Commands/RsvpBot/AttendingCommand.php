@@ -38,7 +38,8 @@ class AttendingCommand extends Command
         }
 
         $event = Event::find(['chat_id' => $chatId])->first();
-
+        Log::info($event['id']);
+        Log::info($event['chat_id']);
         $attendee = new Attendee;
 
         $attendee->event_id = $event['id'];
