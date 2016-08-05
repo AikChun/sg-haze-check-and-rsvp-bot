@@ -14,5 +14,7 @@ class VerifyCsrfToken extends BaseVerifier
     protected $except = [
         'hazebot/*/webhook',
         'hazebot/*',
+        'rsvp/*/webhook',
+        'rsvp/*',
     ];
 }
