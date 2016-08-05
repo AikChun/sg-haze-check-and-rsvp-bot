@@ -6,17 +6,17 @@ use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
 use App\Event;
 
-class CreateEventCommand extends Command
+class DeleteEventCommand extends Command
 {
     /**
      * @var string Command Name
      */
-    protected $name = "createevent";
+    protected $name = "viewevent";
 
     /**
      * @var string Command Description
      */
-    protected $description = "Create An Event for your group chat";
+    protected $description = "View your event";
 
     /**
      * @inheritdoc
@@ -36,15 +36,15 @@ class CreateEventCommand extends Command
 
         $text = "";
         if($event == 0) {
-            $text = "You already have an event created! Delete before starting a new one.";
+            $text = "You don't got not event, son!";
         } else {
-            $event = new Event;
 
-            $event->chat_id     = $chatId;
-            $event->description = $arguments;
+            $event = Event::where('chat_id' => $chatId)->first();
 
-            $event->save();
-            $text = $this->announceEventCreated($arguments);
+            $attendees = Attendee::where('event_id', $event['id']);
+
+            $text = $this->prepareText($event, $attendees);
+
         }
 
 
@@ -55,14 +55,17 @@ class CreateEventCommand extends Command
 
     }
 
-    private function announceEventCreated($data)
+    private function prepareText($event, $attendees)
     {
-        $text = "Event: \n";
-        $text .= $data;
+        $text = "Event: \n\n";
+        $text .= $event['description'] . "\n\n";
+        $i = 1;
+        foreach ($attendees as $attendee) {
+            $text .= $i . ". " . $attendee['username'] . "\n\n";
+            $i = $i + 1;
+        }
 
         return $text;
     }
-
-
 
 }

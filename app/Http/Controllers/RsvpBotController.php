@@ -9,7 +9,11 @@ use Telegram;
 use Telegram\Bot\Api;
 use App\Bots\Commands\HazeBot\StartCommand;
 use App\Bots\Commands\RsvpBot\CreateEventCommand;
+use App\Bots\Commands\RsvpBot\DeleteEventCommand;
+use App\Bots\Commands\RsvpBot\ViewEventCommand;
 use App\Bots\Commands\RsvpBot\AttendingCommand;
+use App\Bots\Commands\RsvpBot\WithdrawCommand;
+
 
 class RsvpBotController extends Controller
 {
@@ -22,7 +26,10 @@ class RsvpBotController extends Controller
         $this->telegram->addCommands([
             StartCommand::class,
             CreateEventCommand::class,
+            ViewEventCommand::class,
+            DeleteEventCommand::class,
             AttendingCommand::class,
+            WithdrawCommand::class,
             Telegram\Bot\Commands\HelpCommand::class
         ]);
     }

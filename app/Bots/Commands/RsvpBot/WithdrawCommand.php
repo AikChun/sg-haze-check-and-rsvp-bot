@@ -7,17 +7,17 @@ use Telegram\Bot\Commands\Command;
 use App\Event;
 use App\Attendee;
 
-class AttendingCommand extends Command
+class WithdrawCommand extends Command
 {
     /**
      * @var string Command Name
      */
-    protected $name = "attending";
+    protected $name = "withdraw";
 
     /**
      * @var string Command Description
      */
-    protected $description = "Attend the event!";
+    protected $description = "Remove yourself from the event!";
 
     /**
      * @inheritdoc
@@ -38,19 +38,12 @@ class AttendingCommand extends Command
         }
 
         $event = Event::where('chat_id', $chatId)->first();
-        $attendee = new Attendee;
-
-        $attendee->event_id = $event['id'];
-        $attendee->user_id  = $fromUserId;
-        $attendee->username = $fromUserName;
-
 
         $attendees = $this->findAllAttendees($event);
 
-        if($this->isNotAttending($attendees, $attendee)) {
-            $attendee->save();
+        if(!$this->isNotAttending($attendees, $attendee)) {
+            Attendee::where('user_id', $fromUserId)->delete();
         }
-
 
         $eventAttendees = $this->findAllAttendees($event);
 
@@ -97,3 +90,4 @@ class AttendingCommand extends Command
         return (empty($attended));
     }
 }
+
