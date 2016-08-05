@@ -6,7 +6,7 @@ use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
 use App\Event;
 
-class ThreeHourPsiUpdateCommand extends Command
+class CreateEventCommand extends Command
 {
     /**
      * @var string Command Name
