@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Log;
 use App\Http\Requests;
 use Telegram;
+use Telegram\Bot\Api;
 
 class TelegramController extends Controller
 {
