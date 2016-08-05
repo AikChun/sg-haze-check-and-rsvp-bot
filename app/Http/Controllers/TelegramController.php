@@ -9,6 +9,7 @@ use Telegram;
 use Telegram\Bot\Api;
 use App\Bots\HazeCheckBot\Commands\StartCommand;
 use App\Bots\HazeCheckBot\Commands\ThreeHourPsiUpdateCommand;
+use App\Bots\HazeCheckBot\Commands\TwentyFourHourForecastCommand;
 
 class TelegramController extends Controller
 {
