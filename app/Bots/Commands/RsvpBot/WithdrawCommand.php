@@ -74,9 +74,11 @@ class WithdrawCommand extends Command
         $text .= $event['description'] . "\n\n";
         $i = 1;
         foreach ($attendees as $attendee) {
-            $text .= $i . ". " . $attendee['username'] . "\n\n";
+            $text .= $i . ". " . $attendee['username'] . "\n";
             $i = $i + 1;
         }
+        $text .= "\nClick here to attend!\n";
+        $text .= "/attending";
 
         return $text;
     }

@@ -84,7 +84,7 @@ class AttendingCommand extends Command
             $text .= $i . ". " . $attendee['username'] . "\n";
             $i = $i + 1;
         }
-        $text .= "Click here to attend!\n";
+        $text .= "\nClick here to attend!\n";
         $text .= "/attending";
 
         return $text;
