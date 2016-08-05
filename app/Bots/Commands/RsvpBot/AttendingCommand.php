@@ -41,7 +41,7 @@ class AttendingCommand extends Command
 
         $attendee = new Attendee;
 
-        $attendee->event_id = $event->id;
+        $attendee->event_id = $event['id'];
         $attendee->user_id  = $fromUserId;
         $attendee->username = $fromUserName;
 
@@ -65,7 +65,7 @@ class AttendingCommand extends Command
 
     private function findAllAttendees($event)
     {
-        $attendees = Attendee::find(['event_id' => $event->id])->get();
+        $attendees = Attendee::find(['event_id' => $event['id']])->get();
 
         return $attendees;
     }
@@ -73,7 +73,7 @@ class AttendingCommand extends Command
     private function prepareText($event, $attendees)
     {
         $text = "Event: \n\n";
-        $text .= $event->description . "\n\n";
+        $text .= $event['description'] . "\n\n";
         $i = 1;
         foreach ($attendees as $attendee) {
             $text .= $i . ". " . $attendee->username . "\n\n";
