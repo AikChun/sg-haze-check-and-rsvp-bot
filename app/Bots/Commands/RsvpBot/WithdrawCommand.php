@@ -41,7 +41,7 @@ class WithdrawCommand extends Command
 
         $attendees = $this->findAllAttendees($event);
 
-        if(!$this->isNotAttending($attendees, $attendee)) {
+        if(!$this->isNotAttending($attendees, $fromUserId)) {
             Attendee::where('user_id', $fromUserId)->delete();
         }
 
@@ -81,10 +81,10 @@ class WithdrawCommand extends Command
         return $text;
     }
 
-    private function isNotAttending($attendees, $newAttendee)
+    private function isNotAttending($attendees, $newUserId)
     {
-        $attended = $attendees->filter(function($attendee) use ($newAttendee){
-            return $attendee->user_id == $newAttendee->user_id;
+        $attended = $attendees->filter(function($attendee) use ($newUserId){
+            return $attendee->user_id == $newUserId;
         })->toArray();
 
         return (empty($attended));

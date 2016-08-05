@@ -5,6 +5,7 @@ namespace App\Bots\Commands\RsvpBot;
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
 use App\Event;
+use App\Attendee;
 
 class ViewEventCommand extends Command
 {
