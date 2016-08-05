@@ -51,6 +51,7 @@ class ThreeHourPsiUpdateCommand extends Command
     public function generateMessageFromData($data)
     {
         $text = $data['title'] . "\n\n";
+        $text .= "Source: " . $data['source'] . "\n\n";
         $text .= "Time of Record: " . date('D j-n-Y H:i', strtotime($data['item']['region'][0]['record']['@attributes']['timestamp'])) . "\n\n";
         $text .= "Region: " . "\n\n";
         $text .= "North - " . $data['item']['region'][0]['record']['reading'][1]['@attributes']['value'] . "\n\n";

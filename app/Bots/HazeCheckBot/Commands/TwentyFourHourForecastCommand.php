@@ -51,6 +51,7 @@ class TwentyFourHourForecastCommand extends Command
     private function generateMessageFromData($data)
     {
         $text = $data['title'] . "\n\n";
+        $text .= 'Source: ' . $data['source'] . "\n\n";
         $text .= $data['main']['title'] . "\n\n";
         $text .= $data['main']['validTime'] . "\n\n";
         $text .= "Temperature: " . "\n\n";
