@@ -20,7 +20,7 @@ class TelegramController extends Controller
     }
     public function setWebhook()
     {
-       $response = $this->telegram->setWebhook(['url' => 'https://pickira.com/hazebot/'. env('TELEGRAM_BOT_TOKEN'). '/webhook']);
+       $response = $this->telegram->setWebhook(['url' => 'https://pickira.com/hazebot/'. env('HAZEBOT_TOKEN'). '/webhook']);
        return $response;
     }
 
@@ -29,7 +29,7 @@ class TelegramController extends Controller
         //$updates         = file_get_contents('php://input');
         $update  = $this->telegram->getWebhookUpdates();
         $chat_id = $update->getMessage()->getChat()->getId();
-        $this->telegram::sendMessage(['chat_id' => $chat_id, 'text' => 'hello.. text message']);
+        $this->telegram->sendMessage(['chat_id' => $chat_id, 'text' => 'hello.. text message']);
         return response()->json(["status" => "success"]);
         //$updatesInObject = json_decode($updates, true);
         //$updates         = $this->rebuildBrokenJson($updatesInObject);
