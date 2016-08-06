@@ -65,7 +65,7 @@ class CoupleCommand extends Command
         $this->replyWithMessage(['text' => $text]);
     }
 
-    public function explodeArguments($argument)
+    public function explodeArguments($arguments)
     {
         $pieces = 0;
         if (preg_match('/\s/', trim($arguments)) > 0) {

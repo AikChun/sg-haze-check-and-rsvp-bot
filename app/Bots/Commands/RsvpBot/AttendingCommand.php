@@ -79,7 +79,7 @@ class AttendingCommand extends Command
     {
         $text = "Event: \n";
         $text .= $event['description'] . "\n\n";
-        $i = 1;
+        $i = 0;
         foreach ($attendees as $attendee) {
             $text .= $i . ". " . $attendee['username'] . "\n";
             $i = $i + $attendee['counter'];
