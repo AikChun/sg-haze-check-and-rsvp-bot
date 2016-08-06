@@ -35,6 +35,16 @@ class CoupleCommand extends Command
         $fromUserId   = $fromUser->getId();
         $fromUserName = $fromUser->getFirstName();
 
+
+        $event = null;
+        try {
+            $event = Event::where('chat_id', $message->getChat()->getId())->firstOrFail();
+        } catch(Exception $e) {
+            $this->replyWithMessage(['text' => "You have no event to attend."]);
+            return false;
+        }
+
+
         $coupleName = $this->getCoupleName($arguments);
 
         if ($coupleName == '') {
@@ -42,14 +52,14 @@ class CoupleCommand extends Command
             return false;
         }
 
-        $attendee = $this->findAttendeeOrNew($message);
+        $attendee = $this->findAttendeeOrNew($event, $message->getFrom());
         $attendee['username'] = $coupleName;
         $attendee['counter'] = 2;
 
         $attendee->save();
 
 
-        $event = Event::where('chat_id', $message->getChat()->getId())->first();
+
 
         $eventAttendees = $this->findAllAttendees($event);
 
@@ -76,11 +86,9 @@ class CoupleCommand extends Command
         return $arguments;
     }
 
-    private function findAttendeeOrNew($message)
+    private function findAttendeeOrNew($event, $fromUser)
     {
-        $event = Event::where('chat_id', $message->getChat()->getId())->first();
-
-        return  Attendee::firstOrNew(['event_id' => $event['id'], 'user_id' => $message->getFrom()->getId()]);
+        return  Attendee::firstOrNew(['event_id' => $event['id'], 'user_id' => $fromUser->getId()]);
     }
 
 
