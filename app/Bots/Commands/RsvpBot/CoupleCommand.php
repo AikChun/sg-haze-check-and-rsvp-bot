@@ -44,8 +44,8 @@ class CoupleCommand extends Command
 
         $attendee = $this->findAttendeeInEvent($message);
 
-        $attendee->username = $coupleName;
-        $attendee->counter = 2;
+        $attendee['username'] = $coupleName;
+        $attendee['counter'] = 2;
 
         $attendee->save();
 
