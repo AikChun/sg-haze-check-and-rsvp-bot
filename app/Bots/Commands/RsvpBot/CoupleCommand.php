@@ -37,9 +37,8 @@ class CoupleCommand extends Command
 
 
         $event = null;
-        try {
-            $event = Event::where('chat_id', $message->getChat()->getId())->firstOrFail();
-        } catch(Exception $e) {
+        $event = Event::where('chat_id', $message->getChat()->getId())->first();
+        if(!$event) {
             $this->replyWithMessage(['text' => "You have no event to attend."]);
             return false;
         }
