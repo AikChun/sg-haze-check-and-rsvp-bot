@@ -32,15 +32,12 @@ class CoupleCommand extends Command
         $message = $this->getUpdate()->getMessage();
         $chatId       = $this->getUpdate()->getMessage()->getChat()->getId();
         $fromUser     = $this->getUpdate()->getMessage()->getFrom();
-        $fromUserId   = $fromUser->getId();
-        $fromUserName = $fromUser->getFirstName();
 
         $event = Event::where('chat_id', $message->getChat()->getId())->first();
         if (!$event) {
             $this->replyWithMessage(['text' => "You have no event to attend."]);
             return false;
         }
-
 
         $coupleName = $this->getCoupleName($arguments);
 
@@ -54,9 +51,6 @@ class CoupleCommand extends Command
         $attendee['counter'] = 2;
 
         $attendee->save();
-
-
-
 
         $eventAttendees = $this->findAllAttendees($event);
 

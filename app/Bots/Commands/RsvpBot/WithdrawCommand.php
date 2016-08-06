@@ -31,19 +31,22 @@ class WithdrawCommand extends Command
         // handled when you replace `send<Method>` with `replyWith` and use the same parameters - except chat_id does NOT need to be included in the array.
         $chatId       = $this->getUpdate()->getMessage()->getChat()->getId();
         $fromUser     = $this->getUpdate()->getMessage()->getFrom();
-        $fromUserId   = $fromUser->getId();
-
-        $fromUserName = $fromUser->getFirstName();
-        if ($fromUser->getUsername() != "") {
-            $fromUserName = $fromUser->getUsername();
-        }
 
         $event = Event::where('chat_id', $chatId)->first();
 
+        if (!$event) {
+            $this->replyWithMessage(['text' => 'You don\'t got not event to attend cuz.']);
+            return false;
+        }
+
         $attendees = $this->findAllAttendees($event);
 
-        if (!$this->isNotAttending($attendees, $fromUserId)) {
-            Attendee::where('user_id', $fromUserId)->delete();
+        if (!$this->isNotAttending($attendees, $fromUser->getId())) {
+            Attendee::where('user_id', $fromUser->getId())->delete();
+        }
+
+        if($arguments == '') {
+            Attendee::where('username', $arguments)->whereNotNull('user_id')->delete();
         }
 
         $eventAttendees = $this->findAllAttendees($event);

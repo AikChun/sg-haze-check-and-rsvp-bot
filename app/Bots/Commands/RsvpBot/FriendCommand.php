@@ -8,17 +8,17 @@ use Telegram\Bot\Commands\Command;
 use App\Event;
 use App\Attendee;
 
-class AttendingCommand extends Command
+class FriendCommand extends Command
 {
     /**
      * @var string Command Name
      */
-    protected $name = "attending";
+    protected $name = "friend";
 
     /**
      * @var string Command Description
      */
-    protected $description = "Attend the event!";
+    protected $description = "Add a friend to the event";
 
     /**
      * @inheritdoc
@@ -29,33 +29,27 @@ class AttendingCommand extends Command
         // the user/chat id who triggered this command.
         // `replyWith<Message|Photo|Audio|Video|Voice|Document|Sticker|Location|ChatAction>()` all the available methods are dynamically
         // handled when you replace `send<Method>` with `replyWith` and use the same parameters - except chat_id does NOT need to be included in the array.
-        $chatId       = $this->getUpdate()->getMessage()->getChat()->getId();
-        $fromUser     = $this->getUpdate()->getMessage()->getFrom();
+        $message  = $this->getUpdate()->getMessage();
+        $chatId   = $this->getUpdate()->getMessage()->getChat()->getId();
+        $fromUser = $this->getUpdate()->getMessage()->getFrom();
 
-        $fromUserName = $fromUser->getFirstName();
-        if ($fromUser->getUsername() != "") {
-            $fromUserName = $fromUser->getUsername();
-        }
-
-        $event = Event::where('chat_id', $chatId)->first();
-
+        $event = Event::where('chat_id', $message->getChat()->getId())->first();
         if (!$event) {
-            $this->replyWithMessage(['text' => 'You don\'t got not event to attend cuz.']);
+            $this->replyWithMessage(['text' => "You have no event to attend."]);
             return false;
         }
 
-        $attendee = Attendee::where(['event_id' => $event['id'], 'user_id' => $fromUser->getId()])->first();
+        $friendName = $this->getArgumentName($arguments);
 
-        if(!$attendee) {
-            $attendee = new Attendee;
-            $attendee->event_id = $event['id'];
-            $attendee->user_id = $fromUser->getId();
-            $attendee->counter = 1;
-            $attendee->username = $fromUserName;
-        } else {
-            $attendee['counter'] = 1;
-            $attendee['username'] = $fromUserName;
+        if ($friendName == '') {
+            $this->replyWithMessage(['text' => " Sorry please enter your couple name."]);
+            return false;
         }
+
+        $attendee = $this->findFriendOrNew($event, $friendName);
+
+        $attendee['username'] = $friendName;
+        $attendee['counter'] = 1;
 
         $attendee->save();
 
@@ -74,6 +68,22 @@ class AttendingCommand extends Command
         $this->replyWithMessage(['text' => $text]);
     }
 
+    public function getArgumentName($arguments)
+    {
+        if (preg_match('/\s/', trim($arguments)) > 0) {
+            $pieces = explode(' ', $arguments);
+            return $pieces[0];
+        }
+
+        return $arguments;
+    }
+
+    private function findFriendOrNew($event, $friend)
+    {
+        return  Attendee::firstOrNew(['event_id' => $event['id'], 'username' => $friend]);
+    }
+
+
     private function findAllAttendees($event)
     {
         $attendees = Attendee::where('event_id', $event['id'])->get();
@@ -87,7 +97,7 @@ class AttendingCommand extends Command
         $text .= $event['description'] . "\n\n";
         $i = 0;
         foreach ($attendees as $attendee) {
-            $text .= $attendee['username'] . "\n";
+            $text .=  $attendee['username'] . "\n";
             $i = $i + $attendee['counter'];
         }
         $text .= "\nNumber of attendees: " . $i . "\n";
@@ -97,4 +107,12 @@ class AttendingCommand extends Command
         return $text;
     }
 
+    private function isNotAttending($attendees, $newAttendee)
+    {
+        $attended = $attendees->filter(function ($attendee) use ($newAttendee) {
+            return $attendee->user_id == $newAttendee->user_id;
+        })->toArray();
+
+        return (empty($attended));
+    }
 }
