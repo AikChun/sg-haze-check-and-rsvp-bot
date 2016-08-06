@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Log;
 use Telegram;
 use Telegram\Bot\Api;
 use App\Bots\Commands\HazeBot\StartCommand;
