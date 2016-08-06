@@ -48,6 +48,8 @@ class RsvpBotController extends Controller
     {
         $update = $this->telegram->commandsHandler(true);
 
+        Log::info(print_r($update, true));
+
         return response()->json(["status" => "success"]);
     }
 
