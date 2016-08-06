@@ -2,6 +2,7 @@
 
 namespace App\Bots\Commands;
 
+use Log;
 class CommandsUtil
 {
     public static function getMessageChatType($message)
