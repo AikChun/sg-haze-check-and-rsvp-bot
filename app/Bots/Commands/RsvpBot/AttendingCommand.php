@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Bots\Commands\RsvpBot;
+
 use Log;
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
@@ -38,6 +39,12 @@ class AttendingCommand extends Command
         }
 
         $event = Event::where('chat_id', $chatId)->first();
+
+        if (!$event) {
+            $this->replyWithMessage(['text' => 'You don\'t got not event to attend cuz.']);
+            return false;
+        }
+
         $attendee = new Attendee;
 
         $attendee->event_id = $event['id'];
@@ -47,7 +54,7 @@ class AttendingCommand extends Command
 
         $attendees = $this->findAllAttendees($event);
 
-        if($this->isNotAttending($attendees, $attendee)) {
+        if ($this->isNotAttending($attendees, $attendee)) {
             $attendee->save();
         }
 
@@ -65,7 +72,6 @@ class AttendingCommand extends Command
 
         // Reply with the commands list
         $this->replyWithMessage(['text' => $text]);
-
     }
 
     private function findAllAttendees($event)
@@ -93,7 +99,7 @@ class AttendingCommand extends Command
 
     private function isNotAttending($attendees, $newAttendee)
     {
-        $attended = $attendees->filter(function($attendee) use ($newAttendee){
+        $attended = $attendees->filter(function ($attendee) use ($newAttendee) {
             return $attendee->user_id == $newAttendee->user_id;
         })->toArray();
 

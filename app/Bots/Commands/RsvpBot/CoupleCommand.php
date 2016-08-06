@@ -35,10 +35,8 @@ class CoupleCommand extends Command
         $fromUserId   = $fromUser->getId();
         $fromUserName = $fromUser->getFirstName();
 
-
-        $event = null;
         $event = Event::where('chat_id', $message->getChat()->getId())->first();
-        if(!$event) {
+        if (!$event) {
             $this->replyWithMessage(['text' => "You have no event to attend."]);
             return false;
         }
