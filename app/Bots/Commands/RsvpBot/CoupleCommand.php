@@ -1,7 +1,7 @@
-
 <?php
 
 namespace App\Bots\Commands\RsvpBot;
+
 use Log;
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
@@ -37,7 +37,7 @@ class CoupleCommand extends Command
 
         $pieces = $this->explodeArguments($arguments);
 
-        if($pieces[0] == '') {
+        if ($pieces[0] == '') {
             $this->replyWithMessage(['text' => " Sorry please enter your couple name."]);
             return false;
         }
@@ -63,13 +63,12 @@ class CoupleCommand extends Command
 
         // Reply with the commands list
         $this->replyWithMessage(['text' => $text]);
-
     }
 
     public function explodeArguments($argument)
     {
         $pieces = 0;
-        if (preg_match('/\s/',trim($arguments)) > 0) {
+        if (preg_match('/\s/', trim($arguments)) > 0) {
             $pieces = explode(' ', $arguments);
         }
 
@@ -109,7 +108,7 @@ class CoupleCommand extends Command
 
     private function isNotAttending($attendees, $newAttendee)
     {
-        $attended = $attendees->filter(function($attendee) use ($newAttendee){
+        $attended = $attendees->filter(function ($attendee) use ($newAttendee) {
             return $attendee->user_id == $newAttendee->user_id;
         })->toArray();
 

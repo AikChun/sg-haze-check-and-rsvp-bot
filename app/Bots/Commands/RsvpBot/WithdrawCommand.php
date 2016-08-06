@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Bots\Commands\RsvpBot;
+
 use Log;
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
@@ -41,7 +42,7 @@ class WithdrawCommand extends Command
 
         $attendees = $this->findAllAttendees($event);
 
-        if(!$this->isNotAttending($attendees, $fromUserId)) {
+        if (!$this->isNotAttending($attendees, $fromUserId)) {
             Attendee::where('user_id', $fromUserId)->delete();
         }
 
@@ -58,7 +59,6 @@ class WithdrawCommand extends Command
 
         // Reply with the commands list
         $this->replyWithMessage(['text' => $text]);
-
     }
 
     private function findAllAttendees($event)
@@ -86,11 +86,10 @@ class WithdrawCommand extends Command
 
     private function isNotAttending($attendees, $newUserId)
     {
-        $attended = $attendees->filter(function($attendee) use ($newUserId){
+        $attended = $attendees->filter(function ($attendee) use ($newUserId) {
             return $attendee->user_id == $newUserId;
         })->toArray();
 
         return (empty($attended));
     }
 }
-
