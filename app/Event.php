@@ -7,6 +7,10 @@ use App\Attendee;
 
 class Event extends Model
 {
+    protected $fillable = [
+        'chat_id',
+        'description'
+    ];
     //
     public function attendees()
     {
