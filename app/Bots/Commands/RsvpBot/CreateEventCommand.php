@@ -5,6 +5,7 @@ namespace App\Bots\Commands\RsvpBot;
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
 use App\Event;
+use App\Bots\Commands\CommandsUtil;
 
 class CreateEventCommand extends Command
 {
@@ -31,6 +32,9 @@ class CreateEventCommand extends Command
         $this->replyWithChatAction(['action' => Actions::TYPING]);
 
         $chatId = $this->getUpdate()->getMessage()->getChat()->getId();
+
+        CommandsUtil::getMessageChatType($this->getUpdate()->getMessage());
+        die;
 
         $event = Event::where('chat_id', $chatId)->count();
 
