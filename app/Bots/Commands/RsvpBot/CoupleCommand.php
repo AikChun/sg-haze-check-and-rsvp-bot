@@ -35,16 +35,16 @@ class CoupleCommand extends Command
         $fromUserId   = $fromUser->getId();
         $fromUserName = $fromUser->getFirstName();
 
-        $pieces = $this->explodeArguments($arguments);
+        $coupleName = $this->getCoupleName($arguments);
 
-        if ($pieces[1] == '') {
+        if ($coupleName == '') {
             $this->replyWithMessage(['text' => " Sorry please enter your couple name."]);
             return false;
         }
 
         $attendee = $this->findAttendeeInEvent($message);
 
-        $attendee->username = $pieces[0];
+        $attendee->username = $coupleName;
         $attendee->counter = 2;
 
         $attendee->save();
@@ -65,14 +65,14 @@ class CoupleCommand extends Command
         $this->replyWithMessage(['text' => $text]);
     }
 
-    public function explodeArguments($arguments)
+    public function getCoupleName($arguments)
     {
-        $pieces = 0;
         if (preg_match('/\s/', trim($arguments)) > 0) {
             $pieces = explode(' ', $arguments);
+            return $pieces[0];
         }
 
-        return $pieces;
+        return $arguments;
     }
 
     private function findAttendeeOrCreate($message)
