@@ -39,7 +39,7 @@ class FriendCommand extends Command
             return false;
         }
 
-        $friendName = $this->getArgumentName($arguments);
+        $friendName = trim($arguments);
 
         if ($friendName == '') {
             $this->replyWithMessage(['text' => " Sorry please enter your couple name."]);

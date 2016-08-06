@@ -39,7 +39,8 @@ class CoupleCommand extends Command
             return false;
         }
 
-        $coupleName = $this->getCoupleName($arguments);
+
+        $coupleName = trim($arguments);
 
         if ($coupleName == '') {
             $this->replyWithMessage(['text' => " Sorry please enter your couple name."]);
