@@ -49,6 +49,8 @@ class CoupleCommand extends Command
         $attendee->save();
 
 
+        $event = Event::where('chat_id', $message->getChat()->getId())->first();
+
         $eventAttendees = $this->findAllAttendees($event);
 
         $text = $this->prepareText($event, $eventAttendees);
