@@ -35,7 +35,7 @@ class WithdrawCommand extends Command
         $event = Event::where('chat_id', $chatId)->first();
 
         if (!$event) {
-            $this->replyWithMessage(['text' => 'You don\'t got not event to attend cuz.']);
+            $this->replyWithMessage(['text' => 'You don\'t got no event to attend cuz.']);
             return false;
         }
 
