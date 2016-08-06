@@ -37,7 +37,7 @@ class CoupleCommand extends Command
 
         $pieces = $this->explodeArguments($arguments);
 
-        if ($pieces[0] == '') {
+        if ($pieces[1] == '') {
             $this->replyWithMessage(['text' => " Sorry please enter your couple name."]);
             return false;
         }

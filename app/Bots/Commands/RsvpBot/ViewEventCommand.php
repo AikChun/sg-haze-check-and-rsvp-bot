@@ -62,7 +62,7 @@ class ViewEventCommand extends Command
         $text .= $event['description'] . "\n\n";
         $i = 0;
         foreach ($attendees as $attendee) {
-            $text .= $i . ". " . $attendee['username'] . "\n";
+            $text .= $attendee['username'] . "\n";
             $i = $i + $attendee['counter'];
         }
         $text .= "\nNumber of attendees: " . $i . "\n";
