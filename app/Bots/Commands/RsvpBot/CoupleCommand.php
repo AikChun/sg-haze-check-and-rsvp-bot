@@ -43,7 +43,7 @@ class CoupleCommand extends Command
         }
 
         $attendee = $this->findAttendeeInEvent($message);
-
+        Log::info(print_r($attendee, true));
         $attendee['username'] = $coupleName;
         $attendee['counter'] = 2;
 
