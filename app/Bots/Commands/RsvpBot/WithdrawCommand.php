@@ -77,7 +77,7 @@ class WithdrawCommand extends Command
             $text .= $i . ". " . $attendee['username'] . "\n";
             $i = $i + $attendee['counter'];
         }
-        $text .= "\nNumber of attendees: " . $i . "\n"
+        $text .= "\nNumber of attendees: " . $i . "\n";
         $text .= "Click here to attend!\n";
         $text .= "/attending";
 
