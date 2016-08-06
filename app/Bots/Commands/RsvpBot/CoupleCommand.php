@@ -42,8 +42,7 @@ class CoupleCommand extends Command
             return false;
         }
 
-        $attendee = $this->findAttendeeInEvent($message);
-        Log::info($attendee);
+        $attendee = $this->findAttendeeOrNew($message);
         $attendee['username'] = $coupleName;
         $attendee['counter'] = 2;
 
@@ -75,7 +74,7 @@ class CoupleCommand extends Command
         return $arguments;
     }
 
-    private function findAttendeeOrCreate($message)
+    private function findAttendeeOrNew($message)
     {
         $event = Event::where('chat_id', $message->getChat()->getId())->first();
 
