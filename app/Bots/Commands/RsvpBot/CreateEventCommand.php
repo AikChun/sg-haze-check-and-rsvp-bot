@@ -33,9 +33,6 @@ class CreateEventCommand extends Command
 
         $chatId = $this->getUpdate()->getMessage()->getChat()->getId();
 
-        CommandsUtil::getMessageChatId($this->getUpdate());
-        die;
-
         $event = Event::where('chat_id', $chatId)->count();
 
         $text = "";
