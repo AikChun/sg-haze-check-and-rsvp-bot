@@ -28,7 +28,7 @@ class HazeBotController extends Controller
 
     public function setWebhook()
     {
-        $response = Telegram::setWebhook(['url' => 'https://pickira.com/hazebot/'. env('TELEGRAM_BOT_TOKEN'). '/webhook']);
+        $response = $this->telegram->setWebhook(['url' => 'https://pickira.com/hazebot/'. env('HAZEBOT_TOKEN'). '/webhook']);
 
         return $response;
     }
