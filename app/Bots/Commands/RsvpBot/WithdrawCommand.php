@@ -43,7 +43,7 @@ class WithdrawCommand extends Command
 
 
         if($arguments != '') {
-            Attendee::where('username', $arguments)->whereNotNull('user_id')->delete();
+            Attendee::where(['username' => $arguments, 'user_id' => 0])->delete();
         } else {
             if (!$this->isNotAttending($attendees, $fromUser->getId())) {
                 Attendee::where('user_id', $fromUser->getId())->delete();
