@@ -12,6 +12,7 @@ use App\Bots\Commands\RsvpBot\CreateEventCommand;
 use App\Bots\Commands\RsvpBot\DeleteEventCommand;
 use App\Bots\Commands\RsvpBot\ViewEventCommand;
 use App\Bots\Commands\RsvpBot\AttendingCommand;
+use App\Bots\Commands\RsvpBot\CoupleCommand;
 use App\Bots\Commands\RsvpBot\WithdrawCommand;
 
 
@@ -29,6 +30,7 @@ class RsvpBotController extends Controller
             ViewEventCommand::class,
             DeleteEventCommand::class,
             AttendingCommand::class,
+            CoupleCommand::class,
             WithdrawCommand::class,
             Telegram\Bot\Commands\HelpCommand::class
         ]);
