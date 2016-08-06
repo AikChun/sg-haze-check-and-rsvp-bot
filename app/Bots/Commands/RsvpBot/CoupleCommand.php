@@ -47,8 +47,13 @@ class CoupleCommand extends Command
             return false;
         }
 
+        $fromUserName = $fromUser->getFirstName();
+        if ($fromUser->getUsername() != "") {
+            $fromUserName = $fromUser->getUsername();
+        }
+
         $attendee = $this->findAttendeeOrNew($event, $message->getFrom());
-        $attendee['username'] = $coupleName;
+        $attendee['username'] = $fromUserName . ' Couple: (' . $coupleName . ')';
         $attendee['counter'] = 2;
 
         $attendee->save();

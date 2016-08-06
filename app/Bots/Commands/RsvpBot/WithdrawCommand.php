@@ -42,7 +42,7 @@ class WithdrawCommand extends Command
         $attendees = $this->findAllAttendees($event);
 
 
-        if($arguments != '') {
+        if ($arguments != '') {
             Attendee::where(['username' => $arguments, 'user_id' => 0])->delete();
         } else {
             if (!$this->isNotAttending($attendees, $fromUser->getId())) {

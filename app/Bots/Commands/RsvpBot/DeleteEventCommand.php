@@ -35,10 +35,9 @@ class DeleteEventCommand extends Command
         $event = Event::where('chat_id', $chatId)->count();
 
         $text = "";
-        if($event == 0) {
+        if ($event == 0) {
             $text = "You don't got no event to delete cuz.";
         } else {
-
             $event = Event::where('chat_id', $chatId)->delete();
             $text = "You have successfully delete the event.";
         }
@@ -47,7 +46,5 @@ class DeleteEventCommand extends Command
         $this->replyWithMessage(['text' => $text]);
 
         // This will update the chat status to typing...
-
     }
-
 }

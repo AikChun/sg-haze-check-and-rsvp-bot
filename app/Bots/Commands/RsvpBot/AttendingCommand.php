@@ -46,7 +46,7 @@ class AttendingCommand extends Command
 
         $attendee = Attendee::where(['event_id' => $event['id'], 'user_id' => $fromUser->getId()])->first();
 
-        if(!$attendee) {
+        if (!$attendee) {
             $attendee = new Attendee;
             $attendee->event_id = $event['id'];
             $attendee->user_id = $fromUser->getId();
@@ -96,5 +96,4 @@ class AttendingCommand extends Command
 
         return $text;
     }
-
 }
