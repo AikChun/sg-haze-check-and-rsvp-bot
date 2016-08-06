@@ -65,7 +65,8 @@ class FriendCommand extends Command
         // They'll be in 'command-name' => 'Command Handler Class' format.
 
         // Reply with the commands list
-        $this->replyWithMessage(['text' => $text]);
+        $forceReply = $this->getTelegram()->forceReply(['selective' => true]);
+        $this->replyWithMessage(['text' => $text, 'reply_markup' => $forceReply]);
     }
 
     public function getArgumentName($arguments)
