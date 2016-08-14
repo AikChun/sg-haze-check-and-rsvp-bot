@@ -44,7 +44,10 @@ class CoupleCommand extends Command
             $fromUserName = $fromUser->getUsername();
         }
 
+        $event = Event::where('chat_id', $chatId)->first();
+
         $attendee = Attendee::firstOrNew(['event_id' => $event['id'], 'user_id' => $message->getFrom()->getId()]);
+
         $attendee['username'] = $fromUserName . ' +1';
         $attendee['counter'] = 2;
 
