@@ -5,9 +5,42 @@ namespace App\Bots\Commands\RsvpBot;
 use App\Event;
 use App\Attendee;
 use Log;
+use Telegram\Bot\Objects\Message;
+use Telegram\Bot\Objects\Update;
+use Telegram\Bot\Objects\Chat;
 
 class CommandUtil
 {
+    /**
+     * chatHasEvent - check if there an event already created for the chat.
+     *
+     * @param mixed $identifier - Could be Telegram SDK Message object, Update Object, Chat Object or just an int
+     * @return boolean true if there's an event already in the chat or false otherwise.
+     */
+    public static function chatHasEvent($identifier)
+    {
+        $chatId = null;
+
+        if($identifier instanceof Update::class) {
+            $chatId = $identifier->getMessage()->getChat()->getId();
+        }
+
+        if($identifier instanceof Message::class) {
+            $chatId = $indentifier->getChat()->getId();
+        }
+
+        if($identifier instanceof Chat::class) {
+            $chatId = $identifier->getId();
+        }
+
+        $event = event::where('chat_id', $chatId)->count();
+
+        if ($event > 0) {
+            return true;
+        }
+
+        return false;
+    }
     public static function prepareText($event, $attendees)
     {
         $text = "Event: \n";

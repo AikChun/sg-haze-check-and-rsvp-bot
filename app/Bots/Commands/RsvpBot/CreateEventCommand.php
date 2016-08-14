@@ -8,6 +8,7 @@ use App\Event;
 use Redis;
 use Log;
 use App\Bots\Commands\CommandsUtil;
+use App\Bots\Commands\RsvpBot\CommandUtil;
 
 class CreateEventCommand extends Command
 {
@@ -35,21 +36,18 @@ class CreateEventCommand extends Command
         $message   = $this->getUpdate()->getMessage();
         $messageId = $message->getMessageId();
         $chatId    = $message->getChat()->getId();
-
-        $event = Event::where('chat_id', $chatId)->count();
-
         $text = "";
-        if ($event > 0) {
+
+        if (CommandUtil::chathasEvent($message)) {
             $text = "You already have an event created! Delete before starting a new one.";
-        } else {
-
-            $forceReply = $this->getTelegram()->forceReply(['force_reply' => true, 'selective' => true]);
-
-            $text = "What is your event?";
-            Redis::set($message->getFrom()->getId(), 'event.create');
-            $status = Redis::get($message->getFrom()->getId());
-            $this->replyWithMessage(['text' => $text, 'reply_to_message_id' => $this->getUpdate()->getMessage()->getMessageId(), 'reply_markup' => $forceReply]);
         }
+
+        $forceReply = $this->getTelegram()->forceReply(['force_reply' => true, 'selective' => true]);
+
+        $text = "What is your event?";
+        Redis::set($message->getFrom()->getId(), 'event.create');
+        $status = Redis::get($message->getFrom()->getId());
+        $this->replyWithMessage(['text' => $text, 'reply_to_message_id' => $this->getUpdate()->getMessage()->getMessageId(), 'reply_markup' => $forceReply]);
 
 
 

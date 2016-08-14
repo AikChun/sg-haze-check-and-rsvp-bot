@@ -7,6 +7,7 @@ use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
 use App\Event;
 use App\Attendee;
+use App\Bots\Commands\RsvpBot\CommandUtil;
 
 class CoupleCommand extends Command
 {
@@ -33,17 +34,8 @@ class CoupleCommand extends Command
         $chatId       = $this->getUpdate()->getMessage()->getChat()->getId();
         $fromUser     = $this->getUpdate()->getMessage()->getFrom();
 
-        $event = Event::where('chat_id', $message->getChat()->getId())->first();
-        if (!$event) {
+        if (!CommandUtil::chatHasEvent($message)) {
             $this->replyWithMessage(['text' => "You have no event to attend."]);
-            return false;
-        }
-
-
-        $coupleName = trim($arguments);
-
-        if ($coupleName == '') {
-            $this->replyWithMessage(['text' => " Sorry please enter your couple name."]);
             return false;
         }
 
@@ -52,15 +44,13 @@ class CoupleCommand extends Command
             $fromUserName = $fromUser->getUsername();
         }
 
-        $attendee = $this->findAttendeeOrNew($event, $message->getFrom());
-        $attendee['username'] = $fromUserName . ' Couple: (' . $coupleName . ')';
+        $attendee = Attendee::firstOrNew(['event_id' => $event['id'], 'user_id' => $message->getFrom()->getId()]);
+        $attendee['username'] = $fromUserName . ' +1';
         $attendee['counter'] = 2;
 
         $attendee->save();
 
-        $eventAttendees = $this->findAllAttendees($event);
-
-        $text = $this->prepareText($event, $eventAttendees);
+        $text = CommandUtil::getAttendanceList($event);
 
         // This will update the chat status to typing...
         $this->replyWithChatAction(['action' => Actions::TYPING]);
@@ -73,51 +63,4 @@ class CoupleCommand extends Command
         $this->replyWithMessage(['text' => $text]);
     }
 
-    public function getCoupleName($arguments)
-    {
-        if (preg_match('/\s/', trim($arguments)) > 0) {
-            $pieces = explode(' ', $arguments);
-            return $pieces[0];
-        }
-
-        return $arguments;
-    }
-
-    private function findAttendeeOrNew($event, $fromUser)
-    {
-        return  Attendee::firstOrNew(['event_id' => $event['id'], 'user_id' => $fromUser->getId()]);
-    }
-
-
-    private function findAllAttendees($event)
-    {
-        $attendees = Attendee::where('event_id', $event['id'])->get();
-
-        return $attendees;
-    }
-
-    private function prepareText($event, $attendees)
-    {
-        $text = "Event: \n";
-        $text .= $event['description'] . "\n\n";
-        $i = 0;
-        foreach ($attendees as $attendee) {
-            $text .=  $attendee['username'] . "\n";
-            $i = $i + $attendee['counter'];
-        }
-        $text .= "\nNumber of attendees: " . $i . "\n";
-        $text .= "Click here to attend!\n";
-        $text .= "/attending";
-
-        return $text;
-    }
-
-    private function isNotAttending($attendees, $newAttendee)
-    {
-        $attended = $attendees->filter(function ($attendee) use ($newAttendee) {
-            return $attendee->user_id == $newAttendee->user_id;
-        })->toArray();
-
-        return (empty($attended));
-    }
 }
