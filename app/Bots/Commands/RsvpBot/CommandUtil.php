@@ -38,7 +38,7 @@ class CommandUtil
 
     public static function getAttendanceList($event)
     {
-        $attendees = self::findAllAttendees($event)
+        $attendees = self::findAllAttendees($event);
         return self::prepareText($event, $attendees);
     }
 }
