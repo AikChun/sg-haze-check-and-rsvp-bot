@@ -21,15 +21,15 @@ class CommandUtil
     {
         $chatId = null;
 
-        if($identifier instanceof Update::class) {
+        if($identifier instanceof Update) {
             $chatId = $identifier->getMessage()->getChat()->getId();
         }
 
-        if($identifier instanceof Message::class) {
+        if($identifier instanceof Message) {
             $chatId = $indentifier->getChat()->getId();
         }
 
-        if($identifier instanceof Chat::class) {
+        if($identifier instanceof Chat) {
             $chatId = $identifier->getId();
         }
 

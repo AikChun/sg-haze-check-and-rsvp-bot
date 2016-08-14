@@ -45,8 +45,9 @@ class CreateEventCommand extends Command
         $forceReply = $this->getTelegram()->forceReply(['force_reply' => true, 'selective' => true]);
 
         $text = "What is your event?";
-        Redis::set($message->getFrom()->getId(), 'event.create');
-        $status = Redis::get($message->getFrom()->getId());
+
+        Redis::set($message->getFrom()->getId(), 'event.create'); // tag user's id with status of event.create
+
         $this->replyWithMessage(['text' => $text, 'reply_to_message_id' => $this->getUpdate()->getMessage()->getMessageId(), 'reply_markup' => $forceReply]);
 
 
