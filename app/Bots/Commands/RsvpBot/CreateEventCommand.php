@@ -6,6 +6,7 @@ use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
 use App\Event;
 use Redis;
+use Log;
 use App\Bots\Commands\CommandsUtil;
 
 class CreateEventCommand extends Command
