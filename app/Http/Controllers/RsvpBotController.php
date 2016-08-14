@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use Log;
 use Telegram;
@@ -17,10 +16,8 @@ use App\Bots\Commands\RsvpBot\CoupleCommand;
 use App\Bots\Commands\RsvpBot\FriendCommand;
 use App\Bots\Commands\RsvpBot\WithdrawCommand;
 use App\Bots\Commands\RsvpBot\CommandUtil;
-
 use App\Attendee;
 use App\Event;
-
 
 class RsvpBotController extends Controller
 {
@@ -58,11 +55,10 @@ class RsvpBotController extends Controller
 
         // First, check the question that the update was replying to
         if ($message->getReplyToMessage()->getText() == "What is your friend's name?") {
-
             $event    = Event::where('chat_id', $message->getChat()->getId())->first(); // check for event
 
             if (!$event) {
-                $this->telegram->sendMessage(['chat_id' => $message->getChat()->getId(), $'text' => "You have no event to attend."]);
+                $this->telegram->sendMessage(['chat_id' => $message->getChat()->getId(), 'text' => "You have no event to attend."]);
                 return response()->json(["status" => "success"]);
             }
 
@@ -90,8 +86,4 @@ class RsvpBotController extends Controller
         $response = $this->telegram->removeWebhook();
         return $response;
     }
-
-
-
-
 }
