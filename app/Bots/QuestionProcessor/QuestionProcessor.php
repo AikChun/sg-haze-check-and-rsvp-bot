@@ -19,7 +19,7 @@ class QuestionProcessor
         foreach($this->questions as $question) {
             if($question->getQuestion() == $message->getReplyToMessage()->getText()) {
                 $text = $question->handle($message);
-                $this->telegram->sendMessage('chat_id' => $message->getChat()->getId(), 'text' => $text);
+                $this->telegram->sendMessage(['chat_id' => $message->getChat()->getId(), 'text' => $text]);
                 return;
             }
         }
