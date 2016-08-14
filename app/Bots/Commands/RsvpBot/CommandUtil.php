@@ -26,7 +26,7 @@ class CommandUtil
         }
 
         if($identifier instanceof Message) {
-            $chatId = $indentifier->getChat()->getId();
+            $chatId = $identifier->getChat()->getId();
         }
 
         if($identifier instanceof Chat) {
