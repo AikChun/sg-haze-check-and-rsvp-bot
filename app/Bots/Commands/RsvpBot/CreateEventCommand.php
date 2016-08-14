@@ -32,9 +32,9 @@ class CreateEventCommand extends Command
         // handled when you replace `send<Method>` with `replyWith` and use the same parameters - except chat_id does NOT need to be included in the array.
 
         $this->replyWithChatAction(['action' => Actions::TYPING]);
-        $message = $this->getUpdate()->getMessage();
+        $message   = $this->getUpdate()->getMessage();
         $messageId = $message->getMessageId();
-        $chatId = $message->getChat()->getId();
+        $chatId    = $message->getChat()->getId();
 
         $event = Event::where('chat_id', $chatId)->count();
 
@@ -48,7 +48,6 @@ class CreateEventCommand extends Command
             $text = "What is your event?";
             Redis::set($message->getFrom()->getId(), 'event.create');
             $status = Redis::get($message->getFrom()->getId());
-            Log::info($status);
             $this->replyWithMessage(['text' => $text, 'reply_to_message_id' => $this->getUpdate()->getMessage()->getMessageId(), 'reply_markup' => $forceReply]);
         }
 

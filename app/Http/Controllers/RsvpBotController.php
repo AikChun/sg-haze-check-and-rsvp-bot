@@ -7,6 +7,7 @@ use App\Http\Requests;
 use Log;
 use Telegram;
 use Telegram\Bot\Api;
+use Telegram\Bot\Actions;
 use App\Bots\Commands\HazeBot\StartCommand;
 use App\Bots\Commands\RsvpBot\CreateEventCommand;
 use App\Bots\Commands\RsvpBot\DeleteEventCommand;
@@ -55,7 +56,6 @@ class RsvpBotController extends Controller
     {
         $update = $this->telegram->commandsHandler(true);
 
-        // ghetto implmentation of conversation
         $message = $update->getMessage();
 
         // First, check the question that the update was replying to
@@ -68,10 +68,14 @@ class RsvpBotController extends Controller
             new CreateEventQuestion('What is your event?', 'event.create')
         ]);
 
+        $this->telegram->sendChatAction(['chat_id', $message->getChat()->getId(), 'action' => Actions::TYPING]);
+
         $this->questionProcessor->process($message);
 
+        // ghetto implmentation of conversation
+        // Check the correct message that this current update is replying to
         if ($message->getReplyToMessage()->getText() == "What is your friend's name?") {
-
+            // normal processing
             $event    = Event::where('chat_id', $message->getChat()->getId())->first(); // check for event
 
             if (!$event) {
@@ -91,10 +95,11 @@ class RsvpBotController extends Controller
             // prepare the text and send
             $text = CommandUtil::getAttendanceList($event);
 
+            // send reply back to user.
             $this->telegram->sendMessage(['chat_id' => $message->getChat()->getId(), 'text' => $text ]);
-
-            return response()->json(["status" => "success"]);
         }
+
+        return response()->json(["status" => "success"]);
     }
 
     public function removeWebhook()

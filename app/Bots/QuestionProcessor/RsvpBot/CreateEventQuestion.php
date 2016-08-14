@@ -9,12 +9,25 @@ use Redis;
 class CreateEventQuestion extends AbstractQuestion
 {
 
+    /**
+     * __construct
+     *
+     * @param String $question will be question that the class is handling/matching
+     * @param String $status will be the status or state of the user, the previous command will cache tag the user with a status to ensure that this is
+     * the next step of the conversation. and also to prevent this class from processing if other users are replying to the previous message.
+     */
     public function __construct($question, $status)
     {
         $this->question = $question;
         $this->status = $status;
     }
 
+    /**
+     * handle will check for status of the user.
+     * The method will then return the reply message.
+     *
+     * @param Message $message Telegram SDK Message object
+     */
     public function handle($message)
     {
         $userStatus = Redis::get($message->getFrom()->getId());
@@ -31,7 +44,7 @@ class CreateEventQuestion extends AbstractQuestion
         }
 
         $messageText = $message->getText();
-        $event       = Event::where('chat_id', $chatId)->count();
+
         $event       = new Event;
 
         $event->chat_id     = $chatId;
@@ -43,6 +56,12 @@ class CreateEventQuestion extends AbstractQuestion
         return $this->announceEventCreated($messageText);
     }
 
+    /**
+     * announceEventCreated - Just a method to prepare the reply text
+     *
+     * @param mixed $data from DB
+     * @return String $text - the reply message
+     */
     private function announceEventCreated($data)
     {
         $text = "Event: \n";
