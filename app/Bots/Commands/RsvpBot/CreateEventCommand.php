@@ -5,6 +5,7 @@ namespace App\Bots\Commands\RsvpBot;
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
 use App\Event;
+use Redis;
 use App\Bots\Commands\CommandsUtil;
 
 class CreateEventCommand extends Command
@@ -28,10 +29,11 @@ class CreateEventCommand extends Command
         // the user/chat id who triggered this command.
         // `replyWith<Message|Photo|Audio|Video|Voice|Document|Sticker|Location|ChatAction>()` all the available methods are dynamically
         // handled when you replace `send<Method>` with `replyWith` and use the same parameters - except chat_id does NOT need to be included in the array.
-        //
-        $this->replyWithChatAction(['action' => Actions::TYPING]);
 
-        $chatId = $this->getUpdate()->getMessage()->getChat()->getId();
+        $this->replyWithChatAction(['action' => Actions::TYPING]);
+        $message = $this->getUpdate()->getMessage();
+        $messageId = $message->getMessageId();
+        $chatId = $message->getChat()->getId();
 
         $event = Event::where('chat_id', $chatId)->count();
 
@@ -39,29 +41,20 @@ class CreateEventCommand extends Command
         if ($event > 0) {
             $text = "You already have an event created! Delete before starting a new one.";
         } else {
-            $event = new Event;
 
-            $event->chat_id     = $chatId;
-            $event->description = $arguments;
+            $forceReply = $this->getTelegram()->forceReply(['force_reply' => true, 'selective' => true]);
 
-            $event->save();
-            $text = $this->announceEventCreated($arguments);
+            $text = "What is your event?";
+            Redis::set($message->getFrom()->getId(), 'event.created');
+            $status = Redis::get($message->getFrom()->getId());
+            Log::info($status);
+            $this->replyWithMessage(['text' => $text, 'reply_to_message_id' => $this->getUpdate()->getMessage()->getMessageId(), 'reply_markup' => $forceReply]);
         }
 
 
 
-        $this->replyWithMessage(['text' => $text]);
 
         // This will update the chat status to typing...
     }
 
-    private function announceEventCreated($data)
-    {
-        $text = "Event: \n";
-        $text .= $data . "\n\n";
-        $text .= "Click here to attend!\n";
-        $text .= "/attending";
-
-        return $text;
-    }
 }

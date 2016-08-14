@@ -23,6 +23,7 @@ class RsvpBotController extends Controller
 {
 
     protected $telegram;
+    protected $questionProcessor;
 
     public function __construct()
     {
@@ -38,6 +39,8 @@ class RsvpBotController extends Controller
             WithdrawCommand::class,
             Telegram\Bot\Commands\HelpCommand::class
         ]);
+
+        $this->questionProcessor = new QuestionProcessor;
     }
 
     public function setWebhook()
@@ -58,6 +61,13 @@ class RsvpBotController extends Controller
 
             return response()->json(["status" => "success"]);
         }
+
+        $this->questionProcessor->addQuestions([
+            new CreateEventQuestion('What is your event?', 'event.create')
+        ]);
+
+        $this->questionProcessor->process($message);
+
         if ($message->getReplyToMessage()->getText() == "What is your friend's name?") {
 
             $event    = Event::where('chat_id', $message->getChat()->getId())->first(); // check for event

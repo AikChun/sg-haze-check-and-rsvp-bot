@@ -1,6 +1,7 @@
 <?php
-
+namespace App\Bots\QuestionProcessor;
 use App\Bots\QuestionProcessor;
+use App\Bots\QuestionProcessor\AbstractQuestion;
 class QuestionProcessor
 {
     protected $message;
@@ -8,25 +9,32 @@ class QuestionProcessor
     protected $output;
     protected $questions;
 
-    public function __construct($telegram, $message)
+    public function __construct()
     {
-        $this->telegram = $telegram;
-        $this->message  = $message;
+
     }
 
-    public function process()
+    public function process($message)
     {
         foreach($this->questions as $question) {
-            if($question->getQuestion() == $this->message->getReplyToMessage()->getText()) {
-                $question->handle($this->message);
+            if($question->getQuestion() == $message->getReplyToMessage()->getText()) {
+                $text = $question->handle($message);
+                $this->telegram->sendMessage('chat_id' => $message->getChat()->getId(), 'text' => $text);
                 return;
             }
         }
+
     }
 
-    public function addQuestions(array $questionClasses)
+    public function addQuestions(array $questions)
     {
-        $this->questions = $questionClasses;
+        foreach($questions as $question) {
+            if(!($question instanceof AbstractQuestion)) {
+                throw new Exception('Object is not of AbstractQuestion');
+                continue;
+            }
+            $this->questions[] = $question;
+        }
     }
 
 
