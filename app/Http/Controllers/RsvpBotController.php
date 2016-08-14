@@ -16,6 +16,10 @@ use App\Bots\Commands\RsvpBot\AttendingCommand;
 use App\Bots\Commands\RsvpBot\CoupleCommand;
 use App\Bots\Commands\RsvpBot\FriendCommand;
 use App\Bots\Commands\RsvpBot\WithdrawCommand;
+use App\Bots\Commands\RsvpBot\CommandUtil;
+
+use App\Attendee;
+use App\Event;
 
 
 class RsvpBotController extends Controller
@@ -49,6 +53,33 @@ class RsvpBotController extends Controller
     {
         $update = $this->telegram->commandsHandler(true);
 
+        // ghetto implmentation of conversation
+        $message = $update->getMessage();
+
+        // First, check the question that the update was replying to
+        if ($message->getReplyToMessage()->getText() == "What is your friend's name?") {
+
+            $event    = Event::where('chat_id', $message->getChat()->getId())->first(); // check for event
+
+            if (!$event) {
+                $this->telegram->sendMessage(['chat_id' => $message->getChat()->getId(), $'text' => "You have no event to attend."]);
+                return response()->json(["status" => "success"]);
+            }
+
+            //get friend's name
+            $name     = $message->getText();
+
+            // new up an attendee if not in record
+            $attendee = Attendee::firstOrNew(['event_id' => $event['id'], 'username' => $name]);
+
+            $attendee->save();
+
+
+            // prepare the text and send
+            $text = CommandUtil::getAttendanceList($event);
+
+            $this->telegram->sendMessage(['chat_id' => $message->getChat()->getId(), 'text' => $text ]);
+        }
         Log::info(print_r($update, true));
 
         return response()->json(["status" => "success"]);

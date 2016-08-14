@@ -6,7 +6,7 @@ use App\Event;
 use App\Attendee;
 use Log;
 
-class CommandsUtil
+class CommandUtil
 {
     public static function prepareText($event, $attendees)
     {
@@ -34,5 +34,11 @@ class CommandsUtil
         $attendees = Attendee::where('event_id', $event['id'])->get();
 
         return $attendees;
+    }
+
+    public static function getAttendanceList($event)
+    {
+        $attendees = self::findAllAttendees($event)
+        return self::prepareText($event, $attendees);
     }
 }

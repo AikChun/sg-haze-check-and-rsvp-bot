@@ -39,35 +39,32 @@ class FriendCommand extends Command
             return false;
         }
 
-        $friendName = trim($arguments);
+        $this->replyWithChatAction(['action' => Actions::TYPING]);
 
-        if ($friendName == '') {
-            $this->replyWithMessage(['text' => " Sorry please enter your friend's name."]);
-            return false;
-        }
+        $forceReply = $this->getTelegram()->forceReply(['force_reply' => true, 'selective' => true]);
 
-        $attendee = $this->findFriendOrNew($event, $friendName);
+        $text = "What is your friend's name?";
 
-        $attendee['username'] = $friendName;
-        $attendee['counter'] = 1;
+        $this->replyWithMessage(['text' => $text, 'reply_to_message_id' => $message->getMessageId(), 'reply_markup' => $forceReply]);
 
-        $attendee->save();
+        //$attendee = $this->findFriendOrNew($event, $friendName);
 
-        $eventAttendees = $this->findAllAttendees($event);
+        //$attendee['username'] = $friendName;
+        //$attendee['counter'] = 1;
 
-        $text = $this->prepareText($event, $eventAttendees);
+        //$attendee->save();
+
+        //$eventAttendees = $this->findAllAttendees($event);
+
+        //$text = $this->prepareText($event, $eventAttendees);
 
         // This will update the chat status to typing...
-        $this->replyWithChatAction(['action' => Actions::TYPING]);
 
         // This will prepare a list of available commands and send the user.
         // First, Get an array of all registered commands
         // They'll be in 'command-name' => 'Command Handler Class' format.
 
         // Reply with the commands list
-        //$forceReply = $this->getTelegram()->forceReply(['force_reply' => true, 'selective' => true]);
-        //$this->replyWithMessage(['text' => $text, 'reply_to_message_id' => $message->getMessageId(), 'reply_markup' => $forceReply]);
-        $this->replyWithMessage(['text' => $text ]);
     }
 
     public function getArgumentName($arguments)
