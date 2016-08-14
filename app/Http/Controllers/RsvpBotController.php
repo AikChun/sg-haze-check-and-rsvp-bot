@@ -68,7 +68,7 @@ class RsvpBotController extends Controller
             new CreateEventQuestion('What is your event?', 'event.create')
         ]);
 
-        $this->telegram->sendChatAction(['chat_id', $message->getChat()->getId(), 'action' => Actions::TYPING]);
+        $this->telegram->sendChatAction(['chat_id' => $message->getChat()->getId(), 'action' => Actions::TYPING]);
 
         $this->questionProcessor->process($message);
 
