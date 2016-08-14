@@ -16,6 +16,7 @@ use App\Bots\Commands\RsvpBot\CoupleCommand;
 use App\Bots\Commands\RsvpBot\FriendCommand;
 use App\Bots\Commands\RsvpBot\WithdrawCommand;
 use App\Bots\Commands\RsvpBot\CommandUtil;
+use App\Bots\QuestionProcessor\QuestionProcessor;
 use App\Attendee;
 use App\Event;
 
