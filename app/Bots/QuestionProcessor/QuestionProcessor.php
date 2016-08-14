@@ -1,6 +1,5 @@
 <?php
 namespace App\Bots\QuestionProcessor;
-use App\Bots\QuestionProcessor;
 use App\Bots\QuestionProcessor\AbstractQuestion;
 class QuestionProcessor
 {
