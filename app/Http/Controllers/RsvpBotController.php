@@ -54,7 +54,12 @@ class RsvpBotController extends Controller
         $message = $update->getMessage();
 
         // First, check the question that the update was replying to
+        if($message->getReplyToMessage() == null) {
+
+            return response()->json(["status" => "success"]);
+        }
         if ($message->getReplyToMessage()->getText() == "What is your friend's name?") {
+
             $event    = Event::where('chat_id', $message->getChat()->getId())->first(); // check for event
 
             if (!$event) {
@@ -75,10 +80,9 @@ class RsvpBotController extends Controller
             $text = CommandUtil::getAttendanceList($event);
 
             $this->telegram->sendMessage(['chat_id' => $message->getChat()->getId(), 'text' => $text ]);
-        }
-        Log::info(print_r($update, true));
 
-        return response()->json(["status" => "success"]);
+            return response()->json(["status" => "success"]);
+        }
     }
 
     public function removeWebhook()
