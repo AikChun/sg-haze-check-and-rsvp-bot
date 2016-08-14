@@ -3,14 +3,11 @@ namespace App\Bots\QuestionProcessor;
 use App\Bots\QuestionProcessor\AbstractQuestion;
 class QuestionProcessor
 {
-    protected $message;
     protected $telegram;
-    protected $output;
-    protected $questions;
 
-    public function __construct()
+    public function __construct($telegram)
     {
-
+        $this->telegram = $telegram;
     }
 
     public function process($message)

@@ -42,7 +42,7 @@ class RsvpBotController extends Controller
             Telegram\Bot\Commands\HelpCommand::class
         ]);
 
-        $this->questionProcessor = new QuestionProcessor;
+        $this->questionProcessor = new QuestionProcessor($this->telegram);
     }
 
     public function setWebhook()
