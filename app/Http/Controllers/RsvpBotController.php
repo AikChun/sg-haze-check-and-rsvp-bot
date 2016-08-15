@@ -21,6 +21,9 @@ use App\Bots\QuestionProcessor\QuestionProcessor;
 use App\Bots\QuestionProcessor\RsvpBot\CreateEventQuestion;
 use App\Attendee;
 use App\Event;
+use Telegram\Bot\Objects\Update;
+
+use Telegram
 
 class RsvpBotController extends Controller
 {
@@ -55,7 +58,42 @@ class RsvpBotController extends Controller
     public function webhook()
     {
         $update = $this->telegram->commandsHandler(true);
-        Log::info(print_r($update, true));
+        //Log::info(print_r($update, true));
+        $newArray = [
+            'update_id' => 446324986,
+            'message' => [
+                'message_id' => 227,
+                'from' => [
+                    'id' => 60875961,
+                    'first_name' => 'Aik Chun',
+                    'username' => 'EggyMcEggface'
+                ],
+                'chat' => [
+                    'id' => -1001053768020,
+                    'title' => 'Bot test sandbox',
+                    'type' => 'supergroup',
+                ],
+                'date' => 1471279851,
+                'reply_to_message' => [
+                    'message_id' => 226,
+                    'from' => [
+                        'id' => 259765048,
+                        'first_name' => 'RSVPMyAss',
+                        'username' => 'RSVPMyAssBot'
+                    ],
+                    'chat' => [
+                        'id' => -1001053768020,
+                        'title' => 'Bot test sandbox',
+                        'type' => 'supergroup',
+                    ],
+                    'date' => 1471279839,
+                    'text' => "What is your friend's name?"
+                ],
+                'text' => 'EggyMcEggface'
+            ]
+        ];
+        $newUpdate = new Update($newArray);
+        Log::info(print_r($newUpdate, true));
         $message = $update->getMessage();
 
         // First, check the question that the update was replying to
