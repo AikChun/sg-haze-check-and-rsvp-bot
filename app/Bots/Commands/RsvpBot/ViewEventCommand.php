@@ -6,6 +6,7 @@ use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
 use App\Event;
 use App\Attendee;
+use App\Bots\Commands\RsvpBot\CommandUtil;
 
 class ViewEventCommand extends Command
 {
@@ -42,13 +43,9 @@ class ViewEventCommand extends Command
 
             $event = Event::where('chat_id', $chatId)->first();
 
-            $attendees = Attendee::where('event_id', $event['id']);
-
-            $text = $this->prepareText($event, $attendees);
+            $text = CommandUtil::getAttendanceList($event);
 
         }
-
-
 
         $this->replyWithMessage(['text' => $text]);
 

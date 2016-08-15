@@ -22,6 +22,7 @@ class ThreeHourPsiUpdateCommand extends Command
      */
     public function handle($arguments)
     {
+        $this->replyWithChatAction(['action' => Actions::TYPING]);
         // This will send a message using `sendMessage` method behind the scenes to
         // the user/chat id who triggered this command.
         // `replyWith<Message|Photo|Audio|Video|Voice|Document|Sticker|Location|ChatAction>()` all the available methods are dynamically
@@ -37,7 +38,6 @@ class ThreeHourPsiUpdateCommand extends Command
         $this->replyWithMessage(['text' => $text]);
 
         // This will update the chat status to typing...
-        $this->replyWithChatAction(['action' => Actions::TYPING]);
 
     }
 
