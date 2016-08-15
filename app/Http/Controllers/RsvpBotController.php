@@ -55,7 +55,7 @@ class RsvpBotController extends Controller
     public function webhook()
     {
         $update = $this->telegram->commandsHandler(true);
-
+        Log::info(print_r(get_object_vars($update), true));
         $message = $update->getMessage();
 
         // First, check the question that the update was replying to
