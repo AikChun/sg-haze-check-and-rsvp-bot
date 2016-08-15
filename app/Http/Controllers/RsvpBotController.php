@@ -23,8 +23,6 @@ use App\Attendee;
 use App\Event;
 use Telegram\Bot\Objects\Update;
 
-use Telegram
-
 class RsvpBotController extends Controller
 {
 
