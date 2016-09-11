@@ -36,7 +36,7 @@ abstract class AbstractQuestion {
     private function validateUserStatus($userId)
     {
         Log::info('this status: '. $this->status);
-        Log::info('cache status: '. $Redis::get($userId));
+        Log::info('cache status: '. Redis::get($userId));
         if($this->status != Redis::get($userId)) {
             return false;
         }
