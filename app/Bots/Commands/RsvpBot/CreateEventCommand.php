@@ -39,7 +39,7 @@ class CreateEventCommand extends Command
         $message   = $this->getUpdate()->getMessage();
         $messageId = $message->getMessageId();
         $chatId    = $message->getChat()->getId();
-        $text = "";
+        $text = self::$question;
 
         if (CommandUtil::chathasEvent($message)) {
             $text = "You already have an event created! Delete before starting a new one.";
@@ -49,7 +49,7 @@ class CreateEventCommand extends Command
 
         Redis::set($message->getFrom()->getId(), self::$step); // tag user's id with status of event.create
 
-        $this->replyWithMessage(['text' => self::$question, 'reply_to_message_id' => $this->getUpdate()->getMessage()->getMessageId(), 'reply_markup' => $forceReply]);
+        $this->replyWithMessage(['text' => $text, 'reply_to_message_id' => $this->getUpdate()->getMessage()->getMessageId(), 'reply_markup' => $forceReply]);
 
 
 
