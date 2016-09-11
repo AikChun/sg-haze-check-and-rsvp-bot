@@ -4,6 +4,7 @@ namespace App\Bots\QuestionProcessor\RsvpBot;
 use App\Bots\QuestionProcessor\AbstractQuestion;
 use App\Bots\Commands\RsvpBot\CommandUtil;
 use App\Event;
+use App\Attendee;
 
 class FriendQuestion extends AbstractQuestion
 {
