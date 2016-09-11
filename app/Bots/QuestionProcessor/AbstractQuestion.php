@@ -22,7 +22,7 @@ abstract class AbstractQuestion {
         return $this->question;
     }
 
-    private function validate($message)
+    public function validate($message)
     {
         return (
             $this->validateUserStatus($message->getFrom()->getId())
