@@ -27,12 +27,11 @@ abstract class AbstractQuestion {
     {
         Log::info('this question: '. $this->question);
         Log::info('replyToMessage question: '. $message->getReplyToMessage()->getText());
-        return (
-            $this->validateUserStatus($message->getFrom()->getId())
-            && $this->question == $message->getReplyToMessage()->getText()
-        );
+        if($this->question == $message->getReplyToMessage()->getText()) {
+            return $this->validateUserStatus($message->getFrom()->getId());
+        }
+        return false;
     }
-
     private function validateUserStatus($userId)
     {
         Log::info('this status: '. $this->status);
