@@ -24,6 +24,8 @@ abstract class AbstractQuestion {
 
     public function validate($message)
     {
+        Log::info('this question: '. $this->question);
+        Log::info('replyToMessage question: '. $message->getReplyToMessage()->getText());
         return (
             $this->validateUserStatus($message->getFrom()->getId())
             && $this->question == $message->getReplyToMessage()->getText()
@@ -32,6 +34,8 @@ abstract class AbstractQuestion {
 
     private function validateUserStatus($userId)
     {
+        Log::info('this status: '. $this->status);
+        Log::info('cache status: '. $Redis::get($userId));
         if($this->status != Redis::get($userId)) {
             return false;
         }
