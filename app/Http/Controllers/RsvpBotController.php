@@ -8,17 +8,8 @@ use Log;
 use Telegram;
 use Telegram\Bot\Api;
 use Telegram\Bot\Actions;
-use App\Bots\Commands\HazeBot\StartCommand;
-use App\Bots\Commands\RsvpBot\CreateEventCommand;
-use App\Bots\Commands\RsvpBot\DeleteEventCommand;
-use App\Bots\Commands\RsvpBot\ViewEventCommand;
-use App\Bots\Commands\RsvpBot\AttendingCommand;
-use App\Bots\Commands\RsvpBot\CoupleCommand;
-use App\Bots\Commands\RsvpBot\FriendCommand;
-use App\Bots\Commands\RsvpBot\WithdrawCommand;
 use App\Bots\Commands\RsvpBot\CommandUtil;
 use App\Bots\QuestionProcessor\QuestionProcessor;
-use App\Bots\QuestionProcessor\RsvpBot\CreateEventQuestion;
 use App\Attendee;
 use App\Event;
 use Telegram\Bot\Objects\Update;
@@ -33,14 +24,14 @@ class RsvpBotController extends Controller
     {
         $this->telegram = new Api(env('RSVPBOT_TOKEN'));
         $this->telegram->addCommands([
-            StartCommand::class,
-            CreateEventCommand::class,
-            ViewEventCommand::class,
-            DeleteEventCommand::class,
-            AttendingCommand::class,
-            CoupleCommand::class,
-            FriendCommand::class,
-            WithdrawCommand::class,
+            \App\Bots\Commands\HazeBot\StartCommand::class,
+            \App\Bots\Commands\RsvpBot\CreateEventCommand::class,
+            \App\Bots\Commands\RsvpBot\ViewEventCommand::class,
+            \App\Bots\Commands\RsvpBot\DeleteEventCommand::class,
+            \App\Bots\Commands\RsvpBot\AttendingCommand::class,
+            \App\Bots\Commands\RsvpBot\CoupleCommand::class,
+            \App\Bots\Commands\RsvpBot\FriendCommand::class,
+            \App\Bots\Commands\RsvpBot\WithdrawCommand::class,
             Telegram\Bot\Commands\HelpCommand::class
         ]);
 
@@ -66,7 +57,7 @@ class RsvpBotController extends Controller
         }
 
         $this->questionProcessor->addQuestions([
-            new CreateEventQuestion('What is your event?', 'event.create')
+            new \App\Bots\QuestionProcessor\RsvpBot\CreateEventQuestion('What is your event?', 'event.create')
         ]);
 
         $this->telegram->sendChatAction(['chat_id' => $message->getChat()->getId(), 'action' => Actions::TYPING]);

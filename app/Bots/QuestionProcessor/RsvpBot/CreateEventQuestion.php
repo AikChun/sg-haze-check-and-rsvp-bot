@@ -30,12 +30,6 @@ class CreateEventQuestion extends AbstractQuestion
      */
     public function handle($message)
     {
-        $userStatus = Redis::get($message->getFrom()->getId());
-
-        if($this->status != $userStatus) {
-            return 'Invalid request';
-        }
-
         $chatId = $message->getChat()->getId();
         $event = Event::where('chat_id', $chatId)->count();
 
@@ -57,12 +51,12 @@ class CreateEventQuestion extends AbstractQuestion
     }
 
     /**
-     * announceEventCreated - Just a method to prepare the reply text
+     * announceAfterHandling - Just a method to prepare the reply text
      *
      * @param mixed $data from DB
      * @return String $text - the reply message
      */
-    private function announceEventCreated($data)
+    private function announceAfterHandling($data)
     {
         $text = "Event: \n";
         $text .= $data . "\n\n";

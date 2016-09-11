@@ -25,13 +25,14 @@ class QuestionProcessor
      */
     public function process($message)
     {
+        $text = "Invalid request.";
         foreach ($this->questions as $question) {
-            if ($question->getQuestion() == $message->getReplyToMessage()->getText()) {
+            if ($question->validate($message)) {
                 $text = $question->handle($message);
-                $this->telegram->sendMessage(['chat_id' => $message->getChat()->getId(), 'text' => $text]);
-                return;
+                break;
             }
         }
+        $this->telegram->sendMessage(['chat_id' => $message->getChat()->getId(), 'text' => $text]);
     }
 
     /**
