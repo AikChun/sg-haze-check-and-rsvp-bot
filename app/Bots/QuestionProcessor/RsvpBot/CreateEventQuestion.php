@@ -47,7 +47,7 @@ class CreateEventQuestion extends AbstractQuestion
         $event->save();
 
         Redis::del($message->getFrom()->getId());
-        return $this->announceEventCreated($messageText);
+        return $this->announceAfterHandling($messageText);
     }
 
     /**
@@ -56,7 +56,7 @@ class CreateEventQuestion extends AbstractQuestion
      * @param mixed $data from DB
      * @return String $text - the reply message
      */
-    private function announceAfterHandling($data)
+    public function announceAfterHandling($data)
     {
         $text = "Event: \n";
         $text .= $data . "\n\n";

@@ -10,7 +10,7 @@ abstract class AbstractQuestion {
 
     abstract public function handle($message);
 
-    abstract private function announceAfterHandling($data);
+    abstract public function announceAfterHandling($data);
 
     public function __construct($question, $status)
     {
