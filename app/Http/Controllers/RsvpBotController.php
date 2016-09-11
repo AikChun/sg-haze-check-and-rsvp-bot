@@ -9,6 +9,8 @@ use Telegram;
 use Telegram\Bot\Api;
 use Telegram\Bot\Actions;
 use App\Bots\Commands\RsvpBot\CommandUtil;
+use App\Bots\Commands\RsvpBot\CreateEventCommand;
+use App\Bots\Commands\RsvpBot\FriendCommand;
 use App\Bots\QuestionProcessor\QuestionProcessor;
 use App\Attendee;
 use App\Event;
@@ -57,7 +59,8 @@ class RsvpBotController extends Controller
         }
 
         $this->questionProcessor->addQuestions([
-            new \App\Bots\QuestionProcessor\RsvpBot\CreateEventQuestion('What is your event?', 'event.create')
+            new \App\Bots\QuestionProcessor\RsvpBot\CreateEventQuestion(CreateEventCommand::question, CreateEventCommand::step),
+            new \App\Bots\QuestionProcessor\RsvpBot\FriendQuestion(FriendCommand::question, FriendCommand::step)
         ]);
 
         $this->telegram->sendChatAction(['chat_id' => $message->getChat()->getId(), 'action' => Actions::TYPING]);
@@ -66,30 +69,6 @@ class RsvpBotController extends Controller
 
         // ghetto implmentation of conversation
         // Check the correct message that this current update is replying to
-        if ($message->getReplyToMessage()->getText() == "What is your friend's name?") {
-            // normal processing
-            $event    = Event::where('chat_id', $message->getChat()->getId())->first(); // check for event
-
-            if (!$event) {
-                $this->telegram->sendMessage(['chat_id' => $message->getChat()->getId(), 'text' => "You have no event to attend."]);
-                return response()->json(["status" => "success"]);
-            }
-
-            //get friend's name
-            $name     = $message->getText();
-
-            // new up an attendee if not in record
-            $attendee = Attendee::firstOrNew(['event_id' => $event['id'], 'username' => $name]);
-
-            $attendee->save();
-
-
-            // prepare the text and send
-            $text = CommandUtil::getAttendanceList($event);
-
-            // send reply back to user.
-            $this->telegram->sendMessage(['chat_id' => $message->getChat()->getId(), 'text' => $text ]);
-        }
 
         return response()->json(["status" => "success"]);
     }

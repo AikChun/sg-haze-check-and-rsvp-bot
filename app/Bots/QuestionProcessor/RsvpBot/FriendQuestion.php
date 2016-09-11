@@ -1,12 +1,11 @@
 <?php
-
 namespace App\Bots\QuestionProcessor\RsvpBot;
 
 use App\Bots\QuestionProcessor\AbstractQuestion;
+use App\Bots\Commands\RsvpBot\CommandUtil;
 use App\Event;
-use Redis;
 
-class CreateEventQuestion extends AbstractQuestion
+class FriendQuestion extends AbstractQuestion
 {
 
     /**
@@ -32,21 +31,18 @@ class CreateEventQuestion extends AbstractQuestion
         $chatId = $message->getChat()->getId();
         $event = Event::where('chat_id', $chatId)->count();
 
-        if ($event > 0) {
-            return 'There\'s already an ongoing event.';
+        if ($event == 0) {
+            return 'There\'s no event.';
         }
 
         $messageText = $message->getText();
 
-        $event       = new Event;
+        $event       = Event::where('chat_id', $chatId)->first();
+        $attendee    = Attendee::firstOrNew(['event_id' => $event->id, 'username' => $messageText]);
+        $attendee->save();
 
-        $event->chat_id     = $chatId;
-        $event->description = $messageText;
+        return CommandUtil::getAttendanceList($event);
 
-        $event->save();
-
-        Redis::del($message->getFrom()->getId());
-        return $this->announceAfterHandling($messageText);
     }
 
     /**
@@ -57,11 +53,6 @@ class CreateEventQuestion extends AbstractQuestion
      */
     public function announceAfterHandling($data)
     {
-        $text = "Event: \n";
-        $text .= $data . "\n\n";
-        $text .= "Click here to attend!\n";
-        $text .= "/attending";
 
-        return $text;
     }
 }

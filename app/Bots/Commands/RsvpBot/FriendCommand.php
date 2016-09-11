@@ -7,6 +7,7 @@ use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
 use App\Event;
 use App\Attendee;
+use Redis;
 
 class FriendCommand extends Command
 {
@@ -19,6 +20,9 @@ class FriendCommand extends Command
      * @var string Command Description
      */
     protected $description = "Add a friend to the event";
+
+    public static $question = "What is your friend's name?";
+    public static $step = "friend.add";
 
     /**
      * @inheritdoc
@@ -39,13 +43,12 @@ class FriendCommand extends Command
             return false;
         }
 
-        $this->replyWithChatAction(['action' => Actions::TYPING]);
+        Redis::set($message->getFrom()->getId(), $step); // tag user's id with status of friend.add
 
+        $this->replyWithChatAction(['action' => Actions::TYPING]);
         $forceReply = $this->getTelegram()->forceReply(['force_reply' => true, 'selective' => true]);
 
-        $text = "What is your friend's name?";
-
-        $this->replyWithMessage(['text' => $text, 'reply_to_message_id' => $message->getMessageId(), 'reply_markup' => $forceReply]);
+        $this->replyWithMessage(['text' => $question, 'reply_to_message_id' => $message->getMessageId(), 'reply_markup' => $forceReply]);
 
     }
 }
