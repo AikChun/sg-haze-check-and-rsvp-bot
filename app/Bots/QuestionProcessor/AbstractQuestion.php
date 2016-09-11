@@ -3,6 +3,7 @@
 namespace App\Bots\QuestionProcessor;
 
 use Redis;
+use Log;
 
 abstract class AbstractQuestion {
     protected $question;
