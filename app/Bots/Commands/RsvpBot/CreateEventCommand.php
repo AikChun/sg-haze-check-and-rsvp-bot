@@ -22,6 +22,9 @@ class CreateEventCommand extends Command
      */
     protected $description = "Create An Event for your group chat";
 
+    public static $question = "What is your event?";
+
+    public static $step = "event.create";
     /**
      * @inheritdoc
      */
@@ -44,11 +47,9 @@ class CreateEventCommand extends Command
 
         $forceReply = $this->getTelegram()->forceReply(['force_reply' => true, 'selective' => true]);
 
-        $text = "What is your event?";
+        Redis::set($message->getFrom()->getId(), self::$step); // tag user's id with status of event.create
 
-        Redis::set($message->getFrom()->getId(), 'event.create'); // tag user's id with status of event.create
-
-        $this->replyWithMessage(['text' => $text, 'reply_to_message_id' => $this->getUpdate()->getMessage()->getMessageId(), 'reply_markup' => $forceReply]);
+        $this->replyWithMessage(['text' => self::$question, 'reply_to_message_id' => $this->getUpdate()->getMessage()->getMessageId(), 'reply_markup' => $forceReply]);
 
 
 

@@ -43,12 +43,12 @@ class FriendCommand extends Command
             return false;
         }
 
-        Redis::set($message->getFrom()->getId(), $step); // tag user's id with status of friend.add
+        Redis::set($message->getFrom()->getId(), self::$step); // tag user's id with status of friend.add
 
         $this->replyWithChatAction(['action' => Actions::TYPING]);
         $forceReply = $this->getTelegram()->forceReply(['force_reply' => true, 'selective' => true]);
 
-        $this->replyWithMessage(['text' => $question, 'reply_to_message_id' => $message->getMessageId(), 'reply_markup' => $forceReply]);
+        $this->replyWithMessage(['text' => self::$question, 'reply_to_message_id' => $message->getMessageId(), 'reply_markup' => $forceReply]);
 
     }
 }
