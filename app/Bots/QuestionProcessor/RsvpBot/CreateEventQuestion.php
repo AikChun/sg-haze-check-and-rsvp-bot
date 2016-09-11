@@ -18,7 +18,7 @@ class CreateEventQuestion extends AbstractQuestion
      */
     public function __construct($question, $status)
     {
-        super($question, $status);
+        parent::__construct($question, $status);
     }
 
     /**
