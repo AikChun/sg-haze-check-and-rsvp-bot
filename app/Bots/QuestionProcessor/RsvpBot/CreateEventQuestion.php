@@ -45,8 +45,7 @@ class CreateEventQuestion extends AbstractQuestion
 
         $event->save();
 
-        Redis::del($message->getFrom()->getId());
-        return $this->announceAfterHandling($messageText);
+        return \App\Bots\Commands\RsvpBot\CommandsUtil::getAttendanceList($event->id);
     }
 
     /**
