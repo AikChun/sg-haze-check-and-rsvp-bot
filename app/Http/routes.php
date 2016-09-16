@@ -24,7 +24,7 @@ Route::get('rsvpbot/' . env('RSVPBOT_TOKEN') . '/setWebhook', 'RsvpBotController
 Route::get('rsvpbot/' . env('RSVPBOT_TOKEN') . '/remove_webhook', 'RsvpBotController@removeWebhook');
 Route::post('rsvpbot/' . env('RSVPBOT_TOKEN') . '/webhook', 'RsvpBotController@webhook');
 
-Route::get('eventifybot/' . env('EVENTIFYBOT_TOKEN') . '/setWebhook', 'HazeBotController@setWebhook');
-Route::get('eventifybot/' . env('EVENTIFYBOT_TOKEN') . '/remove_webhook', 'HazeBotController@removeWebhook');
-Route::post('eventifybot/' . env('EVENTIFYBOT_TOKEN') . '/webhook', 'HazeBotController@webhook');
+Route::get('eventifybot/' . env('EVENTIFYBOT_TOKEN') . '/setWebhook', 'EventifyBotController@setWebhook');
+Route::get('eventifybot/' . env('EVENTIFYBOT_TOKEN') . '/remove_webhook', 'EventifyBotController@removeWebhook');
+Route::post('eventifybot/' . env('EVENTIFYBOT_TOKEN') . '/webhook', 'EventifyBotController@webhook');
 
