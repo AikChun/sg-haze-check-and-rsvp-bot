@@ -15,6 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
 Route::get('hazebot/' . env('HAZEBOT_TOKEN') . '/setWebhook', 'HazeBotController@setWebhook');
 Route::get('hazebot/' . env('HAZEBOT_TOKEN') . '/remove_webhook', 'HazeBotController@removeWebhook');
 Route::post('hazebot/' . env('HAZEBOT_TOKEN') . '/webhook', 'HazeBotController@webhook');
@@ -22,4 +23,8 @@ Route::post('hazebot/' . env('HAZEBOT_TOKEN') . '/webhook', 'HazeBotController@w
 Route::get('rsvpbot/' . env('RSVPBOT_TOKEN') . '/setWebhook', 'RsvpBotController@setWebhook');
 Route::get('rsvpbot/' . env('RSVPBOT_TOKEN') . '/remove_webhook', 'RsvpBotController@removeWebhook');
 Route::post('rsvpbot/' . env('RSVPBOT_TOKEN') . '/webhook', 'RsvpBotController@webhook');
+
+Route::get('eventifybot/' . env('HAZEBOT_TOKEN') . '/setWebhook', 'HazeBotController@setWebhook');
+Route::get('eventifybot/' . env('HAZEBOT_TOKEN') . '/remove_webhook', 'HazeBotController@removeWebhook');
+Route::post('eventifybot/' . env('HAZEBOT_TOKEN') . '/webhook', 'HazeBotController@webhook');
 
