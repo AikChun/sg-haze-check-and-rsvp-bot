@@ -45,7 +45,7 @@ class CreateEventQuestion extends AbstractQuestion
 
         $event->save();
 
-        return \App\Bots\Commands\Rsvp\CommandUtil::getAttendanceList($event);
+        return \App\Bots\Commands\RsvpBot\CommandUtil::getAttendanceList($event);
     }
 
     /**
