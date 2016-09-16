@@ -16,5 +16,7 @@ class VerifyCsrfToken extends BaseVerifier
         'hazebot/*',
         'rsvpbot/*/webhook',
         'rsvpbot/*',
+        'eventifybot/*',
+        'eventifybot/*/webhook',
     ];
 }
