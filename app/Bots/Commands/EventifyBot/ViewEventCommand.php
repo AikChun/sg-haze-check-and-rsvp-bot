@@ -7,6 +7,7 @@ use Telegram\Bot\Commands\Command;
 use App\Event;
 use App\Attendee;
 use App\Bots\Commands\RsvpBot\CommandUtil;
+use Log;
 
 class ViewEventCommand extends Command
 {
@@ -42,8 +43,8 @@ class ViewEventCommand extends Command
         } else {
 
             $text = "Which events do you want to view?\n";
-            $eventCounter = 1;
             $events = $events->each(function($event, $key) use ($text) {
+                Log::info('This event is: '. $event->description);
                 $text .= $key+1 . ". " . $event->description;
             });
         }
