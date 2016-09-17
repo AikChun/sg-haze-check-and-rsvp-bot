@@ -43,10 +43,10 @@ class ViewEventCommand extends Command
         } else {
 
             $text = "Which events do you want to view?\n";
-            $events = $events->each(function($event, $key) use ($text) {
+            foreach($events as $key => $event) {
                 Log::info('This event is: '. $event->description);
-                $text .= $key+1 . ". " . $event->description;
-            });
+                $text .= $key+1 . ". " $event->description;
+            }
         }
 
         $this->replyWithMessage(['text' => $text]);
