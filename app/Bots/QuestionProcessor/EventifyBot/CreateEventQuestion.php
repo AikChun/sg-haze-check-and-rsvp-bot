@@ -32,10 +32,6 @@ class CreateEventQuestion extends AbstractQuestion
         $chatId = $message->getChat()->getId();
         $event = Event::where('chat_id', $chatId)->count();
 
-        if ($event > 0) {
-            return 'There\'s already an ongoing event.';
-        }
-
         $messageText = $message->getText();
 
         $event       = new Event;
@@ -45,7 +41,7 @@ class CreateEventQuestion extends AbstractQuestion
 
         $event->save();
 
-        return \App\Bots\Commands\RsvpBot\CommandUtil::getAttendanceList($event);
+        return 'You\'ve successfully created event: ' . "\n" .  $event->description;
     }
 
     /**

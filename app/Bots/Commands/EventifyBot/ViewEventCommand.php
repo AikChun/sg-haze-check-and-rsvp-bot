@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Bots\Commands\RsvpBot;
+namespace App\Bots\Commands\EventifyBot;
 
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
@@ -34,17 +34,18 @@ class ViewEventCommand extends Command
 
         $chatId = $this->getUpdate()->getMessage()->getChat()->getId();
 
-        $event = Event::where('chat_id', $chatId)->count();
+        $events = Event::where('chat_id', $chatId)->get();
 
         $text = "";
-        if($event == 0) {
+        if(count($event) == 0) {
             $text = "You don't got no event, son!";
         } else {
 
-            $event = Event::where('chat_id', $chatId)->get();
-
-            $text = CommandUtil::getAttendanceList($event);
-
+            $text = "Which events do you want to view?\n";
+            $eventCounter = 1;
+            $events = $events->each(function($event, $key) use ($text) {
+                $text .= $key+1 . ". " . $event->description;
+            });
         }
 
         $this->replyWithMessage(['text' => $text]);

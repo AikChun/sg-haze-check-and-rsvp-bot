@@ -25,7 +25,7 @@ class EventifyBotController extends Controller
         $this->telegram = new Api(env('EVENTIFYBOT_TOKEN'));
         $this->telegram->addCommands([
             \App\Bots\Commands\EventifyBot\CreateEventCommand::class,
-            //\App\Bots\Commands\EventifyBot\ViewEventCommand::class,
+            \App\Bots\Commands\EventifyBot\ViewEventCommand::class,
             //\App\Bots\Commands\EventifyBot\DeleteEventCommand::class,
             //\App\Bots\Commands\EventifyBot\AttendingCommand::class,
             //\App\Bots\Commands\EventifyBot\CoupleCommand::class,
