@@ -37,7 +37,7 @@ class ViewEventCommand extends Command
         $events = Event::where('chat_id', $chatId)->get();
 
         $text = "";
-        if(count($event) == 0) {
+        if(count($events) == 0) {
             $text = "You don't got no event, son!";
         } else {
 
