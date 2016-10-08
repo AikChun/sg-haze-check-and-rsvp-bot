@@ -55,7 +55,7 @@ class EventifyBotController extends Controller
         }
 
         $this->questionProcessor->addQuestions([
-            //new \App\Bots\QuestionProcessor\EventifyBot\CreateEventQuestion('What is your event?', 'event.create')
+            new \App\Bots\QuestionProcessor\EventifyBot\CreateEventQuestion('What is your event?', 'event.create')
         ]);
 
         $this->telegram->sendChatAction(['chat_id' => $message->getChat()->getId(), 'action' => Actions::TYPING]);
