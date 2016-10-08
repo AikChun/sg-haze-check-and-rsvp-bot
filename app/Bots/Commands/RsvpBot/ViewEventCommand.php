@@ -45,6 +45,8 @@ class ViewEventCommand extends Command
 
             $text = CommandUtil::getAttendanceList($event);
 
+        }
+
         $this->replyWithMessage(['text' => $text]);
 
         // This will update the chat status to typing...
