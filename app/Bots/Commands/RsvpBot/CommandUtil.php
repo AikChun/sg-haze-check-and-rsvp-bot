@@ -71,6 +71,7 @@ class CommandUtil
 
     public static function getAttendanceList($event)
     {
+        Log::info('event id: '. $event->id);
         $attendees = self::findAllAttendees($event);
         return self::prepareText($event, $attendees);
     }
