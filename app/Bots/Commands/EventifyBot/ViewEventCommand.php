@@ -44,9 +44,9 @@ class ViewEventCommand extends Command
 
             $text = "Which events do you want to view?\n";
 
-            $events = $events->each(function($event, $key) use ($text)) {
+            $events = $events->each(function($event, $key) use ($text) {
                 $text .= $key+1 . ". " . $event->description . "\n";
-            }
+            });
         }
 
         $this->replyWithMessage(['text' => $text]);
