@@ -64,7 +64,7 @@ class CommandUtil
 
     public static function findAllAttendees($event)
     {
-        $attendees = Attendee::where('event_id', $event['id'])->get();
+        $attendees = Attendee::where('event_id', $event->id)->get();
 
         return $attendees;
     }
