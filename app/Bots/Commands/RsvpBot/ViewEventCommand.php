@@ -34,14 +34,12 @@ class ViewEventCommand extends Command
 
         $chatId = $this->getUpdate()->getMessage()->getChat()->getId();
 
-        $event = Event::where('chat_id', $chatId)->count();
+        $event = Event::where('chat_id', $chatId)->first();
 
         $text = "";
-        if($event == 0) {
+        if(count($event) == 0) {
             $text = "You don't got no event, son!";
         } else {
-
-            $event = Event::where('chat_id', $chatId)->get();
 
             $text = CommandUtil::getAttendanceList($event);
 
