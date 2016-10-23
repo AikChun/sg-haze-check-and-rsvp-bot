@@ -26,36 +26,36 @@
                                             [type] => supergroup
                                         )
                                 )
-			    [date] => 1471279851
-                            [reply_to_message] => Telegram\Bot\Objects\Message Object
+                    [date] => 1471279851
+                    [reply_to_message] => Telegram\Bot\Objects\Message Object
+                        (
+                            [items:protected] => Array
                                 (
-                                    [items:protected] => Array
+                                    [message_id] => 226
+                                    [from] => Telegram\Bot\Objects\User Object
                                         (
-                                            [message_id] => 226
-                                            [from] => Telegram\Bot\Objects\User Object
+                                            [items:protected] => Array
                                                 (
-                                                    [items:protected] => Array
-                                                        (
-                                                            [id] => 259765048
-                                                            [first_name] => RSVPMyAss
-                                                            [username] => RSVPMyAssBot
-                                                        )
+                                                    [id] => 259765048
+                                                    [first_name] => RSVPMyAss
+                                                    [username] => RSVPMyAssBot
                                                 )
-					    [chat] => Telegram\Bot\Objects\Chat Object
-                                                (
-                                                    [items:protected] => Array
-                                                        (
-                                                            [id] => -1001053768020
-                                                            [title] => Bot test sandbox
-                                                            [type] => supergroup
-                                                        )
-                                                )
-                                            [date] => 1471279839
-                                            [text] => What is your friend's name?
                                         )
+                                    [chat] => Telegram\Bot\Objects\Chat Object
+                                        (
+                                            [items:protected] => Array
+                                                (
+                                                    [id] => -1001053768020
+                                                    [title] => Bot test sandbox
+                                                    [type] => supergroup
+                                                )
+                                        )
+                                    [date] => 1471279839
+                                    [text] => What is your friend's name?
                                 )
-                            [text] => EggyMcEggface
                         )
+                    [text] => EggyMcEggface
+                    )
                 )
         )
 )

@@ -8,21 +8,21 @@ use App\Event;
 use Redis;
 use Log;
 use App\Bots\Commands\CommandsUtil;
-use App\Bots\Commands\RsvpBot\CommandUtil;
+use App\Bots\UtilityClasses\RsvpBotUtility;
 
-class CreateEventCommand extends Command
+class CreateEventCommandNew extends Command
 {
     /**
      * @var string Command Name
      */
-    protected $name = "createevent";
+    protected $name = "newcreateevent";
 
     /**
      * @var string Command Description
      */
     protected $description = "Create An Event for your group chat";
 
-    public static $question = "What is your event?";
+    public static $question = "What is the name your event?";
 
     public static $step = "event.create";
     /**
@@ -36,23 +36,21 @@ class CreateEventCommand extends Command
         // handled when you replace `send<Method>` with `replyWith` and use the same parameters - except chat_id does NOT need to be included in the array.
 
         $this->replyWithChatAction(['action' => Actions::TYPING]);
-        $message   = $this->getUpdate()->getMessage();
-        $messageId = $message->getMessageId();
-        $chatId    = $message->getChat()->getId();
-        $text      = self::$question;
 
-        if (CommandUtil::chathasEvent($message)) {
-            $text   = "You already have an event created! Delete before starting a new one.";
-        }
+        $update    = $this->getUpdate();
+
+        $message   = RsvpBotUtility::retrieveMessage($update);
+        $messageId = RsvpBotUtility::retrieveMessageId($update);
+        $chatId    = RsvpBotUtility::retrieveChatId($update);
+
 
         $forceReply = $this->getTelegram()->forceReply(['force_reply' => true, 'selective' => true]);
 
-        Redis::set($message->getFrom()->getId(), self::$step); // tag user's id with status of event.create
+        $from = RsvpBotUtility::getFromId($message);
 
-        $this->replyWithMessage(['text' => $text, 'reply_to_message_id' => $this->getUpdate()->getMessage()->getMessageId(), 'reply_markup' => $forceReply]);
+        Redis::set($from, self::$step); // tag user's id with status of event.create
 
-
-
+        $this->replyWithMessage(['text' => self::$question, 'reply_to_message_id' => $messageId, 'reply_markup' => $forceReply]);
 
         // This will update the chat status to typing...
     }
