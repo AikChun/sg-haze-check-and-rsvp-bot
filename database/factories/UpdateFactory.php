@@ -47,9 +47,6 @@ $factory->define(Update::class, function () {
             'reply_to_message' => $replyToMessage,
         ]);
 
-        $update = new Update([
-
-        ]);
     return [
         'update_id' => 446324986,
         'message'   => $message,
