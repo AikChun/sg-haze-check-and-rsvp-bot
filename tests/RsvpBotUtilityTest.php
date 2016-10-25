@@ -13,56 +13,21 @@ class RsvpBotUtilityTest extends TestCase
 {
     protected $update;
     protected $message;
-    protected $chat;
-    protected $fromUser;
     public function setUp()
     {
         parent::setUp();
-        $this->fromUser = new User([
-            'id'         => 60875961,
-            'first_name' => 'Aik Chun',
-            'username'   => 'EggyMcEggface'
-        ]);
-
-        $this->chat = new Chat([
-            'id'    => -1001053768020,
-            'title' => 'Bot SandBox',
-            'type'  => 'supergroup',
-        ]);
-
-        $replyToMessageFromUser = new User([
-            'id'         => 259765048,
-            'first_name' => 'RSVPMyAss',
-            'username'   => 'RSVPMyAss'
-        ]);
-
-        $replyToMessageChat = new Chat([
-            'id' => -1001053768020,
-            'title' => 'Bot test sandbox',
-            'type' => 'supergroup',
-        ]);
-
-        $replyToMessage = new Message([
-            'message_id' => 226,
-            'from'       => $replyToMessageFromUser,
-            'chat'       => $replyToMessageChat,
-            'date'       => 1471279851,
-            'text'       => 'EggyMcEggface',
-        ]);
 
         $this->message = new Message([
             'message_id' => 227,
-            'from'       => $this->fromUser,
-            'chat'       => $this->chat,
-            'date'       => 1471279851,
-            'reply_to_message' => $replyToMessage,
         ]);
 
-        $this->update = new Update([
-            'update_id' => 446324986,
-            'message'   => $this->message,
+        //$this->update = new Update([
+        //    'update_id' => 446324986,
+        //    'message'   => $this->message,
 
-        ]);
+        //]);
+
+        $this->update = factory(Telegram\Bot\Objects\Update::class)->make();
 
     }
 
@@ -87,7 +52,7 @@ class RsvpBotUtilityTest extends TestCase
     {
         $this->assertTrue(RsvpBotUtility::retrieveMessage($this->update) instanceof Message);
         $this->assertTrue(RsvpBotUtility::retrieveMessage($this->message) instanceof Message);
-        $this->assertTrue(null == RsvpBotUtility::retrieveMessage($this->chat));
+        $this->assertTrue(null == RsvpBotUtility::retrieveMessage($this->update->getMessage()->getChat()));
     }
 
     public function testRetrieveMessageId()
@@ -106,9 +71,9 @@ class RsvpBotUtilityTest extends TestCase
     public function testGetEventDetails()
     {
         $expected = 'Event: Dinner at Storm\'s End' . "\n\n";
-        $expected .= 'Miss Clemmie Larson DVM'. "\n";
-        $expected .= 'Leonel West IV'. "\n";
-        $expected .= 'Casandra Swift'. "\n";
+        $expected .= '3000test_user'. "\n";
+        $expected .= '3001test_user'. "\n";
+        $expected .= '3002test_user'. "\n";
         $expected .= "\n" . 'Number of attendees: 3'. "\n";
         $expected .= 'Click here to attend!'. "\n";
         $expected .= '/attending';

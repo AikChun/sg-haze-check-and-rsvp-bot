@@ -2,7 +2,9 @@
 
 namespace App\Bots\QuestionProcessor\RsvpBot;
 
+use Telegram\Bot\Objects\Update;
 use App\Bots\QuestionProcessor\AbstractQuestion;
+use App\Bots\UtilityClasses\RsvpBotUtility;
 use App\Event;
 use Redis;
 
@@ -27,25 +29,19 @@ class CreateEventQuestion extends AbstractQuestion
      *
      * @param Message $message Telegram SDK Message object
      */
-    public function handle($message)
+    public function handle(Update $update)
     {
-        $chatId = $message->getChat()->getId();
-        $event = Event::where('chat_id', $chatId)->count();
+        $chatId             = RsvpBotUtility::retrieveChatId($update);
+        $messageText        = RsvpBotUtility::retrieveMessageText($update);
 
-        if ($event > 0) {
-            return 'There\'s already an ongoing event.';
-        }
-
-        $messageText = $message->getText();
-
-        $event       = new Event;
+        $event              = new Event;
 
         $event->chat_id     = $chatId;
         $event->description = $messageText;
 
         $event->save();
 
-        return \App\Bots\Commands\RsvpBot\CommandUtil::getAttendanceList($event);
+        return RsvpBotUtility::getEventDetails($event);
     }
 
     /**

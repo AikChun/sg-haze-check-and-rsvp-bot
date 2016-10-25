@@ -5,7 +5,7 @@ namespace App\Bots\Commands\RsvpBot;
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
 use App\Event;
-use Redis;
+use Illuminate\Support\Facades\Redis;
 use Log;
 use App\Bots\Commands\CommandsUtil;
 use App\Bots\Commands\RsvpBot\CommandUtil;

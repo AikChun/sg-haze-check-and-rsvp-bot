@@ -104,6 +104,12 @@ class RsvpBotUtility
         return $text;
     }
 
+    public static function retrieveMessageText($identifier)
+    {
+        $message = self::retrieveMessage($identifier);
+        return $message == null ? null : $message->getText();
+    }
+
     public static function prepareText($event, $attendees)
     {
         $text  = "Event: \n";

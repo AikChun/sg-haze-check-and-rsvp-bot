@@ -2,13 +2,14 @@
 
 namespace App\Bots\QuestionProcessor;
 
-use Redis;
+use Telegram\Bot\Objects\Update;
+use Illuminate\Support\Facades\Redis;
 
 abstract class AbstractQuestion {
     protected $question;
     protected $status;
 
-    abstract public function handle($message);
+    abstract public function handle(Update $update);
 
     abstract public function announceAfterHandling($data);
 
@@ -22,16 +23,19 @@ abstract class AbstractQuestion {
         return $this->question;
     }
 
-    public function validate($message)
+    public function validate(Update $update)
     {
+        $message = $update->getMessage();
+
         if($this->question == $message->getReplyToMessage()->getText()) {
             return $this->validateUserStatus($message->getFrom()->getId());
         }
         return false;
     }
-    private function validateUserStatus($userId)
+    public function validateUserStatus($userId)
     {
-        if($this->status != Redis::get($userId)) {
+        $status = Redis::get($userId);
+        if($this->status != $status) {
             return false;
         }
         Redis::del($userId);

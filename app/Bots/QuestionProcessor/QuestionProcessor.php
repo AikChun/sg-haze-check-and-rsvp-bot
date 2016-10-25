@@ -23,11 +23,11 @@ class QuestionProcessor
      * @param Message $message Telegram Bot SDK Message Object
      * @return void
      */
-    public function process($message)
+    public function process(Update $update)
     {
         $text = "Invalid request.";
         foreach ($this->questions as $question) {
-            if ($question->validate($message)) {
+            if ($question->validate($update)) {
                 $text = $question->handle($message);
                 break;
             }

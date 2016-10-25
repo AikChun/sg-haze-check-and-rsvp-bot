@@ -4,13 +4,14 @@ namespace App\Bots\Commands\RsvpBot;
 
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
+use Telegram\Bot\Objects\Update;
 use App\Event;
-use Redis;
+use Illuminate\Support\Facades\Redis;
 use Log;
 use App\Bots\Commands\CommandsUtil;
 use App\Bots\UtilityClasses\RsvpBotUtility;
 
-class CreateEventCommandNew extends Command
+class NewCreateEventCommand extends Command
 {
     /**
      * @var string Command Name
@@ -22,7 +23,7 @@ class CreateEventCommandNew extends Command
      */
     protected $description = "Create An Event for your group chat";
 
-    public static $question = "What is the name your event?";
+    public static $question = "What is the name of your event?";
 
     public static $step = "event.create";
     /**
@@ -39,20 +40,25 @@ class CreateEventCommandNew extends Command
 
         $update    = $this->getUpdate();
 
+        $reply = $this->replyToUser($update);
+
+        $forceReply = $this->getTelegram()->forceReply(['force_reply' => true, 'selective' => true]);
+        $this->replyWithMessage(['text' => $reply, 'reply_to_message_id' => $messageId, 'reply_markup' => $forceReply]);
+
+        // This will update the chat status to typing...
+    }
+
+    public function replyToUser(Update $update)
+    {
         $message   = RsvpBotUtility::retrieveMessage($update);
         $messageId = RsvpBotUtility::retrieveMessageId($update);
         $chatId    = RsvpBotUtility::retrieveChatId($update);
-
-
-        $forceReply = $this->getTelegram()->forceReply(['force_reply' => true, 'selective' => true]);
 
         $from = RsvpBotUtility::getFromId($message);
 
         Redis::set($from, self::$step); // tag user's id with status of event.create
 
-        $this->replyWithMessage(['text' => self::$question, 'reply_to_message_id' => $messageId, 'reply_markup' => $forceReply]);
-
-        // This will update the chat status to typing...
+        return self::$question;
     }
 
 }

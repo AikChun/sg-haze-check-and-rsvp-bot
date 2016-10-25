@@ -50,8 +50,6 @@ class RsvpBotController extends Controller
     {
         $update = $this->telegram->commandsHandler(true);
 
-        $message = $update->getMessage();
-
         // First, check the question that the update was replying to
         if($message->getReplyToMessage() == null) {
 
@@ -65,7 +63,7 @@ class RsvpBotController extends Controller
 
         $this->telegram->sendChatAction(['chat_id' => $message->getChat()->getId(), 'action' => Actions::TYPING]);
 
-        $this->questionProcessor->process($message);
+        $this->questionProcessor->process($update);
 
         // ghetto implmentation of conversation
         // Check the correct message that this current update is replying to
