@@ -6,6 +6,7 @@ use App\Bots\QuestionProcessor\AbstractQuestion;
 class QuestionProcessor
 {
     protected $telegram;
+    protected $questions;
 
     /**
      * __construct
@@ -15,6 +16,7 @@ class QuestionProcessor
     public function __construct($telegram)
     {
         $this->telegram = $telegram;
+        $this->questions = [];
     }
 
     /**
