@@ -1,33 +1,37 @@
 <?php
 
-use App\Bots\Commands\RsvpBot\NewCreateEventCommand;
+use Telegram\Bot\Objects\Update;
 use Telegram\Bot\Objects\User;
 use Telegram\Bot\Objects\Message;
 use Telegram\Bot\Objects\Chat;
-use Telegram\Bot\Objects\Update;
+use App\Bots\Commands\RsvpBot\CreateEventCommand;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CreateEventCommandTest extends TestCase
 {
-
     protected $update;
-    protected $message;
-    protected $chat;
-    protected $fromUser;
     protected $createEventCommand;
+    /**
+     * A basic test example.
+     *
+     * @return void
+     */
     public function setUp()
     {
         parent::setUp();
-        $this->fromUser = new User([
+        $this->update = factory(Update::class)->make();
+        $this->createEventCommand = new CreateEventCommand;
+
+        $fromUser = new User([
             'id'         => 60875961,
             'first_name' => 'Aik Chun',
             'username'   => 'EggyMcEggface'
         ]);
 
-        $this->chat = new Chat([
-            'id'    => -1001053768020,
+        $chat = new Chat([
+            'id'    => 1,
             'title' => 'Bot SandBox',
             'type'  => 'supergroup',
         ]);
@@ -52,30 +56,21 @@ class CreateEventCommandTest extends TestCase
             'text'       => 'EggyMcEggface',
         ]);
 
-        $this->message = new Message([
+        $message = new Message([
             'message_id' => 227,
-            'from'       => $this->fromUser,
-            'chat'       => $this->chat,
+            'from'       => $fromUser,
+            'chat'       => $chat,
             'date'       => 1471279851,
             'reply_to_message' => $replyToMessage,
         ]);
 
         $this->update = new Update([
-            'update_id' => 446324986,
-            'message'   => $this->message,
-
+            'id'      => 446324986,
+            'message' => $message,
         ]);
-
-        $this->createEventCommand = new NewCreateEventCommand();
-
     }
-
     public function testReplyToUser()
     {
-        $expected = "What is the name of your event?";
-
-        $this->assertEquals($expected, $this->createEventCommand->replyToUser($this->update));
+        $this->assertEquals('You already have an event created! /delete before starting a new one.', $this->createEventCommand->replyToUser($this->update));
     }
-
-
 }

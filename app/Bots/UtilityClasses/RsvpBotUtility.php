@@ -85,6 +85,14 @@ class RsvpBotUtility
         return null;
     }
 
+    public static function retrieveFromUser($identifier)
+    {
+
+        $message = self::retrieveMessage($identifier);
+
+        return $message != null ? $message->getFrom() : null;
+    }
+
     public static function getFromId($identifier)
     {
         $message = self::retrieveMessage($identifier);

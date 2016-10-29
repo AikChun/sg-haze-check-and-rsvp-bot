@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Attendee;
+use Telegram\Bot\Objects\User;
 
 class Event extends Model
 {
@@ -19,7 +20,7 @@ class Event extends Model
 
     public function printEventDetails()
     {
-        $text   = "Event: ";
+        $text   = "Event: \n";
         $text  .= $this->description . "\n\n";
         $attendees = $this->attendees->each(function($item, $key) use (&$text){
             $text  .= $item->username. "\n";
@@ -31,6 +32,33 @@ class Event extends Model
         $text .= "/attending";
 
         return $text;
+    }
+
+    public function registerUser(User $user)
+    {
+        $attended = Attendee::where([
+            'user_id' =>  $user->getId(),
+            'event_id' => $this->id,
+        ])->first();
+
+        if($attended) {
+            return true;
+        }
+
+        $attendee = new Attendee;
+
+        $username = $user->getFirstName();
+
+        if($user->getUsername() != "") {
+            $username = $user->getUsername();
+        }
+
+        $attendee->user_id  = $user->getId();
+        $attendee->username = $username;
+        $attendee->event_id = $this->id;
+        $attendee->counter  = 1;
+
+        return $attendee->save();
     }
 
 }

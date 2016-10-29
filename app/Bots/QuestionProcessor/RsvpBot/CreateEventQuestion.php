@@ -32,6 +32,11 @@ class CreateEventQuestion extends AbstractQuestion
     public function handle(Update $update)
     {
         $chatId             = RsvpBotUtility::retrieveChatId($update);
+
+        if(RsvpBotUtility::chatHasEvent($update)) {
+            return "You already have an event created! /delete before starting a new one.";
+        }
+
         $messageText        = RsvpBotUtility::retrieveMessageText($update);
 
         $event              = new Event;

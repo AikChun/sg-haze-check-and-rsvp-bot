@@ -7,6 +7,8 @@ use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
 use App\Event;
 use App\Attendee;
+use Telegram\Bot\Objects\Update;
+use App\Bots\UtilityClasses\RsvpBotUtility;
 
 class AttendingCommand extends Command
 {
@@ -29,43 +31,11 @@ class AttendingCommand extends Command
         // the user/chat id who triggered this command.
         // `replyWith<Message|Photo|Audio|Video|Voice|Document|Sticker|Location|ChatAction>()` all the available methods are dynamically
         // handled when you replace `send<Method>` with `replyWith` and use the same parameters - except chat_id does NOT need to be included in the array.
-        $chatId       = $this->getUpdate()->getMessage()->getChat()->getId();
-        $fromUser     = $this->getUpdate()->getMessage()->getFrom();
-
-        $fromUserName = $fromUser->getFirstName();
-        if ($fromUser->getUsername() != "") {
-            $fromUserName = $fromUser->getUsername();
-        }
-
-        $event = Event::where('chat_id', $chatId)->first();
-
-        if (!$event) {
-            $this->replyWithMessage(['text' => 'You don\'t got not event to attend cuz.']);
-            return false;
-        }
-
-        $attendee = Attendee::where(['event_id' => $event['id'], 'user_id' => $fromUser->getId()])->first();
-
-        if (!$attendee) {
-            $attendee = new Attendee;
-            $attendee->event_id = $event['id'];
-            $attendee->user_id = $fromUser->getId();
-            $attendee->counter = 1;
-            $attendee->username = $fromUserName;
-        } else {
-            $attendee['counter'] = 1;
-            $attendee['username'] = $fromUserName;
-        }
-
-        $attendee->save();
-
-        $eventAttendees = $this->findAllAttendees($event);
-
-        $text = $this->prepareText($event, $eventAttendees);
 
         // This will update the chat status to typing...
         $this->replyWithChatAction(['action' => Actions::TYPING]);
 
+        $text = $this->replyToUser($this->getUpdate());
         // This will prepare a list of available commands and send the user.
         // First, Get an array of all registered commands
         // They'll be in 'command-name' => 'Command Handler Class' format.
@@ -74,26 +44,23 @@ class AttendingCommand extends Command
         $this->replyWithMessage(['text' => $text]);
     }
 
-    private function findAllAttendees($event)
+    public function replyToUser(Update $update)
     {
-        $attendees = Attendee::where('event_id', $event['id'])->get();
+        $chatId    = RsvpBotUtility::retrieveChatId($update);
 
-        return $attendees;
-    }
+        $event = Event::where('chat_id', $chatId)->first();
 
-    private function prepareText($event, $attendees)
-    {
-        $text = "Event: \n";
-        $text .= $event['description'] . "\n\n";
-        $i = 0;
-        foreach ($attendees as $attendee) {
-            $text .= $attendee['username'] . "\n";
-            $i = $i + $attendee['counter'];
+        if(!$event) {
+            return "You don't got no event to attend cuz.";
         }
-        $text .= "\nNumber of attendees: " . $i . "\n";
-        $text .= "Click here to attend!\n";
-        $text .= "/attending";
 
-        return $text;
+        $user = RsvpBotUtility::retrieveFromUser($update);
+
+        if(!$event->registerUser($user)) {
+            return "Unable to register name to event cuz.";
+        }
+
+        return RsvpBotUtility::getEventDetails($event);
     }
+
 }

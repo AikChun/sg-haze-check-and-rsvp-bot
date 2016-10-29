@@ -14,7 +14,7 @@ class EventsTableSeeder extends Seeder
         $events = [ 'Breakfast at Winterfell',  'Lunch at Eyrie', 'Dinner at Storm\'s End'];
         for($i=0;$i<3;$i++) {
             $event              = new App\Event;
-            $event->chat_id     = 1;
+            $event->chat_id     = $i+1;
             $event->description = $events[$i];
             if($i == 2) {
                 $event->active      = true;

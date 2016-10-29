@@ -1,23 +1,23 @@
 <?php
 
-use App\Bots\QuestionProcessor\RsvpBot\CreateEventQuestion;
+use App\Bots\Commands\RsvpBot\AttendingCommand;
+
 use Telegram\Bot\Objects\User;
 use Telegram\Bot\Objects\Message;
 use Telegram\Bot\Objects\Chat;
 use Telegram\Bot\Objects\Update;
-use Illuminate\Support\Facades\Redis;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class CreateEventQuestionTest extends TestCase
+class AttendingCommandTest extends TestCase
 {
 
     protected $update;
     protected $message;
     protected $chat;
     protected $fromUser;
-    protected $createEventQuestion;
+    protected $attendingCommand;
     public function setUp()
     {
         parent::setUp();
@@ -28,7 +28,7 @@ class CreateEventQuestionTest extends TestCase
         ]);
 
         $this->chat = new Chat([
-            'id'    => -1001053768020,
+            'id'    => 3,
             'title' => 'Bot SandBox',
             'type'  => 'supergroup',
         ]);
@@ -50,16 +50,15 @@ class CreateEventQuestionTest extends TestCase
             'from'       => $replyToMessageFromUser,
             'chat'       => $replyToMessageChat,
             'date'       => 1471279851,
-            'text'       => 'What is the name of your event?',
+            'text'       => 'EggyMcEggface',
         ]);
 
         $this->message = new Message([
-            'message_id'       => 227,
-            'from'             => $this->fromUser,
-            'chat'             => $this->chat,
-            'date'             => 1471279851,
+            'message_id' => 227,
+            'from'       => $this->fromUser,
+            'chat'       => $this->chat,
+            'date'       => 1471279851,
             'reply_to_message' => $replyToMessage,
-            'text'             => 'RiverRun'
         ]);
 
         $this->update = new Update([
@@ -68,35 +67,24 @@ class CreateEventQuestionTest extends TestCase
 
         ]);
 
-        $this->createEventQuestion = new CreateEventQuestion('What is the name of your event?', 'event.create');
-        Redis::set($this->fromUser->getId(), 'event.create'); // tag user's id with status of event.create
+        $this->attendingCommand = new AttendingCommand;
 
     }
 
-    public function testValidateUserStatus()
+    public function testReplyToUser()
     {
-        $this->assertTrue($this->createEventQuestion->validateUserStatus($this->message->getFrom()->getId()));
-        //$this->assertEquals('event.create', Redis::get(60875961));
-        //$createEventQuestion = new CreateEventQuestion('What is the name of your event?', 'event.create');
-        //$this->assertTrue($createEventQuestion->validate($this->update));
 
-    }
-
-    public function testValidate()
-    {
-        $this->assertTrue($this->createEventQuestion->validate($this->update));
-
-    }
-
-    public function testHandle()
-    {
         $expected =  'Event: '. "\n";
-        $expected .= 'RiverRun' . "\n\n";
-        $expected .= "\n" . 'Number of attendees: 0'. "\n";
+        $expected .= 'Dinner at Storm\'s End' . "\n\n";
+        $expected .= '3000test_user'. "\n";
+        $expected .= '3001test_user'. "\n";
+        $expected .= '3002test_user'. "\n";
+        $expected .= 'EggyMcEggface'. "\n";
+        $expected .= "\n" . 'Number of attendees: 4'. "\n";
         $expected .= 'Click here to attend!'. "\n";
         $expected .= '/attending';
 
-        $this->assertEquals($expected, $this->createEventQuestion->handle($this->update));
+        $this->assertEquals($expected, $this->attendingCommand->replyToUser($this->update));
     }
 
 

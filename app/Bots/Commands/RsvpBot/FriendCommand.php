@@ -39,7 +39,7 @@ class FriendCommand extends Command
 
         $event = Event::where('chat_id', $message->getChat()->getId())->first();
         if (!$event) {
-            $this->replyWithMessage(['text' => "You have no event to attend."]);
+            $this->replyWithMessage(['text' => "You don't got no event to attend cuz."]);
             return false;
         }
 

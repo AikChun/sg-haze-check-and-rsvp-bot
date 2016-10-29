@@ -71,15 +71,24 @@ class RsvpBotUtilityTest extends TestCase
 
     public function testGetEventDetails()
     {
-        $expected = 'Event: Dinner at Storm\'s End' . "\n\n";
-        $expected .= '3000test_user'. "\n";
-        $expected .= '3001test_user'. "\n";
-        $expected .= '3002test_user'. "\n";
+        $expected =  'Event: '. "\n";
+        $expected .= 'Breakfast at Winterfell' . "\n\n";
+        $expected .= '1000test_user'. "\n";
+        $expected .= '1001test_user'. "\n";
+        $expected .= '1002test_user'. "\n";
         $expected .= "\n" . 'Number of attendees: 3'. "\n";
         $expected .= 'Click here to attend!'. "\n";
         $expected .= '/attending';
 
-        $this->assertEquals($expected, RsvpBotUtility::getEventDetails(3));
+        $this->assertEquals($expected, RsvpBotUtility::getEventDetails(1));
+    }
+
+    public function testRetrieveFromUser()
+    {
+        $user = RsvpBotUtility::retrieveFromUser($this->update);
+        $this->assertTrue($user instanceof User);
+        $this->assertEquals('EggyMcEggface', $user->getUsername());
+        $this->assertEquals(60875961, $user->getId());
     }
 
 }

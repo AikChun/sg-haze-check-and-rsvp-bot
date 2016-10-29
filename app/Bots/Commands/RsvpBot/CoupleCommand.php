@@ -35,7 +35,7 @@ class CoupleCommand extends Command
         $fromUser     = $this->getUpdate()->getMessage()->getFrom();
 
         if (!CommandUtil::chatHasEvent($message)) {
-            $this->replyWithMessage(['text' => "You have no event to attend."]);
+            $this->replyWithMessage(['text' => "You don't got no event to attend cuz."]);
             return false;
         }
 
