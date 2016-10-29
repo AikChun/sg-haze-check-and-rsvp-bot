@@ -59,7 +59,7 @@ class CreateEventCommand extends Command
         $chatId    = $message->getChat()->getId();
 
         if (RsvpBotUtility::chathasEvent($message)) {
-            $text   = "You already have an event created! /delete before starting a new one.";
+            $text   = "You already have an event created! Please /deleteevent before starting a new one.";
         } else {
             $this->forceReply = $this->getTelegram()->forceReply(['force_reply' => true, 'selective' => true]);
             $text   = self::$question;
