@@ -18,7 +18,7 @@ class WithdrawCommand extends Command
     /**
      * @var string Command Description
      */
-    protected $description = "Remove yourself from the event!";
+    protected $description = "Remove yourself from the event";
 
     /**
      * @inheritdoc
