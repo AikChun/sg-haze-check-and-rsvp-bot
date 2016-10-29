@@ -2,6 +2,7 @@
 
 namespace App\Bots\QuestionProcessor\EventifyBot;
 
+use Telegram\Bot\Objects\Update;
 use App\Bots\QuestionProcessor\AbstractQuestion;
 use App\Event;
 use Redis;
@@ -27,8 +28,10 @@ class DeleteEventQuestion extends AbstractQuestion
      *
      * @param Message $message Telegram SDK Message object
      */
-    public function handle($message)
+    public function handle(Update $update)
     {
+        $message = $update->getMessage();
+
         $chatId             =  $message->getChat()->getId();
 
         $messageText        =  $message->getText();

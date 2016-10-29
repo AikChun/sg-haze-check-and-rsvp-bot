@@ -1,6 +1,7 @@
 <?php
 namespace App\Bots\QuestionProcessor\RsvpBot;
 
+use Telegram\Bot\Objects\Update;
 use App\Bots\QuestionProcessor\AbstractQuestion;
 use App\Bots\Commands\RsvpBot\CommandUtil;
 use App\Event;
@@ -27,8 +28,9 @@ class FriendQuestion extends AbstractQuestion
      *
      * @param Message $message Telegram SDK Message object
      */
-    public function handle($message)
+    public function handle(Update $update)
     {
+        $message = $update->getMessage();
         $chatId = $message->getChat()->getId();
         $event = Event::where('chat_id', $chatId)->count();
 
