@@ -26,6 +26,8 @@ class CreateEventCommand extends Command
     public static $question = "What is your event?";
 
     public static $step = "event.create";
+
+    protected $forceReply = null;
     /**
      * @inheritdoc
      */
@@ -45,7 +47,7 @@ class CreateEventCommand extends Command
 
         Redis::set(RsvpBotUtility::retrieveFromUser($update)->getId(), self::$step); // tag user's id with status of event.create
 
-        $this->replyWithMessage(['text' => $text, 'reply_to_message_id' => $this->getUpdate()->getMessage()->getMessageId(), 'reply_markup' => $forceReply]);
+        $this->replyWithMessage(['text' => $text, 'reply_to_message_id' => $this->getUpdate()->getMessage()->getMessageId(), 'reply_markup' => $this->forceReply]);
 
         // This will update the chat status to typing...
     }
@@ -59,7 +61,7 @@ class CreateEventCommand extends Command
         if (RsvpBotUtility::chathasEvent($message)) {
             $text   = "You already have an event created! /delete before starting a new one.";
         } else {
-            $forceReply = $this->getTelegram()->forceReply(['force_reply' => true, 'selective' => true]);
+            $this->forceReply = $this->getTelegram()->forceReply(['force_reply' => true, 'selective' => true]);
             $text   = self::$question;
         }
 
