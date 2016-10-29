@@ -18,7 +18,7 @@ class AttendingCommand extends Command
     /**
      * @var string Command Description
      */
-    protected $description = "Attend the event!";
+    protected $description = "Attend the event";
 
     /**
      * @inheritdoc

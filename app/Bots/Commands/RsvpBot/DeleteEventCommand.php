@@ -16,7 +16,7 @@ class DeleteEventCommand extends Command
     /**
      * @var string Command Description
      */
-    protected $description = "Delete An Event for your group";
+    protected $description = "Delete an event for your group";
 
     /**
      * @inheritdoc

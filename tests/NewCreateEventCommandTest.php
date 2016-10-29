@@ -11,6 +11,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CreateEventCommandTest extends TestCase
 {
+
     protected $update;
     protected $message;
     protected $chat;

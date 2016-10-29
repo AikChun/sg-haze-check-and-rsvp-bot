@@ -20,7 +20,7 @@ class CreateEventCommand extends Command
     /**
      * @var string Command Description
      */
-    protected $description = "Create An Event for your group chat";
+    protected $description = "Create an event for your group chat";
 
     public static $question = "What is your event?";
 

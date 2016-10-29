@@ -11,6 +11,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class RsvpBotUtilityTest extends TestCase
 {
+
     protected $update;
     protected $message;
     public function setUp()

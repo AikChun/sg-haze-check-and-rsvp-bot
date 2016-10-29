@@ -19,7 +19,7 @@ class CoupleCommand extends Command
     /**
      * @var string Command Description
      */
-    protected $description = "Attend the event as a couple!";
+    protected $description = "Attend the event as a couple";
 
     /**
      * @inheritdoc
