@@ -1,6 +1,8 @@
 <?php
 namespace App\Bots\QuestionProcessor;
 
+use App\Bots\UtilityClasses\RsvpBotUtility;
+use Telegram\Bot\Objects\Update;
 use App\Bots\QuestionProcessor\AbstractQuestion;
 
 class QuestionProcessor
@@ -27,14 +29,15 @@ class QuestionProcessor
      */
     public function process(Update $update)
     {
+
         $text = "Invalid request.";
         foreach ($this->questions as $question) {
             if ($question->validate($update)) {
-                $text = $question->handle($message);
+                $text = $question->handle($update);
                 break;
             }
         }
-        $this->telegram->sendMessage(['chat_id' => $message->getChat()->getId(), 'text' => $text]);
+        $this->telegram->sendMessage(['chat_id' => RsvpBotUtility::retrieveChatId($update), 'text' => $text]);
     }
 
     /**
