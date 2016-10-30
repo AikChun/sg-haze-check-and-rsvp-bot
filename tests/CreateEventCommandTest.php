@@ -11,6 +11,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CreateEventCommandTest extends TestCase
 {
+    use DatabaseTransactions;
     protected $update;
     protected $createEventCommand;
     /**
@@ -24,11 +25,6 @@ class CreateEventCommandTest extends TestCase
         $this->update = factory(Update::class)->make();
         $this->createEventCommand = new CreateEventCommand;
 
-        $fromUser = new User([
-            'id'         => 60875961,
-            'first_name' => 'Aik Chun',
-            'username'   => 'EggyMcEggface'
-        ]);
 
         $chat = new Chat([
             'id'    => 1,
@@ -58,10 +54,9 @@ class CreateEventCommandTest extends TestCase
 
         $message = new Message([
             'message_id' => 227,
-            'from'       => $fromUser,
-            'chat'       => $chat,
+            'from'       => new User([ 'id' => 60875961, 'first_name' => 'Aik Chun', 'username' => 'EggyMcEggface' ]),
+            'chat'       => new Chat([ 'id' => 1, 'title' => 'Bot SandBox', 'type'  => 'supergroup', ]),
             'date'       => 1471279851,
-            'reply_to_message' => $replyToMessage,
         ]);
 
         $this->update = new Update([
@@ -71,6 +66,10 @@ class CreateEventCommandTest extends TestCase
     }
     public function testReplyToUser()
     {
-        $this->assertEquals('You already have an event created! /delete before starting a new one.', $this->createEventCommand->replyToUser($this->update));
+
+        $expected   = "Event: Breakfast at Winterfell is still going on.\n";
+        $expected   .= "Enter your next event, Or /cancel this action.";
+
+        $this->assertEquals($expected, $this->createEventCommand->replyToUser($this->update));
     }
 }

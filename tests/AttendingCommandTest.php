@@ -12,6 +12,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AttendingCommandTest extends TestCase
 {
+    use DatabaseTransactions;
 
     protected $update;
     protected $message;

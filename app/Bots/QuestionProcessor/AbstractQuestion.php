@@ -13,24 +13,16 @@ abstract class AbstractQuestion {
 
     abstract public function announceAfterHandling($data);
 
-    public function __construct($question, $status)
+    public function __construct($status)
     {
-        $this->question = $question;
         $this->status   = $status;
-    }
-
-    public function getQuestion() {
-        return $this->question;
     }
 
     public function validate(Update $update)
     {
         $message = $update->getMessage();
 
-        if($this->question == $message->getReplyToMessage()->getText()) {
-            return $this->validateUserStatus($message->getFrom()->getId());
-        }
-        return false;
+        return $this->validateUserStatus($message->getFrom()->getId());
     }
     public function validateUserStatus($userId)
     {

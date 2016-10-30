@@ -11,9 +11,11 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class RsvpBotUtilityTest extends TestCase
 {
+    use DatabaseTransactions;
 
     protected $update;
     protected $message;
+
     public function setUp()
     {
         parent::setUp();

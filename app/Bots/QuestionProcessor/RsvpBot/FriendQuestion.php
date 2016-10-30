@@ -17,9 +17,9 @@ class FriendQuestion extends AbstractQuestion
      * @param String $status will be the status or state of the user, the previous command will cache tag the user with a status to ensure that this is
      * the next step of the conversation. and also to prevent this class from processing if other users are replying to the previous message.
      */
-    public function __construct($question, $status)
+    public function __construct($status)
     {
-        parent::__construct($question, $status);
+        parent::__construct($status);
     }
 
     /**
@@ -35,7 +35,7 @@ class FriendQuestion extends AbstractQuestion
         $event = Event::where('chat_id', $chatId)->count();
 
         if ($event == 0) {
-            return 'There\'s no event.';
+            return 'You don\t got no event cuz.';
         }
 
         $messageText = $message->getText();

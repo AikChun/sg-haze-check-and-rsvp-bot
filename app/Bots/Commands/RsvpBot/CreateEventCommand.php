@@ -21,13 +21,12 @@ class CreateEventCommand extends Command
     /**
      * @var string Command Description
      */
-    protected $description = "Create an event for your group chat";
+    protected $description  = "Create an event for your group chat";
 
     public static $question = "What is your event?";
 
-    public static $step = "event.create";
+    public static $step     = "event.create";
 
-    protected $forceReply = null;
     /**
      * @inheritdoc
      */
@@ -44,10 +43,10 @@ class CreateEventCommand extends Command
 
         $text = $this->replyToUser($update);
 
-
         Redis::set(RsvpBotUtility::retrieveFromUser($update)->getId(), self::$step); // tag user's id with status of event.create
 
-        $this->replyWithMessage(['text' => $text, 'reply_to_message_id' => $this->getUpdate()->getMessage()->getMessageId(), 'reply_markup' => $this->forceReply]);
+        $forceReply = $this->getTelegram()->forceReply(['force_reply' => true, 'selective' => true]);
+        $this->replyWithMessage(['text' => $text, 'reply_to_message_id' => $this->getUpdate()->getMessage()->getMessageId(), 'reply_markup' => $forceReply]);
 
         // This will update the chat status to typing...
     }
@@ -59,9 +58,10 @@ class CreateEventCommand extends Command
         $chatId    = $message->getChat()->getId();
 
         if (RsvpBotUtility::chathasEvent($message)) {
-            $text   = "You already have an event created! Please /deleteevent before starting a new one.";
+            $existingEvent = \App\Event::where('chat_id', RsvpBotUtility::retrieveChatId($message))->first();
+            $text   = "Event: " . $existingEvent->description . " is still going on.\n";
+            $text   .= "Enter your next event, Or /cancel this action.";
         } else {
-            $this->forceReply = $this->getTelegram()->forceReply(['force_reply' => true, 'selective' => true]);
             $text   = self::$question;
         }
 

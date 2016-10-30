@@ -12,6 +12,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CreateEventQuestionTest extends TestCase
 {
+    use DatabaseTransactions;
 
     protected $update;
     protected $message;
@@ -68,7 +69,7 @@ class CreateEventQuestionTest extends TestCase
 
         ]);
 
-        $this->createEventQuestion = new CreateEventQuestion('What is the name of your event?', 'event.create');
+        $this->createEventQuestion = new CreateEventQuestion('event.create');
         Redis::set($this->fromUser->getId(), 'event.create'); // tag user's id with status of event.create
 
     }
@@ -97,7 +98,39 @@ class CreateEventQuestionTest extends TestCase
         $expected .= '/attending';
 
         $this->assertEquals($expected, $this->createEventQuestion->handle($this->update));
+
     }
 
+    public function testHandleCreateNewEventInChatWithExistingEvent()
+    {
+        $chatWithExistingEvent = new Chat([
+            'id'    => 3,
+            'title' => 'Bot SandBox',
+            'type'  => 'supergroup',
+        ]);
+
+        $message = [
+            'message_id'       => 227,
+            'from'             => $this->fromUser,
+            'chat'             => $chatWithExistingEvent,
+            'date'             => 1471279851,
+            'text'             => 'ReplacingEvent'
+        ];
+        $updateWithExistingEvent = new Update([
+            'update_id' => 112233,
+            'message' => $message,
+        ]);
+
+        $expected =  'Event: '. "\n";
+        $expected .= 'ReplacingEvent' . "\n\n";
+        $expected .= "\n" . 'Number of attendees: 0'. "\n";
+        $expected .= 'Click here to attend!'. "\n";
+        $expected .= '/attending';
+
+        $this->assertEquals($expected, $this->createEventQuestion->handle($updateWithExistingEvent));
+        $latestSavedEvent = \App\Event::orderBy('id', 'desc')->first();
+        $this->assertEquals(3, $latestSavedEvent->chat_id);
+        $this->assertEquals('ReplacingEvent', $latestSavedEvent->description);
+    }
 
 }

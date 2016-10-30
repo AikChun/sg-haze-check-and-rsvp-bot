@@ -34,6 +34,7 @@ class RsvpBotController extends Controller
             \App\Bots\Commands\RsvpBot\CoupleCommand::class,
             \App\Bots\Commands\RsvpBot\FriendCommand::class,
             \App\Bots\Commands\RsvpBot\WithdrawCommand::class,
+            \App\Bots\Commands\RsvpBot\CancelCommand::class,
             Telegram\Bot\Commands\HelpCommand::class
         ]);
 
@@ -57,8 +58,8 @@ class RsvpBotController extends Controller
         }
 
         $this->questionProcessor->addQuestions([
-            new \App\Bots\QuestionProcessor\RsvpBot\CreateEventQuestion(CreateEventCommand::$question, CreateEventCommand::$step),
-            new \App\Bots\QuestionProcessor\RsvpBot\FriendQuestion(FriendCommand::$question, FriendCommand::$step)
+            new \App\Bots\QuestionProcessor\RsvpBot\CreateEventQuestion(CreateEventCommand::$step),
+            new \App\Bots\QuestionProcessor\RsvpBot\FriendQuestion(FriendCommand::$step)
         ]);
 
         $this->telegram->sendChatAction(['chat_id' => $message->getChat()->getId(), 'action' => Actions::TYPING]);

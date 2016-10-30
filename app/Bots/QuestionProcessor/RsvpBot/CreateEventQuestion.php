@@ -18,9 +18,9 @@ class CreateEventQuestion extends AbstractQuestion
      * @param String $status will be the status or state of the user, the previous command will cache tag the user with a status to ensure that this is
      * the next step of the conversation. and also to prevent this class from processing if other users are replying to the previous message.
      */
-    public function __construct($question, $status)
+    public function __construct($status)
     {
-        parent::__construct($question, $status);
+        parent::__construct($status);
     }
 
     /**
@@ -31,10 +31,16 @@ class CreateEventQuestion extends AbstractQuestion
      */
     public function handle(Update $update)
     {
+        if('/cancel' == RsvpBotUtility::retrieveMessageText($update)) {
+            return ;
+        }
+
         $chatId             = RsvpBotUtility::retrieveChatId($update);
 
-        if(RsvpBotUtility::chatHasEvent($update)) {
-            return "You already have an event created! /delete before starting a new one.";
+        $existingEvent = \App\Event::where('chat_id', RsvpBotUtility::retrieveChatId($update))->first();
+
+        if($existingEvent) {
+            $existingEvent->delete();
         }
 
         $messageText        = RsvpBotUtility::retrieveMessageText($update);
