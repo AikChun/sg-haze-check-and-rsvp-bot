@@ -32,8 +32,11 @@ class CreateEventQuestion extends AbstractQuestion
     public function handle(Update $update)
     {
         if('cancel' == strtolower(RsvpBotUtility::retrieveMessageText($update))) {
+            $fromUser = RsvpBotUtility::retrieveFromUser($update);
+
             if (Redis::exists($fromUser->getId())) {
                 Redis::del($fromUser->getId());
+                return "Thank you. Use /start to see what other actions you can do.";
             }
         }
 
