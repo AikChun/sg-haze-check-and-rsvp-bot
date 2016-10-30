@@ -34,7 +34,6 @@ class RsvpBotController extends Controller
             \App\Bots\Commands\RsvpBot\CoupleCommand::class,
             \App\Bots\Commands\RsvpBot\FriendCommand::class,
             \App\Bots\Commands\RsvpBot\WithdrawCommand::class,
-            \App\Bots\Commands\RsvpBot\CancelCommand::class,
             Telegram\Bot\Commands\HelpCommand::class
         ]);
 

@@ -6,7 +6,7 @@ use Telegram\Bot\Objects\Update;
 use App\Bots\QuestionProcessor\AbstractQuestion;
 use App\Bots\UtilityClasses\RsvpBotUtility;
 use App\Event;
-use Redis;
+use Illuminate\Support\Facades\Redis;
 
 class CreateEventQuestion extends AbstractQuestion
 {
@@ -31,8 +31,10 @@ class CreateEventQuestion extends AbstractQuestion
      */
     public function handle(Update $update)
     {
-        if('/cancel' == RsvpBotUtility::retrieveMessageText($update)) {
-            return ;
+        if('cancel' == strtolower(RsvpBotUtility::retrieveMessageText($update))) {
+            if (Redis::exists($fromUser->getId())) {
+                Redis::del($fromUser->getId());
+            }
         }
 
         $chatId             = RsvpBotUtility::retrieveChatId($update);
