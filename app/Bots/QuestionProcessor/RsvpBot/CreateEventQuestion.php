@@ -37,7 +37,8 @@ class CreateEventQuestion extends AbstractQuestion
             if (Redis::exists($fromUser->getId())) {
                 Redis::del($fromUser->getId());
             }
-            return "Thank you. Use /start to see what other actions you can do.";
+            $existingEvent = \App\Event::where('chat_id', RsvpBotUtility::retrieveChatId($update))->first();
+            return RsvpBotUtility::getEventDetails($event);
         }
 
         $chatId             = RsvpBotUtility::retrieveChatId($update);
