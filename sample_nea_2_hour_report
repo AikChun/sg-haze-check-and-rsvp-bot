@@ -1,0 +1,60 @@
+<channel>
+    <title>2 Hour Forecast</title>
+    <source>Meteorological Services Singapore</source>
+    <description>2 Hour Forecast</description>
+    <item>
+        <title>Nowcast Table</title>
+        <category>Singapore Weather Conditions</category>
+        <forecastIssue date="03-11-2016" time="12:30 AM"/>
+        <validTime>12.30 am to 2.30 am</validTime>
+        <weatherForecast>
+            <area forecast="CL" lat="1.37500000" lon="103.83900000" name="Ang Mo Kio"/>
+            <area forecast="CL" lat="1.32100000" lon="103.92400000" name="Bedok"/>
+            <area forecast="CL" lat="1.35077200" lon="103.83900000" name="Bishan"/>
+            <area forecast="CL" lat="1.30400000" lon="103.70100000" name="Boon Lay"/>
+            <area forecast="CL" lat="1.35300000" lon="103.75400000" name="Bukit Batok"/>
+            <area forecast="CL" lat="1.27700000" lon="103.81900000" name="Bukit Merah"/>
+            <area forecast="CL" lat="1.36200000" lon="103.77195000" name="Bukit Panjang"/>
+            <area forecast="CL" lat="1.32500000" lon="103.79100000" name="Bukit Timah"/>
+            <area forecast="CL" lat="1.38000000" lon="103.80500000" name="Central Water Catchment"/>
+            <area forecast="CL" lat="1.35700000" lon="103.98700000" name="Changi"/>
+            <area forecast="CL" lat="1.37700000" lon="103.74500000" name="Choa Chu Kang"/>
+            <area forecast="CL" lat="1.31500000" lon="103.76000000" name="Clementi"/>
+            <area forecast="CL" lat="1.29200000" lon="103.84400000" name="City"/>
+            <area forecast="CL" lat="1.31800000" lon="103.88400000" name="Geylang"/>
+            <area forecast="CL" lat="1.36121800" lon="103.88600000" name="Hougang"/>
+            <area forecast="CL" lat="1.34700000" lon="103.67000000" name="Jalan Bahar"/>
+            <area forecast="CL" lat="1.32600000" lon="103.73700000" name="Jurong East"/>
+            <area forecast="CL" lat="1.26600000" lon="103.69900000" name="Jurong Island"/>
+            <area forecast="CL" lat="1.34039000" lon="103.70500000" name="Jurong West"/>
+            <area forecast="CL" lat="1.31200000" lon="103.86200000" name="Kallang"/>
+            <area forecast="CL" lat="1.42300000" lon="103.71733200" name="Lim Chu Kang"/>
+            <area forecast="CL" lat="1.41900000" lon="103.81200000" name="Mandai"/>
+            <area forecast="CL" lat="1.29700000" lon="103.89100000" name="Marine Parade"/>
+            <area forecast="CL" lat="1.32700000" lon="103.82600000" name="Novena"/>
+            <area forecast="CL" lat="1.37000000" lon="103.94800000" name="Pasir Ris"/>
+            <area forecast="CL" lat="1.35800000" lon="103.91400000" name="Paya Lebar"/>
+            <area forecast="CL" lat="1.31500000" lon="103.67500000" name="Pioneer"/>
+            <area forecast="CL" lat="1.40300000" lon="104.05300000" name="Pulau Tekong"/>
+            <area forecast="CL" lat="1.40400000" lon="103.96000000" name="Pulau Ubin"/>
+            <area forecast="CL" lat="1.40100000" lon="103.90400000" name="Punggol"/>
+            <area forecast="CL" lat="1.29100000" lon="103.78576000" name="Queenstown"/>
+            <area forecast="CL" lat="1.40400000" lon="103.86900000" name="Seletar"/>
+            <area forecast="CL" lat="1.44500000" lon="103.81849500" name="Sembawang"/>
+            <area forecast="CL" lat="1.38400000" lon="103.89144300" name="Sengkang"/>
+            <area forecast="CL" lat="1.24300000" lon="103.83200000" name="Sentosa"/>
+            <area forecast="CL" lat="1.35700000" lon="103.86500000" name="Serangoon"/>
+            <area forecast="CL" lat="1.20800000" lon="103.84200000" name="Southern Islands"/>
+            <area forecast="CL" lat="1.41300000" lon="103.75600000" name="Sungei Kadut"/>
+            <area forecast="CL" lat="1.34500000" lon="103.94400000" name="Tampines"/>
+            <area forecast="CL" lat="1.30800000" lon="103.81300000" name="Tanglin"/>
+            <area forecast="CL" lat="1.37400000" lon="103.71500000" name="Tengah"/>
+            <area forecast="CL" lat="1.33430400" lon="103.85632700" name="Toa Payoh"/>
+            <area forecast="CL" lat="1.29494700" lon="103.63500000" name="Tuas"/>
+            <area forecast="CL" lat="1.20592600" lon="103.74600000" name="Western Islands"/>
+            <area forecast="CL" lat="1.40500000" lon="103.68900000" name="Western Water Catchment"/>
+            <area forecast="CL" lat="1.43200000" lon="103.78652800" name="Woodlands"/>
+            <area forecast="CL" lat="1.41800000" lon="103.83900000" name="Yishun"/>
+        </weatherForecast>
+    </item>
+</channel>
