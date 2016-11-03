@@ -100,6 +100,13 @@ class RsvpBotUtility
         return $message != null ? $message->getFrom()->getId() : null;
     }
 
+    public static function retrieveMessageText($identifier)
+    {
+        $message = self::retrieveMessage($identifier);
+        return $message == null ? null : $message->getText();
+    }
+
+    // start of rsvp specific methods
     public static function getEventDetails($identifier)
     {
         $text = "";
@@ -112,11 +119,6 @@ class RsvpBotUtility
         return $text;
     }
 
-    public static function retrieveMessageText($identifier)
-    {
-        $message = self::retrieveMessage($identifier);
-        return $message == null ? null : $message->getText();
-    }
 
     public static function prepareText($event, $attendees)
     {
