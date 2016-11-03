@@ -5,6 +5,7 @@ namespace App\Bots\Commands\HazeBot;
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
 use App\NeaWeatherForecastAbbrev;
+use Redis;
 
 class TwoHourForecastCommand extends Command
 {
