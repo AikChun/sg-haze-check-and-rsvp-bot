@@ -2,12 +2,13 @@
 
 namespace App\Bots\Commands\HazeBot;
 
+use App\NeaWeatherForecastAbbrev;
+use Illuminate\Support\Facades\Redis;
+use Redis;
 use Telegram\Bot\Actions;
 use Telegram\Bot\Commands\Command;
-use App\NeaWeatherForecastAbbrev;
-use Redis;
 
-class TwoHourForecastCommand extends Command
+class TwoHourForecastByAreaCommand extends Command
 {
     /**
      * @var string Command Name
@@ -30,14 +31,24 @@ class TwoHourForecastCommand extends Command
         // `replyWith<Message|Photo|Audio|Video|Voice|Document|Sticker|Location|ChatAction>()` all the available methods are dynamically
         // handled when you replace `send<Method>` with `replyWith` and use the same parameters - except chat_id does NOT need to be included in the array.
 
-        $apiUrl   = sprintf("http://api.nea.gov.sg/api/WebAPI/?dataset=2hr_nowcast&keyref=%s", env('NEA_API_KEY'));
+        $chatId = HazeBotUtility::retrieveChatId($update);
+        
+        // Prepare a markup keyboard for user.
+        $reply_markup = $telegram->replyKeyboardMarkup([
+            $keyboard = ['North,' 'South', 'East', 'West'];
+            'keyboard' => $keyboard, 
+            'resize_keyboard' => true, 
+            'one_time_keyboard' => true,
+            'selective' => true
+        ]);
+        //$apiUrl   = sprintf("http://api.nea.gov.sg/api/WebAPI/?dataset=2hr_nowcast&keyref=%s", env('NEA_API_KEY'));
 
-        $client   = new \GuzzleHttp\Client();
-        $response = $client->request('GET', $apiUrl );
+        //$client   = new \GuzzleHttp\Client();
+        //$response = $client->request('GET', $apiUrl );
 
-        $data     = $this->convertResponseToArray($response);
-        $text     = $this->generateMessageFromData($data);
-        $this->replyWithMessage(['text' => $text]);
+        //$data     = $this->convertResponseToArray($response);
+        //$text     = $this->generateMessageFromData($data);
+        $this->replyWithMessage(['text' => $text, 'reply_markup' => $reply_markup]);
 
         // This will update the chat status to typing...
 

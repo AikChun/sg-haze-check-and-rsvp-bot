@@ -33,7 +33,9 @@ class CancelCommand extends Command
         // This will update the chat status to typing...
         $this->replyWithChatAction(['action' => Actions::TYPING]);
 
-        $text = $this->replyToUser($this->getUpdate());
+        $update = $this->getUpdate();
+
+        $text = $this->replyToUser($update);
 
         $fromUser = RsvpBotUtility::retrieveFromUser($update);
         if (Redis::exists($fromUser->getId())) {

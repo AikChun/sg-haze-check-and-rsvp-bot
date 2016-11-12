@@ -68,7 +68,7 @@ class CreateEventCommandTest extends TestCase
     {
 
         $expected   = "Event: Breakfast at Winterfell is still going on.\n";
-        $expected   .= "Enter your next event, Or /cancel this action.";
+        $expected   .= "Enter your next event, Or type <b>Cancel</b> this action.";
 
         $this->assertEquals($expected, $this->createEventCommand->replyToUser($this->update));
     }

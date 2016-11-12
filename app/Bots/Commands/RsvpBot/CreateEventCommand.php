@@ -46,7 +46,7 @@ class CreateEventCommand extends Command
         Redis::set(RsvpBotUtility::retrieveFromUser($update)->getId(), self::$step); // tag user's id with status of event.create
 
         $forceReply = $this->getTelegram()->forceReply(['force_reply' => true, 'selective' => true]);
-        $this->replyWithMessage(['text' => $text, 'reply_to_message_id' => $this->getUpdate()->getMessage()->getMessageId(), 'reply_markup' => $forceReply]);
+        $this->replyWithMessage(['text' => $text, 'reply_to_message_id' => $this->getUpdate()->getMessage()->getMessageId(), 'reply_markup' => $forceReply, 'parse_mode' => 'HTML']);
 
         // This will update the chat status to typing...
     }
@@ -60,7 +60,7 @@ class CreateEventCommand extends Command
         if (RsvpBotUtility::chathasEvent($message)) {
             $existingEvent = \App\Event::where('chat_id', RsvpBotUtility::retrieveChatId($message))->first();
             $text   = "Event: " . $existingEvent->description . " is still going on.\n";
-            $text   .= "Enter your next event, Or /cancel this action.";
+            $text   .= "Enter your next event, Or type <b>Cancel</b> this action.";
         } else {
             $text   = self::$question;
         }
