@@ -16,16 +16,14 @@ class CreateEventCommand extends Command
     /**
      * @var string Command Name
      */
-    protected $name = "createevent";
+    protected $name                    = "createevent";
 
     /**
      * @var string Command Description
      */
-    protected $description  = "Create an event for your group chat";
+    protected $description             = "Create an event for your group chat";
 
-    public static $question = "What is your event?";
-
-    public static $step     = "event.create";
+    protected $reply;
 
     /**
      * @inheritdoc
@@ -37,34 +35,30 @@ class CreateEventCommand extends Command
         // `replyWith<Message|Photo|Audio|Video|Voice|Document|Sticker|Location|ChatAction>()` all the available methods are dynamically
         // handled when you replace `send<Method>` with `replyWith` and use the same parameters - except chat_id does NOT need to be included in the array.
 
+        // This will update the chat status to typing...
         $this->replyWithChatAction(['action' => Actions::TYPING]);
 
-        $update = $this->getUpdate();
+        $replyParams = $this->replyToUser($this->getUpdate());
 
-        $text = $this->replyToUser($update);
+        $this->replyWithMessage($replyParams);
 
-        Redis::set(RsvpBotUtility::retrieveFromUser($update)->getId(), self::$step); // tag user's id with status of event.create
-
-        $forceReply = $this->getTelegram()->forceReply(['force_reply' => true, 'selective' => true]);
-        $this->replyWithMessage(['text' => $text, 'reply_to_message_id' => $this->getUpdate()->getMessage()->getMessageId(), 'reply_markup' => $forceReply, 'parse_mode' => 'HTML']);
-
-        // This will update the chat status to typing...
     }
 
     public function replyToUser(Update $update)
     {
-        $message   = $update->getMessage();
-        $messageId = $message->getMessageId();
-        $chatId    = $message->getChat()->getId();
-
-        if (RsvpBotUtility::chathasEvent($message)) {
-            $existingEvent = \App\Event::where('chat_id', RsvpBotUtility::retrieveChatId($message))->first();
-            $text   = "Event: " . $existingEvent->description . " is still going on.\n";
-            $text   .= "Enter your next event, Or type <b>Cancel</b> this action.";
+        if (Event::where('chat_id', $update->getMessage()->getChat()->getId())->first()) {
+            $this->reply = new CreateEventReply();
+            $step = 'event.create';
         } else {
-            $text   = self::$question;
+            $this->reply = new CreateOrCancelEventReply();
+            $step = 'event.createOrCancel';
         }
 
-        return $text;
+        Redis::set($update->getMessage()->getFrom()->getId(), $step); // tag user's id with status of event.createOrCancel
+
+        $this->reply->process($update);
+
+        return $this->reply->getReplyParams();
     }
+
 }
