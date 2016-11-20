@@ -57,8 +57,8 @@ class RsvpBotController extends Controller
         }
 
         $this->questionProcessor->addQuestions([
-            new \App\Bots\QuestionProcessor\RsvpBot\CreateEventQuestion(CreateEventCommand::$step),
-            new \App\Bots\QuestionProcessor\RsvpBot\FriendQuestion(FriendCommand::$step)
+            new \App\Bots\QuestionProcessor\RsvpBot\CreateEventQuestion,
+            new \App\Bots\QuestionProcessor\RsvpBot\FriendQuestion
         ]);
 
         $this->telegram->sendChatAction(['chat_id' => $message->getChat()->getId(), 'action' => Actions::TYPING]);

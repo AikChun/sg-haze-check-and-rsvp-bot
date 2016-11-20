@@ -7,27 +7,27 @@ use Illuminate\Support\Facades\Redis;
 
 abstract class AbstractQuestion {
     protected $question;
-    protected $status;
+    protected $userState;
 
     abstract public function handle(Update $update);
 
     abstract public function announceAfterHandling($data);
 
-    public function __construct($status)
+    public function __construct()
     {
-        $this->status   = $status;
+        // Nothing to initialize
     }
 
     public function validate(Update $update)
     {
         $message = $update->getMessage();
 
-        return $this->validateUserStatus($message->getFrom()->getId());
+        return $this->validateUseruserState($message->getFrom()->getId());
     }
-    public function validateUserStatus($userId)
+    public function validateUseruserState($userId)
     {
-        $status = Redis::get($userId);
-        if($this->status != $status) {
+        $userState = Redis::get($userId);
+        if($this->userState != $userState) {
             return false;
         }
         Redis::del($userId);

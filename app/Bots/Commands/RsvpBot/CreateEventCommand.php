@@ -23,42 +23,89 @@ class CreateEventCommand extends Command
      */
     protected $description             = "Create an event for your group chat";
 
-    protected $reply;
-
     /**
      * @inheritdoc
      */
     public function handle($arguments)
     {
-        // This will send a message using `sendMessage` method behind the scenes to
-        // the user/chat id who triggered this command.
-        // `replyWith<Message|Photo|Audio|Video|Voice|Document|Sticker|Location|ChatAction>()` all the available methods are dynamically
-        // handled when you replace `send<Method>` with `replyWith` and use the same parameters - except chat_id does NOT need to be included in the array.
-
         // This will update the chat status to typing...
         $this->replyWithChatAction(['action' => Actions::TYPING]);
 
-        $replyParams = $this->replyToUser($this->getUpdate());
+        // find out if there's existing event
+        $chatId = $this->getUpdate()->getMessage()->getChat()->getId();
 
-        $this->replyWithMessage($replyParams);
+        $replyParameters = []; // initialize parameters for reply
+        $userState = ''; // initialize user state to be save in cache
+
+        $currentEvent = Event::where('chat_id', $chatId)->first(); // Find existing event for chat
+
+        if($currentEvent) { // if there's an exisitng event for chat
+            $replyParameters = $this->buildReplyParametersForExistingEvent();
+            $userState       = 'event.createOrCancel';
+        } else {
+            $replyParameters = $this->buildReplyParametersForNewEvent();
+            $userState       = 'event.create';
+        }
+
+        $fromUserId = $this->getUpdate()->getMessage()->getFrom()->getId();
+
+        $this->setUserStateInCache($fromUserId, $userState);
+
+        $this->replyWithMessage($replyParameters);
 
     }
 
-    public function replyToUser(Update $update)
+    /**
+     * Builds reply message parameters when the chat has an existing event
+     */
+    protected function buildReplyParametersForExistingEvent()
     {
-        if (Event::where('chat_id', $update->getMessage()->getChat()->getId())->first()) {
-            $this->reply = new CreateEventReply();
-            $step = 'event.create';
-        } else {
-            $this->reply = new CreateOrCancelEventReply();
-            $step = 'event.createOrCancel';
-        }
+        $keyboard => [
+            'Create New Event',
+            'Cancel'
+        ];
 
-        Redis::set($update->getMessage()->getFrom()->getId(), $step); // tag user's id with status of event.createOrCancel
+        $replyMarkup = $this->telegram->replyKeyboardMarkup([
+            'keyboard'          => $keyboard,
+            'resize_keyboard'   => true,
+            'one_time_keyboard' => true,
+            'selective'         => true,
+            'force_reply'       => true,
+        ]);
 
-        $this->reply->process($update);
+        $replyText =  'You have an existing event\nChoose to either **Create New Event** or **Cancel** this action.';
 
-        return $this->reply->getReplyParams();
+        return [
+            'text'         => $text,
+            'reply_markup' => $replyMarkup,
+        ];
+    }
+
+    /**
+     * Builds reply parameters when chat has no existing event
+     */
+    protected function buildReplyParametersForNewEvent()
+    {
+            $replyText = 'What is your event?';
+
+            $replyMarkup = [
+                'selective'   => true,
+                'force_reply' => true
+            ];
+
+        return [
+            'text'         => $text,
+            'reply_markup' => $replyMarkup,
+        ];
+    }
+
+    /**
+     * Saves user's id as key and user state as value with redis.
+     */
+    protected function setUserStateInCache($userId, $userState)
+    {
+        Redis::set($userId, $userState);
+        Redis::expire($userId, 2);
     }
 
 }
