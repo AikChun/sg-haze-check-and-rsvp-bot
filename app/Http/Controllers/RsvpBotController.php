@@ -34,7 +34,7 @@ class RsvpBotController extends Controller
             \App\Bots\Commands\RsvpBot\CoupleCommand::class,
             \App\Bots\Commands\RsvpBot\FriendCommand::class,
             \App\Bots\Commands\RsvpBot\WithdrawCommand::class,
-            Telegram\Bot\Commands\HelpCommand::class
+            // Telegram\Bot\Commands\HelpCommand::class
         ]);
 
         $this->questionProcessor = new QuestionProcessor($this->telegram);
